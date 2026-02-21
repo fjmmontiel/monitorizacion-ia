@@ -1,0 +1,18 @@
+[env-mock]
+9:REACT_APP_MONITOR_FAILOVER_TO_MOCK=true
+[env-schema]
+14:  REACT_APP_MONITOR_FAILOVER_TO_MOCK: z
+[api-failover-paths]
+102:const enableFailoverToMock = envVariables.REACT_APP_MONITOR_FAILOVER_TO_MOCK;
+129:      return cardsResponseSchema.parse(getFixtureByUseCase(casoDeUso).cards);
+135:      if (enableFailoverToMock) {
+136:        return cardsResponseSchema.parse(getFixtureByUseCase(casoDeUso).cards);
+146:      return dashboardResponseSchema.parse(getFixtureByUseCase(casoDeUso).dashboard);
+152:      if (enableFailoverToMock) {
+153:        return dashboardResponseSchema.parse(getFixtureByUseCase(casoDeUso).dashboard);
+166:      return dashboardDetailResponseSchema.parse(getFixtureByUseCase(casoDeUso).dashboardDetail);
+175:      if (enableFailoverToMock) {
+176:        return dashboardDetailResponseSchema.parse(getFixtureByUseCase(casoDeUso).dashboardDetail);
+184:      return getMockDatopsOverview();
+190:      if (enableFailoverToMock) {
+191:        return getMockDatopsOverview();

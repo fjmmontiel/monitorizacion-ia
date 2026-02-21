@@ -1,0 +1,97 @@
+# 09_make_run.log
+
+## Fecha (UTC)
+2026-02-21T17:03:52Z
+
+## make run
+Requirement already satisfied: pip in ./.venv/lib/python3.14/site-packages (26.0.1)
+Obtaining file:///Users/usuario/personal/monitorizacion-ia/monitorizacion-ia-python
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status 'done'
+  Getting requirements to build editable: started
+  Getting requirements to build editable: finished with status 'done'
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status 'done'
+Requirement already satisfied: fastapi>=0.115.0 in ./.venv/lib/python3.14/site-packages (from monitorizacion-ia-python==0.2.0) (0.129.1)
+Requirement already satisfied: uvicorn>=0.30.0 in ./.venv/lib/python3.14/site-packages (from monitorizacion-ia-python==0.2.0) (0.41.0)
+Requirement already satisfied: pydantic>=2.7.0 in ./.venv/lib/python3.14/site-packages (from monitorizacion-ia-python==0.2.0) (2.12.5)
+Requirement already satisfied: pydantic-settings>=2.3.0 in ./.venv/lib/python3.14/site-packages (from monitorizacion-ia-python==0.2.0) (2.13.1)
+Requirement already satisfied: httpx>=0.27.0 in ./.venv/lib/python3.14/site-packages (from monitorizacion-ia-python==0.2.0) (0.28.1)
+Requirement already satisfied: PyYAML>=6.0.1 in ./.venv/lib/python3.14/site-packages (from monitorizacion-ia-python==0.2.0) (6.0.3)
+Requirement already satisfied: pytest>=8.2.0 in ./.venv/lib/python3.14/site-packages (from monitorizacion-ia-python==0.2.0) (9.0.2)
+Requirement already satisfied: pytest-asyncio>=0.23.0 in ./.venv/lib/python3.14/site-packages (from monitorizacion-ia-python==0.2.0) (1.3.0)
+Requirement already satisfied: starlette<1.0.0,>=0.40.0 in ./.venv/lib/python3.14/site-packages (from fastapi>=0.115.0->monitorizacion-ia-python==0.2.0) (0.52.1)
+Requirement already satisfied: typing-extensions>=4.8.0 in ./.venv/lib/python3.14/site-packages (from fastapi>=0.115.0->monitorizacion-ia-python==0.2.0) (4.15.0)
+Requirement already satisfied: typing-inspection>=0.4.2 in ./.venv/lib/python3.14/site-packages (from fastapi>=0.115.0->monitorizacion-ia-python==0.2.0) (0.4.2)
+Requirement already satisfied: annotated-doc>=0.0.2 in ./.venv/lib/python3.14/site-packages (from fastapi>=0.115.0->monitorizacion-ia-python==0.2.0) (0.0.4)
+Requirement already satisfied: anyio<5,>=3.6.2 in ./.venv/lib/python3.14/site-packages (from starlette<1.0.0,>=0.40.0->fastapi>=0.115.0->monitorizacion-ia-python==0.2.0) (4.12.1)
+Requirement already satisfied: idna>=2.8 in ./.venv/lib/python3.14/site-packages (from anyio<5,>=3.6.2->starlette<1.0.0,>=0.40.0->fastapi>=0.115.0->monitorizacion-ia-python==0.2.0) (3.11)
+Requirement already satisfied: certifi in ./.venv/lib/python3.14/site-packages (from httpx>=0.27.0->monitorizacion-ia-python==0.2.0) (2026.1.4)
+Requirement already satisfied: httpcore==1.* in ./.venv/lib/python3.14/site-packages (from httpx>=0.27.0->monitorizacion-ia-python==0.2.0) (1.0.9)
+Requirement already satisfied: h11>=0.16 in ./.venv/lib/python3.14/site-packages (from httpcore==1.*->httpx>=0.27.0->monitorizacion-ia-python==0.2.0) (0.16.0)
+Requirement already satisfied: annotated-types>=0.6.0 in ./.venv/lib/python3.14/site-packages (from pydantic>=2.7.0->monitorizacion-ia-python==0.2.0) (0.7.0)
+Requirement already satisfied: pydantic-core==2.41.5 in ./.venv/lib/python3.14/site-packages (from pydantic>=2.7.0->monitorizacion-ia-python==0.2.0) (2.41.5)
+Requirement already satisfied: python-dotenv>=0.21.0 in ./.venv/lib/python3.14/site-packages (from pydantic-settings>=2.3.0->monitorizacion-ia-python==0.2.0) (1.2.1)
+Requirement already satisfied: iniconfig>=1.0.1 in ./.venv/lib/python3.14/site-packages (from pytest>=8.2.0->monitorizacion-ia-python==0.2.0) (2.3.0)
+Requirement already satisfied: packaging>=22 in ./.venv/lib/python3.14/site-packages (from pytest>=8.2.0->monitorizacion-ia-python==0.2.0) (26.0)
+Requirement already satisfied: pluggy<2,>=1.5 in ./.venv/lib/python3.14/site-packages (from pytest>=8.2.0->monitorizacion-ia-python==0.2.0) (1.6.0)
+Requirement already satisfied: pygments>=2.7.2 in ./.venv/lib/python3.14/site-packages (from pytest>=8.2.0->monitorizacion-ia-python==0.2.0) (2.19.2)
+Requirement already satisfied: click>=7.0 in ./.venv/lib/python3.14/site-packages (from uvicorn>=0.30.0->monitorizacion-ia-python==0.2.0) (8.3.1)
+Building wheels for collected packages: monitorizacion-ia-python
+  Building editable for monitorizacion-ia-python (pyproject.toml): started
+  Building editable for monitorizacion-ia-python (pyproject.toml): finished with status 'done'
+  Created wheel for monitorizacion-ia-python: filename=monitorizacion_ia_python-0.2.0-0.editable-py3-none-any.whl size=2477 sha256=90753d0aacd7ce7761b4ce4e444d288514b34d54225271ce7825a438515c38ae
+  Stored in directory: /private/var/folders/g5/ccr4x75n6776kj5ckhdlwtxw0000gp/T/pip-ephem-wheel-cache-u796pjl4/wheels/7d/a4/03/e5a3f4bbcae5bf584270360c804fb0c4dc1475d355027a4d0a
+Successfully built monitorizacion-ia-python
+Installing collected packages: monitorizacion-ia-python
+  Attempting uninstall: monitorizacion-ia-python
+    Found existing installation: monitorizacion-ia-python 0.2.0
+    Uninstalling monitorizacion-ia-python-0.2.0:
+      Successfully uninstalled monitorizacion-ia-python-0.2.0
+Successfully installed monitorizacion-ia-python-0.2.0
+
+up to date, audited 664 packages in 806ms
+
+115 packages are looking for funding
+  run `npm fund` for details
+
+13 vulnerabilities (2 moderate, 10 high, 1 critical)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+Starting backend on port 8002
+Starting frontend on port 3100
+Stack up:
+- Frontend: http://127.0.0.1:3100/monitor?caso_de_uso=hipotecas
+- Backend:  http://127.0.0.1:8002/health
+- Front log: /Users/usuario/personal/monitorizacion-ia/logs/fase-ejecucion-local/runtime/front.log
+- Back log:  /Users/usuario/personal/monitorizacion-ia/logs/fase-ejecucion-local/runtime/back.log
+Sistemas habilitados:
+- hipotecas (Hipotecas)
+- prestamos (Prestamos)
+Vistas habilitadas:
+- operativa (Operativa)
+- supervision (Supervision)
+- ejecutiva (Ejecutiva)
+URL base monitor:
+http://127.0.0.1:3100/monitor?caso_de_uso=hipotecas&vista=operativa&timeRange=24h&limit=25
+Stack lista. Usa 'make logs' para ver runtime logs.
+
+## make status
+Estado de puertos:
+--- FRONT (3100)
+COMMAND   PID    USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+node    83982 usuario   14u  IPv6 0x2b8140c92ae6a7d6      0t0  TCP *:3100 (LISTEN)
+--- BACK (8002)
+COMMAND   PID    USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+Python  83912 usuario    6u  IPv4 0x608f1e849cecf6db      0t0  TCP 127.0.0.1:8002 (LISTEN)
+
+## make stop
+Stopped frontend (pid=83918)
+Stopped backend (pid=83906)
+Warning: port 3100 still in use by pid 83982. Forcing stop.
+Stack down.

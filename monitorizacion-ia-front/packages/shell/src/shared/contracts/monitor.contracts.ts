@@ -79,10 +79,30 @@ export const dashboardDetailResponseSchema = z.object({
   ),
 });
 
+const datopsUseCaseSchema = z.object({
+  id: z.string(),
+  adapter: z.string(),
+  timeout_ms: z.number().int().positive(),
+  upstream_base_url: z.string().nullable().optional(),
+  routes: z.object({
+    cards: z.string(),
+    dashboard: z.string(),
+    dashboard_detail: z.string(),
+  }),
+});
+
+export const datopsOverviewResponseSchema = z.object({
+  schema_version: z.string(),
+  generated_at: z.string(),
+  profile: z.string(),
+  use_cases: z.array(datopsUseCaseSchema),
+});
+
 export type QueryRequest = z.infer<typeof queryRequestSchema>;
 export type CardsResponse = z.infer<typeof cardsResponseSchema>;
 export type DashboardResponse = z.infer<typeof dashboardResponseSchema>;
 export type DashboardDetailResponse = z.infer<typeof dashboardDetailResponseSchema>;
+export type DatopsOverviewResponse = z.infer<typeof datopsOverviewResponseSchema>;
 
 export type NormalizedApiErrorCode =
   | 'UNKNOWN_USE_CASE'

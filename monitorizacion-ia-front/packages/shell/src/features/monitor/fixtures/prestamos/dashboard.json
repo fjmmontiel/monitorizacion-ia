@@ -1,14 +1,35 @@
 {
   "table": {
     "columns": [
-      { "key": "id", "label": "Id", "sortable": true },
-      { "key": "cliente", "label": "Cliente", "filterable": true },
-      { "key": "estado", "label": "Estado", "filterable": true, "sortable": true },
+      { "key": "fecha_hora", "label": "Fecha · Hora", "sortable": true },
+      { "key": "numero_entrante", "label": "Numero entrante", "filterable": true },
+      { "key": "nombre_cliente", "label": "Nombre del cliente", "filterable": true },
+      { "key": "razones_llamada", "label": "Razones de la llamada", "filterable": true },
+      { "key": "duracion", "label": "Duracion", "sortable": true },
+      { "key": "resolucion", "label": "Resolucion", "filterable": true, "sortable": true },
       { "key": "detail", "label": "Detalle" }
     ],
     "rows": [
-      { "id": "pres-100", "cliente": "Marta Ruiz", "estado": "Pendiente", "detail": { "action": "Ver detalle" } },
-      { "id": "pres-101", "cliente": "Carlos Vega", "estado": "Aprobado", "detail": { "action": "Ver detalle" } }
+      {
+        "id": "pres-100",
+        "fecha_hora": "20-02-2026 · 12:01",
+        "numero_entrante": "+34608281798",
+        "nombre_cliente": "Marta Ruiz",
+        "razones_llamada": "Consulta de preaprobacion",
+        "duracion": "0 min 39 s",
+        "resolucion": "Pendiente",
+        "detail": { "action": "Ver detalle" }
+      },
+      {
+        "id": "pres-101",
+        "fecha_hora": "20-02-2026 · 12:19",
+        "numero_entrante": "+34600122334",
+        "nombre_cliente": "Carlos Vega",
+        "razones_llamada": "Solicitud de carencia",
+        "duracion": "1 min 10 s",
+        "resolucion": "Aprobado",
+        "detail": { "action": "Ver detalle" }
+      }
     ],
     "nextCursor": "page-2"
   }

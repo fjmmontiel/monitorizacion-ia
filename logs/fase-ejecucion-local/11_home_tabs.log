@@ -1,0 +1,40 @@
+[info] Jest shell no ejecutable en este equipo: falta preset corporativo @architecture-components/test-config
+
+> @iagmvps-front-hipotecas/shell@0.0.1 typecheck
+> tsc --noEmit
+
+
+> @iagmvps-front-hipotecas/shell@0.0.1 build
+> dotenv -e .env.mock npm run webpack
+
+
+> @iagmvps-front-hipotecas/shell@0.0.1 webpack
+> webpack
+
+assets by status 357 KiB [cached] 1 asset
+assets by path *.js 4.53 MiB
+  assets by chunk 3.47 MiB (id hint: vendors)
+    asset vendors-node_modules_react-dom_index_js.90069ec877f8cc6ea5f0.js 2.55 MiB [emitted] [immutable] (id hint: vendors)
+    asset vendors-node_modules_react-router-dom_dist_index_js.612b355ee8a111a34f82.js 614 KiB [emitted] [immutable] (id hint: vendors)
+    asset vendors-node_modules_react_index_js.88caae70ce53a97f5702.js 223 KiB [emitted] [immutable] (id hint: vendors)
+    asset vendors-node_modules_react-dom_client_js-node_modules_react_jsx-runtime_js.f4774dc14617746316a1.js 109 KiB [emitted] [immutable] (id hint: vendors)
+  + 6 assets
+assets by status 1.04 KiB [compared for emit]
+  asset index.html 619 bytes [emitted] [compared for emit]
+  asset favicon.ico 451 bytes [compared for emit] [from: public/favicon.ico] [copied]
+runtime modules 21.2 KiB 14 modules
+modules by path ./node_modules/ 1.73 MiB 174 modules
+modules by path ./src/ 128 KiB
+  javascript modules 124 KiB 19 modules
+  json modules 3.68 KiB 8 modules
+provide-module modules 168 bytes
+  provide shared module (default) react-dom@18.2.0 = ./node_modules/react-dom/index.js 42 bytes [built] [code generated]
+  provide shared module (default) react-router-dom@6.11.1 = ./node_modules/react-router-dom/dist/index.js 42 bytes [built] [code generated]
+  provide shared module (default) react@18.2.0 = ./node_modules/react/index.js 42 bytes [built] [code generated]
+  provide shared module (default) zod@3.21.4 = ./node_modules/zod/lib/index.mjs 42 bytes [built] [code generated]
+consume-shared-module modules 168 bytes
+  consume shared module (default) react@=18.2.0 (singleton) (fallback: ./node_modules/react/index.js) 42 bytes [built] [code generated]
+  consume shared module (default) react-dom@=18.2.0 (singleton) (fallback: ./node_modules/react-dom/index.js) 42 bytes [built] [code generated]
+  consume shared module (default) zod@=3.21.4 (strict) (fallback: ./node_modules/zod/lib/index.mjs) 42 bytes [built] [code generated]
+  consume shared module (default) react-router-dom@=6.11.1 (strict) (fallback: ./node_modules/react-router-dom/dist/index.js) 42 bytes [built] [code generated]
+webpack 5.75.0 compiled successfully in 372 ms

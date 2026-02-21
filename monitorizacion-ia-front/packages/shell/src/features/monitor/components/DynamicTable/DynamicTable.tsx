@@ -1,5 +1,5 @@
 import { DashboardResponse, QueryRequest } from '#/shell/shared/contracts/monitor.contracts';
-import { ViewConfig } from '#/shell/shared/config/views';
+import { MonitorStyleConfig } from '#/shell/features/monitor/config/monitorStyle';
 
 type Props = {
   data: DashboardResponse | null;
@@ -8,7 +8,7 @@ type Props = {
   query: QueryRequest;
   onQueryChange: (next: QueryRequest) => void;
   onOpenDetail: (id: string) => void;
-  view: ViewConfig;
+  view: MonitorStyleConfig;
 };
 
 export const DynamicTable = ({ data, loading, error, query, onQueryChange, onOpenDetail, view }: Props) => {
@@ -25,29 +25,28 @@ export const DynamicTable = ({ data, loading, error, query, onQueryChange, onOpe
   }
 
   const { columns, rows, nextCursor } = data.table;
-  const hasRequiredColumns = columns.some(column => column.key === 'id') && columns.some(column => column.key === 'detail');
+  const hasRequiredColumns = columns.some(column => column.key === 'detail');
   const filterableColumns = columns.filter(column => column.filterable);
 
   if (!hasRequiredColumns) {
-    return <p>Configuración inválida: faltan columnas obligatorias id/detail.</p>;
+    return <p>Configuración inválida: falta columna obligatoria detail.</p>;
   }
 
   return (
     <section
       style={{
-        background: view.theme.surfaceBackground,
         border: `1px solid ${view.theme.surfaceBorder}`,
         borderRadius: 8,
-        marginTop: 12,
-        padding: 12,
+        padding: 10,
       }}
     >
       {filterableColumns.length > 0 && (
-        <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 10 }}>
           {filterableColumns.map(column => (
             <label key={column.key}>
               <span>{column.label}</span>
               <input
+                style={{ marginLeft: 6 }}
                 value={String(query.filters?.[column.key] ?? '')}
                 onChange={event =>
                   onQueryChange({
@@ -64,14 +63,15 @@ export const DynamicTable = ({ data, loading, error, query, onQueryChange, onOpe
           ))}
         </div>
       )}
-      <table style={{ width: '100%' }}>
+      <table style={{ border: `1px solid ${view.theme.surfaceBorder}`, borderRadius: 6, overflow: 'hidden', width: '100%' }}>
         <thead>
-          <tr style={{ background: view.theme.pageBackground }}>
+          <tr style={{ background: view.theme.pageBackground, textAlign: 'left' }}>
             {columns.map(column => (
-              <th key={column.key}>
+              <th key={column.key} style={{ borderBottom: `1px solid ${view.theme.surfaceBorder}`, padding: 10 }}>
                 <span>{column.label}</span>
                 {column.sortable && (
                   <button
+                    style={{ marginLeft: 6 }}
                     onClick={() =>
                       onQueryChange({
                         ...query,
@@ -88,18 +88,22 @@ export const DynamicTable = ({ data, loading, error, query, onQueryChange, onOpe
         </thead>
         <tbody>
           {rows.map(row => (
-            <tr key={row.id}>
+            <tr key={row.id} style={{ borderBottom: `1px solid ${view.theme.surfaceBorder}` }}>
               {columns.map(column => {
                 if (column.key === 'detail') {
                   return (
-                    <td key={`${row.id}-${column.key}`}>
+                    <td key={`${row.id}-${column.key}`} style={{ padding: 10 }}>
                       <button onClick={() => onOpenDetail(row.id)}>{row.detail.action}</button>
                     </td>
                   );
                 }
 
                 const value = row[column.key];
-                return <td key={`${row.id}-${column.key}`}>{typeof value === 'string' || typeof value === 'number' ? value : '-'}</td>;
+                return (
+                  <td key={`${row.id}-${column.key}`} style={{ padding: 10 }}>
+                    {typeof value === 'string' || typeof value === 'number' ? value : '-'}
+                  </td>
+                );
               })}
             </tr>
           ))}

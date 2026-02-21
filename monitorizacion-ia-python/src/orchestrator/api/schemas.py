@@ -147,3 +147,30 @@ class DashboardDetailResponse(BaseModel):
 
     left: LeftPanel
     right: list[RightPanel]
+
+
+class DatopsRoutes(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+
+    cards: str
+    dashboard: str
+    dashboard_detail: str
+
+
+class DatopsUseCase(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+
+    id: str
+    adapter: str
+    timeout_ms: int
+    upstream_base_url: str | None = None
+    routes: DatopsRoutes
+
+
+class DatopsOverviewResponse(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+
+    schema_version: str = 'v1'
+    generated_at: str
+    profile: str
+    use_cases: list[DatopsUseCase]

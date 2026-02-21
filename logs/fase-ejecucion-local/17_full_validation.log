@@ -1,0 +1,29 @@
+.........                                                                [100%]
+9 passed in 0.30s
+Smoke local OK
+Running E2E case: caso_de_uso=hipotecas, vista=operativa, timeRange=24h, search=<empty>, limit=25
+Running E2E case: caso_de_uso=prestamos, vista=supervision, timeRange=7d, search=Pendiente, limit=10
+Running E2E case: caso_de_uso=hipotecas, vista=ejecutiva, timeRange=30d, search=Ana, limit=5
+E2E cases local OK
+[cors-preflight]
+HTTP/1.1 200 OK
+date: Sat, 21 Feb 2026 17:36:52 GMT
+server: uvicorn
+vary: Origin
+access-control-allow-methods: DELETE, GET, HEAD, OPTIONS, PATCH, POST, PUT
+access-control-max-age: 600
+access-control-allow-credentials: true
+access-control-allow-origin: http://127.0.0.1:3100
+content-length: 2
+content-type: text/plain; charset=utf-8
+x-request-id: c593c323-00c6-4184-a6c2-d8ce9d4e0cef
+
+[datops-overview]
+{"schema_version":"v1","generated_at":"2026-02-21T17:36:52.460885+00:00","profile":"development","use_cases":[{"id":"hipotecas","adapter":"native","timeout_ms":2500,"upstream_base_url":null,"routes":{"cards":"/cards?caso_de_uso=hipotecas","dashboard":"/dashboard?caso_de_uso=hipotecas","dashboard_detail":"/dashboard_detail?caso_de_uso=hipotecas&id={id}"}},{"id":"prestamos","adapter":"native","timeout_ms":2500,"upstream_base_url":null,"routes":{"cards":"/cards?caso_de_uso=prestamos","dashboard":"/dashboard?caso_de_uso=prestamos","dashboard_detail":"/dashboard_detail?caso_de_uso=prestamos&id={id}"}},{"id":"piloto_proxy","adapter":"http_proxy","timeout_ms":5000,"upstream_base_url":"http://localhost:9000","routes":{"cards":"/cards?caso_de_uso=piloto_proxy","dashboard":"/dashboard?caso_de_uso=piloto_proxy","dashboard_detail":"/dashboard_detail?caso_de_uso=piloto_proxy&id={id}"}}]}...........                                                              [100%]
+11 passed in 0.22s
+Smoke local OK
+Running E2E case: caso_de_uso=hipotecas, vista=operativa, timeRange=24h, search=<empty>, limit=25
+Running E2E case: caso_de_uso=prestamos, vista=supervision, timeRange=7d, search=Pendiente, limit=10
+Running E2E case: caso_de_uso=hipotecas, vista=ejecutiva, timeRange=30d, search=Ana, limit=5
+E2E cases local OK
+[jest-shell-attempt]

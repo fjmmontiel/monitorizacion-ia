@@ -3,6 +3,7 @@ import time
 import uuid
 
 from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
 from starlette.responses import Response
 
 from orchestrator.adapters.registry import AdapterRegistry
@@ -18,6 +19,13 @@ logger = logging.getLogger(__name__)
 def create_app() -> FastAPI:
     configure_logging()
     app = FastAPI(title=settings.PROJECT_NAME, version=settings.PROJECT_VERSION)
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=['http://127.0.0.1:3100', 'http://localhost:3100'],
+        allow_credentials=True,
+        allow_methods=['*'],
+        allow_headers=['*'],
+    )
     loader = UseCaseLoader(settings.ORCH_CONFIG_PATH)
     routing = loader.load()
     app.state.adapter_registry = AdapterRegistry(routing, settings.UPSTREAM_TIMEOUT_MS)

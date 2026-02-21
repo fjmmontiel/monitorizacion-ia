@@ -12,4 +12,11 @@ describe('MonitorApi mock mode', () => {
     expect(keys).toContain('id');
     expect(keys).toContain('detail');
   });
+
+  test('carga inventario datops', async () => {
+    const payload = await MonitorApi.getDatopsOverview();
+    const useCases = payload.use_cases.map(item => item.id);
+    expect(useCases).toContain('hipotecas');
+    expect(useCases).toContain('prestamos');
+  });
 });

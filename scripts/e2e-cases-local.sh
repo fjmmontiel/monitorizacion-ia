@@ -13,14 +13,14 @@ trap cleanup EXIT
 "${ROOT_DIR}/scripts/up-local.sh" >/dev/null
 
 declare -a CASES=(
-  "hipotecas|operativa|24h||25"
-  "prestamos|supervision|7d|Pendiente|10"
-  "hipotecas|ejecutiva|30d|Ana|5"
+  "hipotecas|24h||25"
+  "prestamos|7d|Pendiente|10"
+  "hipotecas|30d|Ana|5"
 )
 
 for item in "${CASES[@]}"; do
-  IFS='|' read -r caso vista time_range search_term limit <<< "${item}"
-  echo "Running E2E case: caso_de_uso=${caso}, vista=${vista}, timeRange=${time_range}, search=${search_term:-<empty>}, limit=${limit}"
+  IFS='|' read -r caso time_range search_term limit <<< "${item}"
+  echo "Running E2E case: caso_de_uso=${caso}, timeRange=${time_range}, search=${search_term:-<empty>}, limit=${limit}"
 
   QUERY_JSON="{\"timeRange\":\"${time_range}\",\"limit\":${limit}"
   if [ -n "${search_term}" ]; then
@@ -28,7 +28,7 @@ for item in "${CASES[@]}"; do
   fi
   QUERY_JSON="${QUERY_JSON}}"
 
-  FRONT_URL="http://127.0.0.1:${FRONT_PORT}/monitor?caso_de_uso=${caso}&vista=${vista}&timeRange=${time_range}&limit=${limit}"
+  FRONT_URL="http://127.0.0.1:${FRONT_PORT}/monitor?caso_de_uso=${caso}&timeRange=${time_range}&limit=${limit}"
   if [ -n "${search_term}" ]; then
     FRONT_URL="${FRONT_URL}&search=${search_term}"
   fi

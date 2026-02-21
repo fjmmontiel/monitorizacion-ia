@@ -1,7 +1,8 @@
 {
   "cards": [
-    { "title": "Solicitudes activas", "value": 74, "format": "int" },
-    { "title": "Tiempo medio de aprobacion", "value": 4.8, "format": "seconds" },
-    { "title": "Ratio de conversion", "value": 0.64, "format": "percent" }
+    { "title": "Solicitudes activas", "subtitle": "Operaciones en curso", "value": 74, "format": "int" },
+    { "title": "Tiempo medio de aprobacion", "subtitle": "Media por solicitud", "value": 4.8, "format": "seconds" },
+    { "title": "Ratio de conversion", "subtitle": "Solicitudes aprobadas", "value": 0.64, "format": "percent" },
+    { "title": "Coste medio por solicitud", "subtitle": "Estimado interno", "value": 116, "format": "currencyEUR" }
   ]
 }

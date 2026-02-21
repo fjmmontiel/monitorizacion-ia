@@ -1,14 +1,35 @@
 {
   "table": {
     "columns": [
-      { "key": "id", "label": "Id", "sortable": true },
-      { "key": "cliente", "label": "Cliente", "filterable": true },
-      { "key": "estado", "label": "Estado", "filterable": true, "sortable": true },
+      { "key": "fecha_hora", "label": "Fecha · Hora", "sortable": true },
+      { "key": "numero_entrante", "label": "Numero entrante", "filterable": true },
+      { "key": "nombre_cliente", "label": "Nombre del cliente", "filterable": true },
+      { "key": "razones_llamada", "label": "Razones de la llamada", "filterable": true },
+      { "key": "duracion", "label": "Duracion", "sortable": true },
+      { "key": "resolucion", "label": "Resolucion", "filterable": true, "sortable": true },
       { "key": "detail", "label": "Detalle" }
     ],
     "rows": [
-      { "id": "conv-001", "cliente": "Ana Lopez", "estado": "Completada", "detail": { "action": "Ver detalle" } },
-      { "id": "conv-002", "cliente": "Luis Perez", "estado": "En curso", "detail": { "action": "Ver detalle" } }
+      {
+        "id": "conv-001",
+        "fecha_hora": "20-02-2026 · 10:01",
+        "numero_entrante": "+34608281798",
+        "nombre_cliente": "Ana Lopez",
+        "razones_llamada": "Hipoteca fija",
+        "duracion": "0 min 39 s",
+        "resolucion": "Completada",
+        "detail": { "action": "Ver detalle" }
+      },
+      {
+        "id": "conv-002",
+        "fecha_hora": "20-02-2026 · 10:08",
+        "numero_entrante": "+34611222333",
+        "nombre_cliente": "Luis Perez",
+        "razones_llamada": "Revision de cuota",
+        "duracion": "1 min 22 s",
+        "resolucion": "En curso",
+        "detail": { "action": "Ver detalle" }
+      }
     ],
     "nextCursor": "page-2"
   }

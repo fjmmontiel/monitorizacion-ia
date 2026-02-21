@@ -11,6 +11,10 @@ const envVariablesSchema = z.object({
     .enum(['true', 'false'])
     .transform(value => value === 'true')
     .default('false'),
+  REACT_APP_MONITOR_FAILOVER_TO_MOCK: z
+    .enum(['true', 'false'])
+    .transform(value => value === 'true')
+    .default('false'),
 });
 
 const parseEnvironmentVariables = () => {

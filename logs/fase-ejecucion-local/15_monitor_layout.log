@@ -1,0 +1,8 @@
+[hipotecas-dashboard-columns]
+['fecha_hora', 'numero_entrante', 'nombre_cliente', 'razones_llamada', 'duracion', 'resolucion', 'detail']
+{'id': 'conv-001', 'detail': {'action': 'Ver detalle'}, 'fecha_hora': '20-02-2026 · 10:01', 'numero_entrante': '+34608281798', 'nombre_cliente': 'Ana Lopez', 'razones_llamada': 'Hipoteca fija', 'duracion': '0 min 39 s', 'resolucion': 'Completada'}
+[prestamos-detail-panels]
+['list', 'timeline', 'metrics']
+{'role': 'cliente', 'text': 'Quiero revisar las condiciones del prestamo', 'timestamp': '11:15'}
+[monitor-url-with-filters]
+200

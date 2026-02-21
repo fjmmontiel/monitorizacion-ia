@@ -1,0 +1,42 @@
+
+> @iagmvps-front-hipotecas/shell@0.0.1 typecheck
+> tsc --noEmit
+
+
+> @iagmvps-front-hipotecas/shell@0.0.1 build
+> dotenv -e .env.mock npm run webpack
+
+
+> @iagmvps-front-hipotecas/shell@0.0.1 webpack
+> webpack
+
+assets by status 3.88 MiB [cached] 7 assets
+assets by path . 1.07 MiB
+  assets by path *.js 1.07 MiB
+    asset main.8b8dfb91407480466806.js 821 KiB [emitted] [immutable] (name: main)
+    asset src_features_monitor_pages_MonitorDashboard_page_tsx.ef1bf0d4b236ee5aa3c8.js 162 KiB [emitted] [immutable]
+    asset src_shared_api_MonitorApi_ts-src_shared_config_views_ts.f89b466f70a4170ecdff.js 89.5 KiB [emitted] [immutable]
+    asset src_bootstrap_tsx-webpack_sharing_consume_default_react-dom_react-dom.8b6aaae035a125cc7943.js 21.1 KiB [emitted] [immutable]
+  assets by status 1.04 KiB [compared for emit]
+    asset index.html 619 bytes [emitted] [compared for emit]
+    asset favicon.ico 451 bytes [compared for emit] [from: public/favicon.ico] [copied]
+runtime modules 21.2 KiB 14 modules
+modules by path ./node_modules/ 1.73 MiB 174 modules
+modules by path ./src/ 165 KiB
+  javascript modules 159 KiB 20 modules
+  json modules 5.46 KiB 8 modules
+provide-module modules 168 bytes
+  provide shared module (default) react-dom@18.2.0 = ./node_modules/react-dom/index.js 42 bytes [built] [code generated]
+  provide shared module (default) react-router-dom@6.11.1 = ./node_modules/react-router-dom/dist/index.js 42 bytes [built] [code generated]
+  provide shared module (default) react@18.2.0 = ./node_modules/react/index.js 42 bytes [built] [code generated]
+  provide shared module (default) zod@3.21.4 = ./node_modules/zod/lib/index.mjs 42 bytes [built] [code generated]
+consume-shared-module modules 168 bytes
+  consume shared module (default) react@=18.2.0 (singleton) (fallback: ./node_modules/react/index.js) 42 bytes [built] [code generated]
+  consume shared module (default) react-dom@=18.2.0 (singleton) (fallback: ./node_modules/react-dom/index.js) 42 bytes [built] [code generated]
+  consume shared module (default) zod@=3.21.4 (strict) (fallback: ./node_modules/zod/lib/index.mjs) 42 bytes [built] [code generated]
+  consume shared module (default) react-router-dom@=6.11.1 (strict) (fallback: ./node_modules/react-router-dom/dist/index.js) 42 bytes [built] [code generated]
+webpack 5.75.0 compiled successfully in 558 ms
+
+> @iagmvps-front-hipotecas/shell@0.0.1 typecheck
+> tsc --noEmit
+

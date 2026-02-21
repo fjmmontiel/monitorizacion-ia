@@ -2,7 +2,8 @@
   "left": {
     "messages": [
       { "role": "cliente", "text": "Quiero revisar las condiciones del prestamo", "timestamp": "11:15" },
-      { "role": "agente", "text": "Te muestro el resumen de condiciones", "timestamp": "11:16" }
+      { "role": "agente", "text": "Te muestro el resumen de condiciones", "timestamp": "11:16" },
+      { "role": "agente", "text": "Necesito confirmar ingresos mensuales", "timestamp": "11:17" }
     ]
   },
   "right": [
@@ -16,7 +17,16 @@
       "title": "Hitos",
       "events": [
         { "label": "Solicitud recibida", "time": "2026-02-20 09:30" },
-        { "label": "Analisis riesgo", "time": "2026-02-20 12:15" }
+        { "label": "Analisis de riesgo", "time": "2026-02-20 12:15" },
+        { "label": "Revision final", "time": "2026-02-20 13:42" }
+      ]
+    },
+    {
+      "type": "metrics",
+      "title": "Metricas",
+      "metrics": [
+        { "label": "Turnos", "value": 6 },
+        { "label": "Riesgo", "value": "Medio" }
       ]
     }
   ]

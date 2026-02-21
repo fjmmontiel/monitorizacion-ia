@@ -1,5 +1,5 @@
 import { CardsResponse } from '#/shell/shared/contracts/monitor.contracts';
-import { ViewConfig } from '#/shell/shared/config/views';
+import { MonitorStyleConfig } from '#/shell/features/monitor/config/monitorStyle';
 
 const formatters: Record<string, (value: string | number) => string> = {
   seconds: value => `${Number(value).toFixed(2)} s`,
@@ -14,7 +14,7 @@ type Props = {
   loading: boolean;
   error: string | null;
   onRefresh: () => void;
-  view: ViewConfig;
+  view: MonitorStyleConfig;
 };
 
 export const CardsGrid = ({ data, loading, error, onRefresh, view }: Props) => {
@@ -36,16 +36,12 @@ export const CardsGrid = ({ data, loading, error, onRefresh, view }: Props) => {
   }
 
   return (
-    <section
-      style={{
-        background: view.theme.surfaceBackground,
-        border: `1px solid ${view.theme.surfaceBorder}`,
-        borderRadius: 8,
-        padding: 12,
-      }}
-    >
-      <button onClick={onRefresh}>Refresh tarjetas</button>
-      <div style={{ display: 'grid', gridTemplateColumns: `repeat(${view.cards.columns}, minmax(0, 1fr))`, gap: 12 }}>
+    <section>
+      <div style={{ alignItems: 'center', display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
+        <p style={{ margin: 0 }}>Indicadores principales</p>
+        <button onClick={onRefresh}>Actualizar cards</button>
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: `repeat(${view.cards.columns}, minmax(0, 1fr))`, gap: 10 }}>
         {data.cards.map(card => {
           const formatter = card.format ? formatters[card.format] : undefined;
           const value = formatter ? formatter(card.value) : card.value;
@@ -55,14 +51,14 @@ export const CardsGrid = ({ data, loading, error, onRefresh, view }: Props) => {
               key={card.title}
               style={{
                 border: `1px solid ${view.theme.surfaceBorder}`,
-                borderLeft: `4px solid ${view.theme.accent}`,
+                borderTop: `4px solid ${view.theme.accent}`,
                 borderRadius: 8,
                 padding: 12,
               }}
             >
-              <h3>{title}</h3>
-              {view.cards.showSubtitle && card.subtitle && <small>{card.subtitle}</small>}
-              <p>{value}</p>
+              <h3 style={{ marginBottom: 8 }}>{title}</h3>
+              {view.cards.showSubtitle && card.subtitle && <small style={{ display: 'block', marginBottom: 10 }}>{card.subtitle}</small>}
+              <p style={{ fontSize: 28, fontWeight: 700, margin: 0 }}>{value}</p>
             </article>
           );
         })}

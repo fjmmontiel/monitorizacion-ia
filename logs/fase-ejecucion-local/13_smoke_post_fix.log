@@ -1,0 +1,25 @@
+[health]
+{"status":"ok","service":"monitorizacion-ia-orchestrator","version":"0.1.0"}
+[cors-options-cards]
+HTTP/1.1 200 OK
+date: Sat, 21 Feb 2026 17:19:11 GMT
+server: uvicorn
+vary: Origin
+access-control-allow-methods: DELETE, GET, HEAD, OPTIONS, PATCH, POST, PUT
+access-control-max-age: 600
+access-control-allow-credentials: true
+access-control-allow-origin: http://127.0.0.1:3100
+content-length: 2
+content-type: text/plain; charset=utf-8
+x-request-id: 1d855f47-d8f3-4e67-a19b-2e9821ba0b5c
+
+[datops-overview]
+{"schema_version":"v1","generated_at":"2026-02-21T17:19:12.076868+00:00","profile":"development","use_cases":[{"id":"hipotecas","adapter":"native","timeout_ms":2500,"upstream_base_url":null,"routes":{"cards":"/cards?caso_de_uso=hipotecas","dashboard":"/dashboard?caso_de_uso=hipotecas","dashboard_detail":"/dashboard_detail?caso_de_uso=hipotecas&id={id}"}},{"id":"prestamos","adapter":"native","timeout_ms":2500,"upstream_base_url":null,"routes":{"cards":"/cards?caso_de_uso=prestamos","dashboard":"/dashboard?caso_de_uso=prestamos","dashboard_detail":"/dashboard_detail?caso_de_uso=prestamos&id={id}"}},{"id":"piloto_proxy","adapter":"http_proxy","timeout_ms":5000,"upstream_base_url":"http://localhost:9000","routes":{"cards":"/cards?caso_de_uso=piloto_proxy","dashboard":"/dashboard?caso_de_uso=piloto_proxy","dashboard_detail":"/dashboard_detail?caso_de_uso=piloto_proxy&id={id}"}}]}
+[cards]
+{"cards":[{"title":"Conversaciones activas","subtitle":null,"value":128,"format":"int"},{"title":"Tiempo medio de respuesta","subtitle":null,"value":2.31,"format":"seconds"},{"title":"Tasa de resolucion","subtitle":null,"value":0.92,"format":"percent"}]}
+[dashboard]
+{"table":{"columns":[{"key":"id","label":"Id","filterable":null,"sortable":true},{"key":"cliente","label":"Cliente","filterable":true,"sortable":null},{"key":"estado","label":"Estado","filterable":true,"sortable":true},{"key":"detail","label":"Detalle","filterable":null,"sortable":null}],"rows":[{"id":"conv-001","detail":{"action":"Ver detalle"},"cliente":"Ana Lopez","estado":"Completada"},{"id":"conv-002","detail":{"action":"Ver detalle"},"cliente":"Luis Perez","estado":"En curso"}],"nextCursor":"page-2"}}
+[dashboard-detail]
+{"left":{"messages":[{"role":"cliente","text":"Necesito informacion sobre una hipoteca fija","timestamp":"10:01"},{"role":"agente","text":"Claro, que importe necesitas?","timestamp":"10:02"}]},"right":[{"type":"kv","title":"Contexto","items":[{"key":"Canal","value":"Web"},{"key":"Caso de uso","value":"hipotecas"}]},{"type":"metrics","title":"Metricas","metrics":[{"label":"Mensajes","value":12},{"label":"Id","value":"conv-001"}]}]}
+[home-http-code]
+200

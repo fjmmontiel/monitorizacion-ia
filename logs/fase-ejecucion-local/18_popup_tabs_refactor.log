@@ -1,0 +1,75 @@
+
+> @iagmvps-front-hipotecas/shell@0.0.1 typecheck
+> tsc --noEmit
+
+
+> @iagmvps-front-hipotecas/shell@0.0.1 build
+> dotenv -e .env.mock npm run webpack
+
+
+> @iagmvps-front-hipotecas/shell@0.0.1 webpack
+> webpack
+
+assets by status 971 KiB [cached] 2 assets
+assets by path *.js 3.99 MiB
+  assets by chunk 2.88 MiB (id hint: vendors)
+    asset vendors-node_modules_react-dom_index_js.e0b214faa0b1ec03c3f2.js 2.55 MiB [emitted] [immutable] (id hint: vendors)
+    asset vendors-node_modules_react_index_js.bf472bee9d806f5c72fb.js 223 KiB [emitted] [immutable] (id hint: vendors)
+    asset vendors-node_modules_react-dom_client_js-node_modules_react_jsx-runtime_js.b242b0aabd91ffa37989.js 109 KiB [emitted] [immutable] (id hint: vendors)
+  asset main.f24ad1f7231086e9f26c.js 821 KiB [emitted] [immutable] (name: main)
+  asset src_features_monitor_pages_MonitorDashboard_page_tsx.ccb71ef25d47f259fa25.js 162 KiB [emitted] [immutable]
+  asset src_shared_api_MonitorApi_ts.4f702560e9dc10e56cca.js 78.3 KiB [emitted] [immutable]
+  asset src_features_home_pages_Home_page_tsx.87865527540b723fdd3c.js 42.2 KiB [emitted] [immutable]
+  asset src_bootstrap_tsx-webpack_sharing_consume_default_react-dom_react-dom.5784e78b64a3762122c9.js 21.1 KiB [emitted] [immutable]
+  asset src_App_tsx.b07c171d2f55057f215e.js 12.3 KiB [emitted] [immutable]
+assets by status 1.04 KiB [compared for emit]
+  asset index.html 619 bytes [emitted] [compared for emit]
+  asset favicon.ico 451 bytes [compared for emit] [from: public/favicon.ico] [copied]
+runtime modules 21.2 KiB 14 modules
+modules by path ./node_modules/ 1.73 MiB 174 modules
+modules by path ./src/ 159 KiB
+  javascript modules 155 KiB 20 modules
+  json modules 4.1 KiB 7 modules
+provide-module modules 168 bytes
+  provide shared module (default) react-dom@18.2.0 = ./node_modules/react-dom/index.js 42 bytes [built] [code generated]
+  provide shared module (default) react-router-dom@6.11.1 = ./node_modules/react-router-dom/dist/index.js 42 bytes [built] [code generated]
+  provide shared module (default) react@18.2.0 = ./node_modules/react/index.js 42 bytes [built] [code generated]
+  provide shared module (default) zod@3.21.4 = ./node_modules/zod/lib/index.mjs 42 bytes [built] [code generated]
+consume-shared-module modules 168 bytes
+  consume shared module (default) react@=18.2.0 (singleton) (fallback: ./node_modules/react/index.js) 42 bytes [built] [code generated]
+  consume shared module (default) react-dom@=18.2.0 (singleton) (fallback: ./node_modules/react-dom/index.js) 42 bytes [built] [code generated]
+  consume shared module (default) zod@=3.21.4 (strict) (fallback: ./node_modules/zod/lib/index.mjs) 42 bytes [built] [code generated]
+  consume shared module (default) react-router-dom@=6.11.1 (strict) (fallback: ./node_modules/react-router-dom/dist/index.js) 42 bytes [built] [code generated]
+webpack 5.75.0 compiled successfully in 536 ms
+
+> @iagmvps-front-hipotecas/shell@0.0.1 typecheck
+> tsc --noEmit
+
+
+> @iagmvps-front-hipotecas/shell@0.0.1 build
+> dotenv -e .env.mock npm run webpack
+
+
+> @iagmvps-front-hipotecas/shell@0.0.1 webpack
+> webpack
+
+assets by status 4.93 MiB [cached] 11 assets
+assets by path . 1.04 KiB
+  asset index.html 619 bytes [compared for emit]
+  asset favicon.ico 451 bytes [compared for emit] [from: public/favicon.ico] [copied]
+runtime modules 21.2 KiB 14 modules
+modules by path ./node_modules/ 1.73 MiB 174 modules
+modules by path ./src/ 159 KiB
+  javascript modules 155 KiB 20 modules
+  json modules 4.1 KiB 7 modules
+provide-module modules 168 bytes
+  provide shared module (default) react-dom@18.2.0 = ./node_modules/react-dom/index.js 42 bytes [built] [code generated]
+  provide shared module (default) react-router-dom@6.11.1 = ./node_modules/react-router-dom/dist/index.js 42 bytes [built] [code generated]
+  provide shared module (default) react@18.2.0 = ./node_modules/react/index.js 42 bytes [built] [code generated]
+  provide shared module (default) zod@3.21.4 = ./node_modules/zod/lib/index.mjs 42 bytes [built] [code generated]
+consume-shared-module modules 168 bytes
+  consume shared module (default) react@=18.2.0 (singleton) (fallback: ./node_modules/react/index.js) 42 bytes [built] [code generated]
+  consume shared module (default) react-dom@=18.2.0 (singleton) (fallback: ./node_modules/react-dom/index.js) 42 bytes [built] [code generated]
+  consume shared module (default) zod@=3.21.4 (strict) (fallback: ./node_modules/zod/lib/index.mjs) 42 bytes [built] [code generated]
+  consume shared module (default) react-router-dom@=6.11.1 (strict) (fallback: ./node_modules/react-router-dom/dist/index.js) 42 bytes [built] [code generated]
+webpack 5.75.0 compiled successfully in 399 ms
