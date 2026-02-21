@@ -1,7 +1,6 @@
 import { envVariables } from '#/shell/config/env';
-import { cardsFixture } from '#/shell/features/monitor/fixtures/default/cards';
-import { dashboardFixture } from '#/shell/features/monitor/fixtures/default/dashboard';
-import { dashboardDetailFixture } from '#/shell/features/monitor/fixtures/default/dashboardDetail';
+import { getFixtureByUseCase } from '#/shell/features/monitor/fixtures';
+import { isAllowedUseCase } from '#/shell/shared/config/useCases';
 import {
   CardsResponse,
   DashboardDetailResponse,
@@ -26,6 +25,21 @@ const normalizeError = (error: unknown): MonitorApiError => {
   return new MonitorApiError('INTERNAL_ERROR', 'Unexpected monitor API error');
 };
 
+const mapBackendErrorCode = (code?: string): MonitorApiError['code'] => {
+  switch (code) {
+    case 'UNKNOWN_USE_CASE':
+      return 'UNKNOWN_USE_CASE';
+    case 'VALIDATION_ERROR':
+      return 'VALIDATION_ERROR';
+    case 'UPSTREAM_TIMEOUT':
+      return 'UPSTREAM_TIMEOUT';
+    case 'UPSTREAM_ERROR':
+      return 'UPSTREAM_ERROR';
+    default:
+      return 'INTERNAL_ERROR';
+  }
+};
+
 const assertQuery = (body?: QueryRequest) => {
   if (!body) {
     return;
@@ -34,6 +48,12 @@ const assertQuery = (body?: QueryRequest) => {
   const parsed = queryRequestSchema.safeParse(body);
   if (!parsed.success) {
     throw new MonitorApiError('VALIDATION_ERROR', parsed.error.message);
+  }
+};
+
+const assertUseCase = (casoDeUso: string) => {
+  if (!isAllowedUseCase(casoDeUso)) {
+    throw new MonitorApiError('UNKNOWN_USE_CASE', `Use case not allowed: ${casoDeUso}`);
   }
 };
 
@@ -56,7 +76,16 @@ const request = async <T>(url: string, body?: QueryRequest): Promise<T> => {
     });
 
     if (!response.ok) {
-      throw new MonitorApiError('UPSTREAM_ERROR', `HTTP ${response.status}`);
+      let payload: { code?: string; message?: string } | undefined;
+      try {
+        payload = (await response.json()) as { code?: string; message?: string };
+      } catch {
+        payload = undefined;
+      }
+      throw new MonitorApiError(
+        mapBackendErrorCode(payload?.code),
+        payload?.message ?? `HTTP ${response.status}`,
+      );
     }
 
     return (await response.json()) as T;
@@ -71,9 +100,10 @@ const inMockMode = envVariables.REACT_APP_MONITOR_MOCK_MODE;
 
 export const MonitorApi = {
   async postCards(casoDeUso: string, body?: QueryRequest): Promise<CardsResponse> {
+    assertUseCase(casoDeUso);
     assertQuery(body);
     if (inMockMode) {
-      return cardsResponseSchema.parse(cardsFixture);
+      return cardsResponseSchema.parse(getFixtureByUseCase(casoDeUso).cards);
     }
 
     const payload = await request<CardsResponse>(buildUrl('/cards', { caso_de_uso: casoDeUso }), body);
@@ -81,9 +111,10 @@ export const MonitorApi = {
   },
 
   async postDashboard(casoDeUso: string, body?: QueryRequest): Promise<DashboardResponse> {
+    assertUseCase(casoDeUso);
     assertQuery(body);
     if (inMockMode) {
-      return dashboardResponseSchema.parse(dashboardFixture);
+      return dashboardResponseSchema.parse(getFixtureByUseCase(casoDeUso).dashboard);
     }
 
     const payload = await request<DashboardResponse>(buildUrl('/dashboard', { caso_de_uso: casoDeUso }), body);
@@ -91,9 +122,13 @@ export const MonitorApi = {
   },
 
   async postDashboardDetail(casoDeUso: string, id: string, body?: QueryRequest): Promise<DashboardDetailResponse> {
+    assertUseCase(casoDeUso);
+    if (!id) {
+      throw new MonitorApiError('VALIDATION_ERROR', 'id is required');
+    }
     assertQuery(body);
     if (inMockMode) {
-      return dashboardDetailResponseSchema.parse(dashboardDetailFixture);
+      return dashboardDetailResponseSchema.parse(getFixtureByUseCase(casoDeUso).dashboardDetail);
     }
 
     const payload = await request<DashboardDetailResponse>(

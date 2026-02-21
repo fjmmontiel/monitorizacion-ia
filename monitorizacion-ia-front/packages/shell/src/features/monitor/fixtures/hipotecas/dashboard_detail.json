@@ -1,0 +1,26 @@
+{
+  "left": {
+    "messages": [
+      { "role": "cliente", "text": "Necesito informacion sobre una hipoteca fija", "timestamp": "10:01" },
+      { "role": "agente", "text": "Claro, que importe necesitas?", "timestamp": "10:02" }
+    ]
+  },
+  "right": [
+    {
+      "type": "kv",
+      "title": "Contexto",
+      "items": [
+        { "key": "Canal", "value": "Web" },
+        { "key": "Pais", "value": "ES" }
+      ]
+    },
+    {
+      "type": "metrics",
+      "title": "Metricas",
+      "metrics": [
+        { "label": "Sentimiento", "value": "Positivo" },
+        { "label": "Mensajes", "value": 12 }
+      ]
+    }
+  ]
+}

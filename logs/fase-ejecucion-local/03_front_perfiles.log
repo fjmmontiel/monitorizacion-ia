@@ -1,0 +1,51 @@
+# 03_front_perfiles.log
+
+## Fecha (UTC)
+2026-02-21T16:29:59Z
+
+## PORT_NUMBER=3100 npm run start (shell) + curl -I /monitor
+--- curl -I http://127.0.0.1:3100/monitor?caso_de_uso=hipotecas
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS
+Access-Control-Allow-Headers: X-Requested-With, content-type, Authorization
+Content-Type: text/html; charset=utf-8
+Accept-Ranges: bytes
+Content-Length: 619
+ETag: W/"26b-0I+AHybMvFNxeSDeePAI8muZs00"
+Vary: Accept-Encoding
+Date: Sat, 21 Feb 2026 16:30:06 GMT
+Connection: keep-alive
+
+--- webpack-dev-server tail
+<i> [webpack-dev-server] 404s will fallback to '/'
+assets by path *.js 5.21 MiB
+  assets by chunk 3.82 MiB (id hint: vendors)
+    asset vendors-node_modules_react-dom_index_js.76fb0885541a0fc71fd9.js 2.55 MiB [emitted] [immutable] (id hint: vendors)
+    asset vendors-node_modules_react-router-dom_dist_index_js.76058af85d469f56ee43.js 614 KiB [emitted] [immutable] (id hint: vendors)
+    asset vendors-node_modules_zod_lib_index_mjs.c2014ea63da4f6818805.js 357 KiB [emitted] [immutable] (id hint: vendors)
+    asset vendors-node_modules_react_index_js.0e830a71cf70650dd0a2.js 223 KiB [emitted] [immutable] (id hint: vendors)
+    asset vendors-node_modules_react-dom_client_js-node_modules_react_jsx-runtime_js.948d45f086fcb2c1eac6.js 109 KiB [emitted] [immutable] (id hint: vendors)
+  asset main.3458d873a24d604158d7.js 1.21 MiB [emitted] [immutable] (name: main)
+  asset src_features_monitor_pages_MonitorDashboard_page_tsx.23211a376364ef16cb66.js 137 KiB [emitted] [immutable]
+  asset src_bootstrap_tsx-webpack_sharing_consume_default_react-dom_react-dom.3f5cf12aa0371d978d30.js 23.2 KiB [emitted] [immutable]
+  asset src_App_tsx.5dfefa02d6e2aafb99b9.js 11.6 KiB [emitted] [immutable]
+asset index.html 619 bytes [emitted]
+asset favicon.ico 451 bytes [emitted] [from: public/favicon.ico] [copied]
+runtime modules 44.6 KiB 18 modules
+modules by path ./node_modules/ 1.85 MiB 199 modules
+modules by path ./src/ 83.9 KiB
+  javascript modules 81.6 KiB 16 modules
+  json modules 2.32 KiB 7 modules
+provide-module modules 168 bytes
+  provide shared module (default) react-dom@18.2.0 = ./node_modules/react-dom/index.js 42 bytes [built] [code generated]
+  provide shared module (default) react-router-dom@6.11.1 = ./node_modules/react-router-dom/dist/index.js 42 bytes [built] [code generated]
+  provide shared module (default) react@18.2.0 = ./node_modules/react/index.js 42 bytes [built] [code generated]
+  provide shared module (default) zod@3.21.4 = ./node_modules/zod/lib/index.mjs 42 bytes [built] [code generated]
+consume-shared-module modules 168 bytes
+  consume shared module (default) react@=18.2.0 (singleton) (fallback: ./node_modules/react/index.js) 42 bytes [built] [code generated]
+  consume shared module (default) react-dom@=18.2.0 (singleton) (fallback: ./node_modules/react-dom/index.js) 42 bytes [built] [code generated]
+  consume shared module (default) zod@=3.21.4 (strict) (fallback: ./node_modules/zod/lib/index.mjs) 42 bytes [built] [code generated]
+  consume shared module (default) react-router-dom@=6.11.1 (strict) (fallback: ./node_modules/react-router-dom/dist/index.js) 42 bytes [built] [code generated]
+webpack 5.75.0 compiled successfully in 468 ms

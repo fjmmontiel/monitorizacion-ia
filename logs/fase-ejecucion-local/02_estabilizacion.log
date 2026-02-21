@@ -1,0 +1,30 @@
+# 02_estabilizacion.log
+
+## Fecha (UTC)
+2026-02-21T16:28:34Z
+
+## Verificacion artefactos criticos (git ls-files)
+UNTRACKED: monitorizacion-ia-python/src/orchestrator/config/dev.yaml
+UNTRACKED: monitorizacion-ia-python/src/orchestrator/config/stg.yaml
+UNTRACKED: monitorizacion-ia-python/src/orchestrator/config/prod.yaml
+UNTRACKED: monitorizacion-ia-front/packages/shell/src/shared/config/use_cases.json
+UNTRACKED: monitorizacion-ia-front/packages/shell/src/features/monitor/fixtures/index.ts
+UNTRACKED: monitorizacion-ia-front/packages/shell/src/features/monitor/fixtures/hipotecas/cards.json
+UNTRACKED: monitorizacion-ia-front/packages/shell/src/features/monitor/fixtures/hipotecas/dashboard.json
+UNTRACKED: monitorizacion-ia-front/packages/shell/src/features/monitor/fixtures/hipotecas/dashboard_detail.json
+UNTRACKED: monitorizacion-ia-front/packages/shell/src/features/monitor/fixtures/prestamos/cards.json
+UNTRACKED: monitorizacion-ia-front/packages/shell/src/features/monitor/fixtures/prestamos/dashboard.json
+UNTRACKED: monitorizacion-ia-front/packages/shell/src/features/monitor/fixtures/prestamos/dashboard_detail.json
+UNTRACKED: monitorizacion-ia-front/packages/shell/tests/shared/api/MonitorApi.spec.ts
+UNTRACKED: monitorizacion-ia-front/packages/shell/tests/shared/config/useCases.spec.ts
+UNTRACKED: monitorizacion-ia-python/tests/test_use_case_loader_validation.py
+
+## pytest -q (backend)
+.......                                                                  [100%]
+7 passed in 0.19s
+
+## npm run typecheck (shell)
+
+> @iagmvps-front-hipotecas/shell@0.0.1 typecheck
+> tsc --noEmit
+

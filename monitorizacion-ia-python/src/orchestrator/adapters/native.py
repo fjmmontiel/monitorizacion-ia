@@ -2,37 +2,78 @@ from orchestrator.adapters.base import Adapter, AdapterContext
 from orchestrator.api.schemas import (
     CardItem,
     CardsResponse,
-    DashboardAction,
-    DashboardActionPayload,
-    DashboardDetailRequest,
     DashboardDetailResponse,
     DashboardResponse,
-    DashboardRow,
-    DetailBlock,
+    DetailAction,
+    KVItem,
+    KVPanel,
+    LeftPanel,
     MessageBlock,
+    MetricItem,
+    MetricsPanel,
     QueryRequest,
+    TableColumn,
+    TablePayload,
+    TableRow,
 )
 
 
 class NativeAdapter(Adapter):
     async def get_cards(self, ctx: AdapterContext, req: QueryRequest) -> CardsResponse:
-        return CardsResponse(cards=[CardItem(id='total', title=f'Total {ctx.caso_de_uso}', value=1)])
+        return CardsResponse(
+            cards=[
+                CardItem(title='Conversaciones activas', value=128, format='int'),
+                CardItem(title='Tiempo medio de respuesta', value=2.31, format='seconds'),
+                CardItem(title='Tasa de resolucion', value=0.92, format='percent'),
+            ]
+        )
 
     async def get_dashboard(self, ctx: AdapterContext, req: QueryRequest) -> DashboardResponse:
-        row = DashboardRow(
-            id='row-1',
-            data={'status': 'ok', 'caso_de_uso': ctx.caso_de_uso},
-            detail=DashboardAction(payload=DashboardActionPayload(id='row-1')),
+        rows = [
+            TableRow(
+                id='conv-001',
+                detail=DetailAction(action='Ver detalle'),
+                cliente='Ana Lopez',
+                estado='Completada',
+            ),
+            TableRow(
+                id='conv-002',
+                detail=DetailAction(action='Ver detalle'),
+                cliente='Luis Perez',
+                estado='En curso',
+            ),
+        ]
+        return DashboardResponse(
+            table=TablePayload(
+                columns=[
+                    TableColumn(key='id', label='Id', sortable=True),
+                    TableColumn(key='cliente', label='Cliente', filterable=True),
+                    TableColumn(key='estado', label='Estado', filterable=True, sortable=True),
+                    TableColumn(key='detail', label='Detalle'),
+                ],
+                rows=rows,
+                nextCursor='page-2',
+            )
         )
-        return DashboardResponse(columns=['id', 'status', 'caso_de_uso', 'detail'], rows=[row])
 
-    async def get_detail(self, ctx: AdapterContext, req: DashboardDetailRequest) -> DashboardDetailResponse:
+    async def get_detail(self, ctx: AdapterContext, id: str, req: QueryRequest | None) -> DashboardDetailResponse:
         return DashboardDetailResponse(
-            id=req.id,
-            left={'messages': [MessageBlock(role='assistant', text='Detalle generado por NativeAdapter')]},
-            right={
-                'blocks': [
-                    DetailBlock(type='meta', title='Contexto', content={'caso_de_uso': ctx.caso_de_uso, 'id': req.id})
+            left=LeftPanel(
+                messages=[
+                    MessageBlock(role='cliente', text='Necesito informacion sobre una hipoteca fija', timestamp='10:01'),
+                    MessageBlock(role='agente', text='Claro, que importe necesitas?', timestamp='10:02'),
                 ]
-            },
+            ),
+            right=[
+                KVPanel(
+                    type='kv',
+                    title='Contexto',
+                    items=[KVItem(key='Canal', value='Web'), KVItem(key='Caso de uso', value=ctx.caso_de_uso)],
+                ),
+                MetricsPanel(
+                    type='metrics',
+                    title='Metricas',
+                    metrics=[MetricItem(label='Mensajes', value=12), MetricItem(label='Id', value=id)],
+                ),
+            ],
         )

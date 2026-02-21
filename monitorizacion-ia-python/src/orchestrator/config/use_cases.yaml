@@ -1,17 +1,9 @@
 use_cases:
-  piloto_native:
+  hipotecas:
     adapter: native
     timeouts:
       ms: 2500
-  piloto_proxy:
-    adapter: http_proxy
-    upstream:
-      base_url: http://localhost:9000
-      routes:
-        cards: /cards
-        dashboard: /dashboard
-        dashboard_detail: /dashboard_detail
-    headers_passthrough:
-      allowlist:
-        - x-request-id
-        - x-trace-id
+  prestamos:
+    adapter: native
+    timeouts:
+      ms: 2500

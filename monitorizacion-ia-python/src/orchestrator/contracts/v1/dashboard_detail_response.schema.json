@@ -2,11 +2,108 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "DashboardDetailResponse",
   "type": "object",
-  "required": ["schema_version", "id", "left", "right"],
+  "additionalProperties": false,
+  "required": ["left", "right"],
   "properties": {
-    "schema_version": {"type": "string", "const": "v1"},
-    "id": {"type": "string"},
-    "left": {"type": "object"},
-    "right": {"type": "object"}
+    "left": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["messages"],
+      "properties": {
+        "messages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["role", "text"],
+            "properties": {
+              "role": {"type": "string"},
+              "text": {"type": "string"},
+              "timestamp": {"type": ["string", "null"]}
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["type", "title", "items"],
+            "properties": {
+              "type": {"const": "kv"},
+              "title": {"type": "string"},
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["key", "value"],
+                  "properties": {
+                    "key": {"type": "string"},
+                    "value": {"type": "string"}
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["type", "title", "items"],
+            "properties": {
+              "type": {"const": "list"},
+              "title": {"type": "string"},
+              "items": {"type": "array", "items": {"type": "string"}}
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["type", "title", "events"],
+            "properties": {
+              "type": {"const": "timeline"},
+              "title": {"type": "string"},
+              "events": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["label"],
+                  "properties": {
+                    "label": {"type": "string"},
+                    "time": {"type": ["string", "null"]}
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["type", "title", "metrics"],
+            "properties": {
+              "type": {"const": "metrics"},
+              "title": {"type": "string"},
+              "metrics": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["label", "value"],
+                  "properties": {
+                    "label": {"type": "string"},
+                    "value": {"type": ["string", "number"]}
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
   }
 }

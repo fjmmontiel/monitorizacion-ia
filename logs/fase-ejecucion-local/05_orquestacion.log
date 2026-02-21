@@ -1,0 +1,27 @@
+# 05_orquestacion.log
+
+## Fecha (UTC)
+2026-02-21T16:41:28Z
+
+## ./scripts/up-local.sh
+Starting backend on port 8002
+Starting frontend on port 3100
+Stack up:
+- Frontend: http://127.0.0.1:3100/monitor?caso_de_uso=hipotecas
+- Backend:  http://127.0.0.1:8002/health
+- Front log: /Users/usuario/personal/monitorizacion-ia/logs/fase-ejecucion-local/runtime/front.log
+- Back log:  /Users/usuario/personal/monitorizacion-ia/logs/fase-ejecucion-local/runtime/back.log
+
+## lsof -iTCP:3100 -sTCP:LISTEN
+COMMAND   PID    USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+node    57140 usuario   14u  IPv6 0x9760053772fcdd54      0t0  TCP *:3100 (LISTEN)
+
+## lsof -iTCP:8002 -sTCP:LISTEN
+COMMAND   PID    USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+Python  57070 usuario    6u  IPv4 0xae8e18a3038b5b2a      0t0  TCP 127.0.0.1:8002 (LISTEN)
+
+## ./scripts/down-local.sh
+Stopped frontend (pid=57076)
+Stopped backend (pid=57064)
+Warning: port 3100 still in use by pid 57140. Forcing stop.
+Stack down.

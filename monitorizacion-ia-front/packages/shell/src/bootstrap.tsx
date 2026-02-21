@@ -1,7 +1,6 @@
 /* istanbul ignore file */
 import { StrictMode, lazy } from 'react';
 import { createRoot } from 'react-dom/client';
-import { global } from '@internal-channels-components/theme';
 
 import { envVariables } from '#/shell/config/env';
 
@@ -16,7 +15,7 @@ const debug = envVariables.REACT_APP_ENABLE_STRICT_MODE;
 
 const Application = () => {
   return (
-    <AppThemeProvider theme={global}>
+    <AppThemeProvider>
       <App />
     </AppThemeProvider>
   );

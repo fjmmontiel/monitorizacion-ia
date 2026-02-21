@@ -1,0 +1,33 @@
+# 07_uat_manual.log
+
+## Fecha (UTC)
+2026-02-21T16:42:05Z
+
+## Preparacion stack
+Starting backend on port 8002
+Starting frontend on port 3100
+Stack up:
+- Frontend: http://127.0.0.1:3100/monitor?caso_de_uso=hipotecas
+- Backend:  http://127.0.0.1:8002/health
+- Front log: /Users/usuario/personal/monitorizacion-ia/logs/fase-ejecucion-local/runtime/front.log
+- Back log:  /Users/usuario/personal/monitorizacion-ia/logs/fase-ejecucion-local/runtime/back.log
+
+## Paso 1 - vista inicial hipotecas (home monitor)
+10:  <title>Shell MFE</title>
+16:  <div id="root"></div>
+
+## Paso 2 - navegacion tab prestamos + vista supervision
+10:  <title>Shell MFE</title>
+16:  <div id="root"></div>
+
+## Paso 3 - error controlado caso_de_uso invalido
+{"schema_version":"v1","code":"UNKNOWN_USE_CASE","message":"caso_de_uso not registered: no_existe","detail":null}
+
+## Paso 4 - cierre stack
+Stopped frontend (pid=58919)
+Stopped backend (pid=58907)
+Warning: port 3100 still in use by pid 59018. Forcing stop.
+Stack down.
+
+## Nota
+Los pasos interactivos (filtro, ordenar, abrir/cerrar detalle) quedan definidos en docs/qa/uat-manual-monitor.md para validacion manual en navegador.

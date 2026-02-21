@@ -1,0 +1,7 @@
+{
+  "cards": [
+    { "title": "Solicitudes activas", "value": 74, "format": "int" },
+    { "title": "Tiempo medio de aprobacion", "value": 4.8, "format": "seconds" },
+    { "title": "Ratio de conversion", "value": 0.64, "format": "percent" }
+  ]
+}

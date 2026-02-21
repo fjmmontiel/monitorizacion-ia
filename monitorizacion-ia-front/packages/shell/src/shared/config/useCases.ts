@@ -9,10 +9,19 @@ export type UseCaseConfig = {
   default?: boolean;
 };
 
-export const useCasesConfig: UseCaseConfig[] = [
-  { id: 'hipotecas', label: 'Hipotecas', enabled: true, default: true },
-  { id: 'prestamos', label: 'Préstamos', enabled: true },
-];
+const useCaseConfigSchema = z.array(
+  z.object({
+    id: z.string().min(1),
+    label: z.string().min(1),
+    enabled: z.boolean(),
+    default: z.boolean().optional(),
+  }),
+);
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const rawUseCases = require('./use_cases.json') as unknown;
+
+export const useCasesConfig = useCaseConfigSchema.parse(rawUseCases) as UseCaseConfig[];
 
 const allowedUseCases = useCasesConfig.filter(item => item.enabled).map(item => item.id);
 

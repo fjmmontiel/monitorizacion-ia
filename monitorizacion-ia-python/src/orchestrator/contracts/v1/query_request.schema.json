@@ -3,18 +3,22 @@
   "$id": "QueryRequest",
   "type": "object",
   "additionalProperties": false,
-  "required": ["query"],
   "properties": {
-    "query": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "filters": {"type": "array", "items": {"type": "object"}},
-        "search": {"type": ["string", "null"]},
-        "sort": {"type": "array", "items": {"type": "object"}},
-        "cursor": {"type": ["string", "null"]},
-        "limit": {"type": ["integer", "null"], "minimum": 1}
+    "timeRange": {"type": ["string", "null"]},
+    "filters": {"type": ["object", "null"]},
+    "search": {"type": ["string", "null"]},
+    "sort": {
+      "type": ["array", "null"],
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["field", "direction"],
+        "properties": {
+          "field": {"type": "string"},
+          "direction": {"type": "string", "enum": ["asc", "desc"]}
+        }
       }
-    }
+    },
+    "cursor": {"type": ["string", "null"]}
   }
 }

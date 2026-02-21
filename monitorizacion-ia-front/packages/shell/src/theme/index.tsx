@@ -1,19 +1,15 @@
-import { DefaultTheme, ThemeProvider, createGlobalStyle } from '@internal-channels-components/theme';
 import { ReactNode } from 'react';
 
 import { reset } from './reset';
 import { reboot } from './reboot';
 
-const GlobalStyles = createGlobalStyle`
-  ${reset};
-  ${reboot};
-`;
+const globalStyles = `${reset}\n${reboot}`;
 
-export const AppThemeProvider = ({ children, theme }: { children: ReactNode; theme: DefaultTheme }) => {
+export const AppThemeProvider = ({ children }: { children: ReactNode }) => {
   return (
     <>
-      <GlobalStyles />
-      <ThemeProvider theme={theme}>{children}</ThemeProvider>
+      <style>{globalStyles}</style>
+      {children}
     </>
   );
 };

@@ -2,18 +2,23 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "CardsResponse",
   "type": "object",
-  "required": ["schema_version", "cards"],
+  "additionalProperties": false,
+  "required": ["cards"],
   "properties": {
-    "schema_version": {"type": "string", "const": "v1"},
     "cards": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["id", "title", "value"],
+        "additionalProperties": false,
+        "required": ["title", "value"],
         "properties": {
-          "id": {"type": "string"},
           "title": {"type": "string"},
-          "value": {}
+          "subtitle": {"type": ["string", "null"]},
+          "value": {"type": ["string", "number"]},
+          "format": {
+            "type": ["string", "null"],
+            "enum": ["seconds", "percent", "currencyEUR", "int", "float", null]
+          }
         }
       }
     }

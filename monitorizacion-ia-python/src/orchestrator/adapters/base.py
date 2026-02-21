@@ -2,7 +2,6 @@ from dataclasses import dataclass
 
 from orchestrator.api.schemas import (
     CardsResponse,
-    DashboardDetailRequest,
     DashboardDetailResponse,
     DashboardResponse,
     QueryRequest,
@@ -26,5 +25,5 @@ class Adapter:
     async def get_dashboard(self, ctx: AdapterContext, req: QueryRequest) -> DashboardResponse:
         raise NotImplementedError
 
-    async def get_detail(self, ctx: AdapterContext, req: DashboardDetailRequest) -> DashboardDetailResponse:
+    async def get_detail(self, ctx: AdapterContext, id: str, req: QueryRequest | None) -> DashboardDetailResponse:
         raise NotImplementedError

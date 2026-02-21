@@ -1,0 +1,17 @@
+use_cases:
+  hipotecas:
+    adapter: http_proxy
+    upstream:
+      base_url: https://stg-monitor-upstream.example.com
+      routes:
+        cards: /cards
+        dashboard: /dashboard
+        dashboard_detail: /dashboard_detail/{id}
+  prestamos:
+    adapter: http_proxy
+    upstream:
+      base_url: https://stg-monitor-upstream.example.com
+      routes:
+        cards: /cards
+        dashboard: /dashboard
+        dashboard_detail: /dashboard_detail/{id}

@@ -8,12 +8,11 @@
     "code": {
       "type": "string",
       "enum": [
-        "UNKNOWN_CASO_DE_USO",
+        "UNKNOWN_USE_CASE",
         "VALIDATION_ERROR",
         "UPSTREAM_ERROR",
         "UPSTREAM_TIMEOUT",
-        "UNAUTHORIZED",
-        "FORBIDDEN"
+        "INTERNAL_ERROR"
       ]
     },
     "message": {"type": "string"},

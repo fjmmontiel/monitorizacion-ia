@@ -1,12 +1,11 @@
 import logging
 
-from fastapi import APIRouter, Header, Query, Request
+from fastapi import APIRouter, Body, Header, Query, Request
 
 from orchestrator.adapters.base import AdapterContext
 from orchestrator.adapters.registry import AdapterRegistry
 from orchestrator.api.schemas import (
     CardsResponse,
-    DashboardDetailRequest,
     DashboardDetailResponse,
     DashboardResponse,
     QueryRequest,
@@ -36,7 +35,8 @@ async def cards(
 ) -> CardsResponse:
     registry = get_registry(request)
     adapter = registry.resolve(caso_de_uso)
-    ctx = AdapterContext(caso_de_uso, x_request_id, x_trace_id, registry.timeout_for(caso_de_uso))
+    request_id = x_request_id or getattr(request.state, 'request_id', None)
+    ctx = AdapterContext(caso_de_uso, request_id, x_trace_id, registry.timeout_for(caso_de_uso))
     return await adapter.get_cards(ctx, req)
 
 
@@ -50,19 +50,22 @@ async def dashboard(
 ) -> DashboardResponse:
     registry = get_registry(request)
     adapter = registry.resolve(caso_de_uso)
-    ctx = AdapterContext(caso_de_uso, x_request_id, x_trace_id, registry.timeout_for(caso_de_uso))
+    request_id = x_request_id or getattr(request.state, 'request_id', None)
+    ctx = AdapterContext(caso_de_uso, request_id, x_trace_id, registry.timeout_for(caso_de_uso))
     return await adapter.get_dashboard(ctx, req)
 
 
 @router.post('/dashboard_detail', response_model=DashboardDetailResponse)
 async def dashboard_detail(
     request: Request,
-    req: DashboardDetailRequest,
+    req: QueryRequest | None = Body(default=None),
     caso_de_uso: str = Query(..., min_length=1),
+    id: str = Query(..., min_length=1),
     x_request_id: str | None = Header(default=None),
     x_trace_id: str | None = Header(default=None),
 ) -> DashboardDetailResponse:
     registry = get_registry(request)
     adapter = registry.resolve(caso_de_uso)
-    ctx = AdapterContext(caso_de_uso, x_request_id, x_trace_id, registry.timeout_for(caso_de_uso))
-    return await adapter.get_detail(ctx, req)
+    request_id = x_request_id or getattr(request.state, 'request_id', None)
+    ctx = AdapterContext(caso_de_uso, request_id, x_trace_id, registry.timeout_for(caso_de_uso))
+    return await adapter.get_detail(ctx, id, req)

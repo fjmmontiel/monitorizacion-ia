@@ -1,77 +1,149 @@
-from typing import Any
+from typing import Annotated, Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
 
-class QueryModel(BaseModel):
+class SortItem(BaseModel):
     model_config = ConfigDict(extra='forbid')
 
-    filters: list[dict[str, Any]] = Field(default_factory=list)
-    search: str | None = None
-    sort: list[dict[str, Any]] = Field(default_factory=list)
-    cursor: str | None = None
-    limit: int | None = None
+    field: str
+    direction: Literal['asc', 'desc']
 
 
 class QueryRequest(BaseModel):
     model_config = ConfigDict(extra='forbid')
 
-    query: QueryModel = Field(default_factory=QueryModel)
+    timeRange: str | None = None
+    filters: dict[str, Any] | None = None
+    search: str | None = None
+    sort: list[SortItem] | None = None
+    cursor: str | None = None
+    limit: int | None = Field(default=None, ge=1)
 
 
 class CardItem(BaseModel):
-    id: str
+    model_config = ConfigDict(extra='forbid')
+
     title: str
+    subtitle: str | None = None
     value: str | int | float
+    format: Literal['seconds', 'percent', 'currencyEUR', 'int', 'float'] | None = None
 
 
 class CardsResponse(BaseModel):
-    schema_version: str = 'v1'
+    model_config = ConfigDict(extra='forbid')
+
     cards: list[CardItem]
 
 
-class DashboardActionPayload(BaseModel):
+class TableColumn(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+
+    key: str
+    label: str
+    filterable: bool | None = None
+    sortable: bool | None = None
+
+
+class DetailAction(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+
+    action: str = 'Ver detalle'
+
+
+class TableRow(BaseModel):
+    model_config = ConfigDict(extra='allow')
+
     id: str
+    detail: DetailAction
 
 
-class DashboardAction(BaseModel):
-    type: str = 'dashboard_detail'
-    payload: DashboardActionPayload
+class TablePayload(BaseModel):
+    model_config = ConfigDict(extra='forbid')
 
-
-class DashboardRow(BaseModel):
-    id: str
-    data: dict[str, Any]
-    detail: DashboardAction
+    columns: list[TableColumn]
+    rows: list[TableRow]
+    nextCursor: str | None = None
 
 
 class DashboardResponse(BaseModel):
-    schema_version: str = 'v1'
-    columns: list[str]
-    rows: list[DashboardRow]
-    next_cursor: str | None = None
-
-
-class DashboardDetailRequest(BaseModel):
     model_config = ConfigDict(extra='forbid')
 
-    id: str
-    query: QueryModel | None = None
+    table: TablePayload
 
 
 class MessageBlock(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+
     role: str
     text: str
+    timestamp: str | None = None
 
 
-class DetailBlock(BaseModel):
-    type: str
+class LeftPanel(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+
+    messages: list[MessageBlock]
+
+
+class KVItem(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+
+    key: str
+    value: str
+
+
+class KVPanel(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+
+    type: Literal['kv']
     title: str
-    content: dict[str, Any]
+    items: list[KVItem]
+
+
+class ListPanel(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+
+    type: Literal['list']
+    title: str
+    items: list[str]
+
+
+class TimelineEvent(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+
+    label: str
+    time: str | None = None
+
+
+class TimelinePanel(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+
+    type: Literal['timeline']
+    title: str
+    events: list[TimelineEvent]
+
+
+class MetricItem(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+
+    label: str
+    value: str | int | float
+
+
+class MetricsPanel(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+
+    type: Literal['metrics']
+    title: str
+    metrics: list[MetricItem]
+
+
+RightPanel = Annotated[KVPanel | ListPanel | TimelinePanel | MetricsPanel, Field(discriminator='type')]
 
 
 class DashboardDetailResponse(BaseModel):
-    schema_version: str = 'v1'
-    id: str
-    left: dict[str, list[MessageBlock]]
-    right: dict[str, list[DetailBlock]]
+    model_config = ConfigDict(extra='forbid')
+
+    left: LeftPanel
+    right: list[RightPanel]

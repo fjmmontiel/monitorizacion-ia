@@ -1,13 +1,13 @@
 from pathlib import Path
 
 import yaml
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 
 class UpstreamRoutes(BaseModel):
-    cards: str = '/cards'
-    dashboard: str = '/dashboard'
-    dashboard_detail: str = '/dashboard_detail'
+    cards: str
+    dashboard: str
+    dashboard_detail: str
 
 
 class UpstreamConfig(BaseModel):
@@ -24,6 +24,15 @@ class UseCaseConfig(BaseModel):
     upstream: UpstreamConfig | None = None
     timeouts: UseCaseTimeouts = Field(default_factory=UseCaseTimeouts)
     headers_passthrough: dict | None = None
+
+    @model_validator(mode='after')
+    def validate_by_adapter(self):
+        if self.adapter == 'http_proxy':
+            if not self.upstream:
+                raise ValueError('http_proxy adapter requires upstream config')
+            if '{id}' not in self.upstream.routes.dashboard_detail:
+                raise ValueError('upstream.routes.dashboard_detail must include {id} template')
+        return self
 
 
 class RoutingConfig(BaseModel):

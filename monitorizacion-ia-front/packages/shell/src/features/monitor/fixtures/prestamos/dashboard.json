@@ -1,0 +1,15 @@
+{
+  "table": {
+    "columns": [
+      { "key": "id", "label": "Id", "sortable": true },
+      { "key": "cliente", "label": "Cliente", "filterable": true },
+      { "key": "estado", "label": "Estado", "filterable": true, "sortable": true },
+      { "key": "detail", "label": "Detalle" }
+    ],
+    "rows": [
+      { "id": "pres-100", "cliente": "Marta Ruiz", "estado": "Pendiente", "detail": { "action": "Ver detalle" } },
+      { "id": "pres-101", "cliente": "Carlos Vega", "estado": "Aprobado", "detail": { "action": "Ver detalle" } }
+    ],
+    "nextCursor": "page-2"
+  }
+}

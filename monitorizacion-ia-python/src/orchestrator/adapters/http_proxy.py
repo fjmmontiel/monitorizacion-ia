@@ -3,7 +3,6 @@ import httpx
 from orchestrator.adapters.base import Adapter, AdapterContext
 from orchestrator.api.schemas import (
     CardsResponse,
-    DashboardDetailRequest,
     DashboardDetailResponse,
     DashboardResponse,
     QueryRequest,
@@ -45,6 +44,9 @@ class HttpProxyAdapter(Adapter):
         payload = await self._post(self.cfg.upstream.routes.dashboard, req.model_dump(), ctx.timeout_ms)
         return DashboardResponse.model_validate(payload)
 
-    async def get_detail(self, ctx: AdapterContext, req: DashboardDetailRequest) -> DashboardDetailResponse:
-        payload = await self._post(self.cfg.upstream.routes.dashboard_detail, req.model_dump(), ctx.timeout_ms)
+    async def get_detail(self, ctx: AdapterContext, id: str, req: QueryRequest | None) -> DashboardDetailResponse:
+        detail_path = self.cfg.upstream.routes.dashboard_detail
+        if '{id}' in detail_path:
+            detail_path = detail_path.replace('{id}', id)
+        payload = await self._post(detail_path, (req or QueryRequest()).model_dump(), ctx.timeout_ms)
         return DashboardDetailResponse.model_validate(payload)

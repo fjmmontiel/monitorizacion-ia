@@ -1,0 +1,13 @@
+[
+  {
+    "id": "hipotecas",
+    "label": "Hipotecas",
+    "enabled": true,
+    "default": true
+  },
+  {
+    "id": "prestamos",
+    "label": "Prestamos",
+    "enabled": true
+  }
+]

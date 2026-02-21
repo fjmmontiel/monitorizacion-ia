@@ -1,17 +1,17 @@
 from enum import StrEnum
 
 from fastapi import FastAPI, Request
+from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 
 class ErrorCode(StrEnum):
-    UNKNOWN_CASO_DE_USO = 'UNKNOWN_CASO_DE_USO'
+    UNKNOWN_USE_CASE = 'UNKNOWN_USE_CASE'
     VALIDATION_ERROR = 'VALIDATION_ERROR'
     UPSTREAM_ERROR = 'UPSTREAM_ERROR'
     UPSTREAM_TIMEOUT = 'UPSTREAM_TIMEOUT'
-    UNAUTHORIZED = 'UNAUTHORIZED'
-    FORBIDDEN = 'FORBIDDEN'
+    INTERNAL_ERROR = 'INTERNAL_ERROR'
 
 
 class ErrorResponse(BaseModel):
@@ -36,4 +36,26 @@ def install_error_handlers(app: FastAPI) -> None:
         return JSONResponse(
             status_code=exc.status_code,
             content=ErrorResponse(code=exc.code, message=exc.message, detail=exc.detail).model_dump(),
+        )
+
+    @app.exception_handler(RequestValidationError)
+    async def handle_validation_error(_: Request, exc: RequestValidationError) -> JSONResponse:
+        return JSONResponse(
+            status_code=422,
+            content=ErrorResponse(
+                code=ErrorCode.VALIDATION_ERROR,
+                message='Validation failed',
+                detail={'errors': exc.errors()},
+            ).model_dump(),
+        )
+
+    @app.exception_handler(Exception)
+    async def handle_unexpected_error(_: Request, exc: Exception) -> JSONResponse:
+        return JSONResponse(
+            status_code=500,
+            content=ErrorResponse(
+                code=ErrorCode.INTERNAL_ERROR,
+                message='Internal server error',
+                detail={'error_type': type(exc).__name__},
+            ).model_dump(),
         )

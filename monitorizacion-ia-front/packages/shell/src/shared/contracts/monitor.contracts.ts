@@ -13,6 +13,7 @@ export const queryRequestSchema = z.object({
     )
     .optional(),
   cursor: z.string().optional(),
+  limit: z.number().int().positive().optional(),
 });
 
 const cardSchema = z.object({

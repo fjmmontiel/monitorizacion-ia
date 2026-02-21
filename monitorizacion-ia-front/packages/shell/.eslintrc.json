@@ -6,6 +6,13 @@
       "files": ["src/**/*.ts", "src/**/*.tsx"],
       "excludedFiles": ["src/shared/api/MonitorApi.ts"],
       "rules": {
+        "no-restricted-globals": [
+          "error",
+          {
+            "name": "fetch",
+            "message": "Usa MonitorApi para las llamadas HTTP del flujo monitor."
+          }
+        ],
         "no-restricted-imports": [
           "error",
           {

@@ -1,0 +1,17 @@
+use_cases:
+  hipotecas:
+    adapter: native
+    timeouts:
+      ms: 2500
+  prestamos:
+    adapter: native
+    timeouts:
+      ms: 2500
+  piloto_proxy:
+    adapter: http_proxy
+    upstream:
+      base_url: http://localhost:9000
+      routes:
+        cards: /cards
+        dashboard: /dashboard
+        dashboard_detail: /dashboard_detail/{id}

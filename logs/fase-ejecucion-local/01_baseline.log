@@ -1,0 +1,312 @@
+# 01_baseline.log
+
+## Fecha (UTC)
+2026-02-21T16:28:01Z
+
+## git status --short
+ M monitorizacion-ia-front/packages/shell/.env.development
+ M monitorizacion-ia-front/packages/shell/.env.integration
+ M monitorizacion-ia-front/packages/shell/.env.mock
+ M monitorizacion-ia-front/packages/shell/.env.preproduction
+ M monitorizacion-ia-front/packages/shell/.env.production
+ M monitorizacion-ia-front/packages/shell/.eslintrc.json
+ M monitorizacion-ia-front/packages/shell/README.md
+ D monitorizacion-ia-front/packages/shell/cypress.config.ts
+ D monitorizacion-ia-front/packages/shell/cypress/functional/Login/Login.page.cy.tsx
+ D monitorizacion-ia-front/packages/shell/cypress/support/commands.ts
+ D monitorizacion-ia-front/packages/shell/cypress/support/component-index.html
+ D monitorizacion-ia-front/packages/shell/cypress/support/component.ts
+ D monitorizacion-ia-front/packages/shell/cypress/tsconfig.json
+ D monitorizacion-ia-front/packages/shell/cypress/types.d.ts
+ M monitorizacion-ia-front/packages/shell/module.federation.config.js
+ M monitorizacion-ia-front/packages/shell/package.json
+ D monitorizacion-ia-front/packages/shell/src/assets/images/login-background.jpg
+ D monitorizacion-ia-front/packages/shell/src/assets/logos/unidesk_ia.svg
+ M monitorizacion-ia-front/packages/shell/src/bootstrap.tsx
+ D monitorizacion-ia-front/packages/shell/src/components/ChatInput/ChatInput.styles.ts
+ D monitorizacion-ia-front/packages/shell/src/components/ChatInput/ChatInput.tsx
+ D monitorizacion-ia-front/packages/shell/src/components/ChatInterface/ChatInterface.styles.ts
+ D monitorizacion-ia-front/packages/shell/src/components/ChatInterface/ChatInterface.tsx
+ D monitorizacion-ia-front/packages/shell/src/components/ChatInterface/mensajes_mock.tsx
+ D monitorizacion-ia-front/packages/shell/src/components/ChatMessage/ChatMessage.styles.ts
+ D monitorizacion-ia-front/packages/shell/src/components/ChatMessage/ChatMessage.tsx
+ D monitorizacion-ia-front/packages/shell/src/components/ContextPanel/ContextPanel.styled.ts
+ D monitorizacion-ia-front/packages/shell/src/components/ContextPanel/ContextPanel.tsx
+ D monitorizacion-ia-front/packages/shell/src/components/DataItems/DataClienteItem.tsx
+ D monitorizacion-ia-front/packages/shell/src/components/DataItems/DataGestorItem.tsx
+ D monitorizacion-ia-front/packages/shell/src/components/DataItems/DataIntervinienteItem.tsx
+ D monitorizacion-ia-front/packages/shell/src/components/DataItems/DataItem.styled.ts
+ D monitorizacion-ia-front/packages/shell/src/components/DataItems/DataMuestraInteresItem.tsx
+ D monitorizacion-ia-front/packages/shell/src/components/DataItems/DataOperacionItem.tsx
+ D monitorizacion-ia-front/packages/shell/src/components/DataItems/DataPreevalItem.tsx
+ D monitorizacion-ia-front/packages/shell/src/components/DataItems/DataRecomendacionItem.tsx
+ D monitorizacion-ia-front/packages/shell/src/components/PrivateRoutes/PrivateRoutes.tsx
+ D monitorizacion-ia-front/packages/shell/src/config/channelManagerConfig.tsx
+ D monitorizacion-ia-front/packages/shell/src/config/development.ts
+ M monitorizacion-ia-front/packages/shell/src/config/env.ts
+ D monitorizacion-ia-front/packages/shell/src/config/index.ts
+ D monitorizacion-ia-front/packages/shell/src/config/integration.ts
+ D monitorizacion-ia-front/packages/shell/src/config/mock.ts
+ D monitorizacion-ia-front/packages/shell/src/config/production.ts
+ D monitorizacion-ia-front/packages/shell/src/context/AuthContext.tsx
+ D monitorizacion-ia-front/packages/shell/src/context/ToastContext.tsx
+ D monitorizacion-ia-front/packages/shell/src/domains/Context.domain.ts
+ D monitorizacion-ia-front/packages/shell/src/domains/Login/Login.domain.ts
+ D monitorizacion-ia-front/packages/shell/src/domains/Sesion.domain.ts
+ D monitorizacion-ia-front/packages/shell/src/domains/Traducciones.domain.ts
+ M monitorizacion-ia-front/packages/shell/src/features/monitor/components/DynamicTable/DynamicTable.tsx
+ D monitorizacion-ia-front/packages/shell/src/features/monitor/fixtures/default/cards.ts
+ D monitorizacion-ia-front/packages/shell/src/features/monitor/fixtures/default/dashboard.ts
+ D monitorizacion-ia-front/packages/shell/src/features/monitor/fixtures/default/dashboardDetail.ts
+ M monitorizacion-ia-front/packages/shell/src/features/monitor/pages/MonitorDashboard.page.tsx
+ D monitorizacion-ia-front/packages/shell/src/hooks/AppQueryParamsContext.tsx
+ D monitorizacion-ia-front/packages/shell/src/hooks/useAuth.tsx
+ D monitorizacion-ia-front/packages/shell/src/hooks/useContextManager.tsx
+ D monitorizacion-ia-front/packages/shell/src/hooks/useLogoutOnWindowClose.tsx
+ D monitorizacion-ia-front/packages/shell/src/layouts/TopNavLayout/TopNavLayout.styles.ts
+ D monitorizacion-ia-front/packages/shell/src/layouts/TopNavLayout/TopNavLayout.tsx
+ D monitorizacion-ia-front/packages/shell/src/layouts/TopNavLayout/index.ts
+ D monitorizacion-ia-front/packages/shell/src/locales/ca/home.json
+ D monitorizacion-ia-front/packages/shell/src/locales/ca/index.ts
+ D monitorizacion-ia-front/packages/shell/src/locales/ca/login.json
+ D monitorizacion-ia-front/packages/shell/src/locales/ca/translations.json
+ D monitorizacion-ia-front/packages/shell/src/locales/en/home.json
+ D monitorizacion-ia-front/packages/shell/src/locales/en/index.ts
+ D monitorizacion-ia-front/packages/shell/src/locales/en/login.json
+ D monitorizacion-ia-front/packages/shell/src/locales/en/translations.json
+ D monitorizacion-ia-front/packages/shell/src/locales/es/home.json
+ D monitorizacion-ia-front/packages/shell/src/locales/es/index.ts
+ D monitorizacion-ia-front/packages/shell/src/locales/es/login.json
+ D monitorizacion-ia-front/packages/shell/src/locales/es/translations.json
+ D monitorizacion-ia-front/packages/shell/src/locales/index.ts
+ D monitorizacion-ia-front/packages/shell/src/pages/About/About.page.tsx
+ D monitorizacion-ia-front/packages/shell/src/pages/Access/Access.page.tsx
+ D monitorizacion-ia-front/packages/shell/src/pages/Auth/Auth.page.tsx
+ D monitorizacion-ia-front/packages/shell/src/pages/Chat/Chat.page.tsx
+ D monitorizacion-ia-front/packages/shell/src/pages/Chat/Chat.styles.tsx
+ D monitorizacion-ia-front/packages/shell/src/pages/Chat/ChatQueryParamsRoute.tsx
+ D monitorizacion-ia-front/packages/shell/src/pages/Home/Home.page.tsx
+ D monitorizacion-ia-front/packages/shell/src/pages/NotFound/NotFound.page.tsx
+ D monitorizacion-ia-front/packages/shell/src/pages/SessionDetails/SessionDetail.page.tsx
+ D monitorizacion-ia-front/packages/shell/src/pages/SessionDetails/SessionDetail.styles.tsx
+ D monitorizacion-ia-front/packages/shell/src/pages/SessionList/SessionList.page.tsx
+ D monitorizacion-ia-front/packages/shell/src/pages/SessionList/SessionList.styles.tsx
+ D monitorizacion-ia-front/packages/shell/src/pages/SessionList/sesiones_mock.ts
+ D monitorizacion-ia-front/packages/shell/src/router/router.config.ts
+ D monitorizacion-ia-front/packages/shell/src/services/ChatService.ts
+ D monitorizacion-ia-front/packages/shell/src/services/ContextService.ts
+ D monitorizacion-ia-front/packages/shell/src/services/CustomFetch.ts
+ D monitorizacion-ia-front/packages/shell/src/services/SesionService.ts
+ D monitorizacion-ia-front/packages/shell/src/services/errorSchema.ts
+ D monitorizacion-ia-front/packages/shell/src/services/index.ts
+ D monitorizacion-ia-front/packages/shell/src/services/items_mock.tsx
+ M monitorizacion-ia-front/packages/shell/src/shared/api/MonitorApi.ts
+ M monitorizacion-ia-front/packages/shell/src/shared/config/useCases.ts
+ M monitorizacion-ia-front/packages/shell/src/shared/contracts/monitor.contracts.ts
+ M monitorizacion-ia-front/packages/shell/src/theme/index.tsx
+ M monitorizacion-ia-front/packages/shell/src/theme/reboot.ts
+ M monitorizacion-ia-front/packages/shell/src/theme/reset.ts
+ D monitorizacion-ia-front/packages/shell/tests/components/AuthContext/AuthContext.spec.tsx
+ D monitorizacion-ia-front/packages/shell/tests/components/ChatInput/ChatInput.spec.tsx
+ D monitorizacion-ia-front/packages/shell/tests/components/ChatInterface/ChatInterface.spec.tsx
+ D monitorizacion-ia-front/packages/shell/tests/components/ChatMessage/ChatMessage.spec.tsx
+ D monitorizacion-ia-front/packages/shell/tests/components/ContextPanel/ContextPanel.spec.tsx
+ D monitorizacion-ia-front/packages/shell/tests/components/DataItems/DataItems.spec.tsx
+ D monitorizacion-ia-front/packages/shell/tests/components/PrivateRoutes/PrivateRoutes.spec.tsx
+ D monitorizacion-ia-front/packages/shell/tests/context/ToastContext.spec.tsx
+ D monitorizacion-ia-front/packages/shell/tests/domains/Login.domain.spec.ts
+ D monitorizacion-ia-front/packages/shell/tests/hooks/AppQueryParamsContext.spec.tsx
+ D monitorizacion-ia-front/packages/shell/tests/hooks/useAuth.spec.tsx
+ D monitorizacion-ia-front/packages/shell/tests/hooks/useContextManager.spec.ts
+ D monitorizacion-ia-front/packages/shell/tests/pages/.gitkeep
+ D monitorizacion-ia-front/packages/shell/tests/services/ChatService.spec.ts
+ D monitorizacion-ia-front/packages/shell/tests/services/ContextService.spec.ts
+ D monitorizacion-ia-front/packages/shell/tests/services/errorSchema.spec.ts
+ D monitorizacion-ia-front/packages/shell/tests/services/index.spec.ts
+ M monitorizacion-ia-front/packages/shell/tsconfig.json
+ M monitorizacion-ia-front/packages/shell/webpack.config.js
+ M monitorizacion-ia-python/README.md
+ M monitorizacion-ia-python/docs/legacy-scope.md
+ M monitorizacion-ia-python/src/orchestrator/adapters/base.py
+ M monitorizacion-ia-python/src/orchestrator/adapters/http_proxy.py
+ M monitorizacion-ia-python/src/orchestrator/adapters/native.py
+ M monitorizacion-ia-python/src/orchestrator/adapters/registry.py
+ M monitorizacion-ia-python/src/orchestrator/api/routes.py
+ M monitorizacion-ia-python/src/orchestrator/api/schemas.py
+ M monitorizacion-ia-python/src/orchestrator/config/use_cases.yaml
+ M monitorizacion-ia-python/src/orchestrator/contracts/v1/cards_response.schema.json
+ M monitorizacion-ia-python/src/orchestrator/contracts/v1/dashboard_detail_response.schema.json
+ M monitorizacion-ia-python/src/orchestrator/contracts/v1/dashboard_response.schema.json
+ M monitorizacion-ia-python/src/orchestrator/contracts/v1/error_response.schema.json
+ M monitorizacion-ia-python/src/orchestrator/contracts/v1/query_request.schema.json
+ M monitorizacion-ia-python/src/orchestrator/core/errors.py
+ M monitorizacion-ia-python/src/orchestrator/core/settings.py
+ M monitorizacion-ia-python/src/orchestrator/core/use_case_loader.py
+ M monitorizacion-ia-python/src/orchestrator/main.py
+ M monitorizacion-ia-python/tests/test_orchestrator_smoke.py
+?? logs/
+?? monitorizacion-ia-front/packages/shell/docs/
+?? monitorizacion-ia-front/packages/shell/src/features/monitor/fixtures/hipotecas/
+?? monitorizacion-ia-front/packages/shell/src/features/monitor/fixtures/index.ts
+?? monitorizacion-ia-front/packages/shell/src/features/monitor/fixtures/prestamos/
+?? monitorizacion-ia-front/packages/shell/src/shared/config/use_cases.json
+?? monitorizacion-ia-front/packages/shell/tests/shared/
+?? monitorizacion-ia-python/src/__pycache__/
+?? monitorizacion-ia-python/src/orchestrator/__pycache__/
+?? monitorizacion-ia-python/src/orchestrator/adapters/__pycache__/
+?? monitorizacion-ia-python/src/orchestrator/api/__pycache__/
+?? monitorizacion-ia-python/src/orchestrator/config/dev.yaml
+?? monitorizacion-ia-python/src/orchestrator/config/prod.yaml
+?? monitorizacion-ia-python/src/orchestrator/config/stg.yaml
+?? monitorizacion-ia-python/src/orchestrator/core/__pycache__/
+?? monitorizacion-ia-python/tests/__pycache__/
+?? monitorizacion-ia-python/tests/test_use_case_loader_validation.py
+
+## git diff --stat
+ .../packages/shell/.env.development                |  21 +-
+ .../packages/shell/.env.integration                |  21 +-
+ monitorizacion-ia-front/packages/shell/.env.mock   |  30 +-
+ .../packages/shell/.env.preproduction              |  21 +-
+ .../packages/shell/.env.production                 |  21 +-
+ .../packages/shell/.eslintrc.json                  |   7 +
+ monitorizacion-ia-front/packages/shell/README.md   |  29 +-
+ .../packages/shell/cypress.config.ts               |  35 --
+ .../cypress/functional/Login/Login.page.cy.tsx     |   6 -
+ .../packages/shell/cypress/support/commands.ts     |   1 -
+ .../shell/cypress/support/component-index.html     |  12 -
+ .../packages/shell/cypress/support/component.ts    |  24 -
+ .../packages/shell/cypress/tsconfig.json           |   8 -
+ .../packages/shell/cypress/types.d.ts              |  13 -
+ .../packages/shell/module.federation.config.js     |  32 +-
+ .../packages/shell/package.json                    | 129 ++--
+ .../shell/src/assets/images/login-background.jpg   | Bin 355201 -> 0 bytes
+ .../packages/shell/src/assets/logos/unidesk_ia.svg |  44 --
+ .../packages/shell/src/bootstrap.tsx               |   3 +-
+ .../src/components/ChatInput/ChatInput.styles.ts   |  80 ---
+ .../shell/src/components/ChatInput/ChatInput.tsx   | 234 --------
+ .../ChatInterface/ChatInterface.styles.ts          | 102 ----
+ .../src/components/ChatInterface/ChatInterface.tsx | 243 --------
+ .../src/components/ChatInterface/mensajes_mock.tsx |   3 -
+ .../components/ChatMessage/ChatMessage.styles.ts   |  81 ---
+ .../src/components/ChatMessage/ChatMessage.tsx     |  37 --
+ .../components/ContextPanel/ContextPanel.styled.ts | 100 ----
+ .../src/components/ContextPanel/ContextPanel.tsx   | 271 ---------
+ .../src/components/DataItems/DataClienteItem.tsx   |  20 -
+ .../src/components/DataItems/DataGestorItem.tsx    |  15 -
+ .../components/DataItems/DataIntervinienteItem.tsx | 175 ------
+ .../src/components/DataItems/DataItem.styled.ts    |  18 -
+ .../DataItems/DataMuestraInteresItem.tsx           |  18 -
+ .../src/components/DataItems/DataOperacionItem.tsx |  30 -
+ .../src/components/DataItems/DataPreevalItem.tsx   |  40 --
+ .../components/DataItems/DataRecomendacionItem.tsx | 136 -----
+ .../src/components/PrivateRoutes/PrivateRoutes.tsx |  12 -
+ .../shell/src/config/channelManagerConfig.tsx      |  33 --
+ .../packages/shell/src/config/development.ts       |  12 -
+ .../packages/shell/src/config/env.ts               |  28 +-
+ .../packages/shell/src/config/index.ts             |  35 --
+ .../packages/shell/src/config/integration.ts       |  12 -
+ .../packages/shell/src/config/mock.ts              |  12 -
+ .../packages/shell/src/config/production.ts        |  12 -
+ .../packages/shell/src/context/AuthContext.tsx     | 297 ----------
+ .../packages/shell/src/context/ToastContext.tsx    |  47 --
+ .../packages/shell/src/domains/Context.domain.ts   | 509 ----------------
+ .../shell/src/domains/Login/Login.domain.ts        |  46 --
+ .../packages/shell/src/domains/Sesion.domain.ts    |  28 -
+ .../shell/src/domains/Traducciones.domain.ts       | 208 -------
+ .../components/DynamicTable/DynamicTable.tsx       |  23 +
+ .../src/features/monitor/fixtures/default/cards.ts |   9 -
+ .../features/monitor/fixtures/default/dashboard.ts |  17 -
+ .../monitor/fixtures/default/dashboardDetail.ts    |  28 -
+ .../monitor/pages/MonitorDashboard.page.tsx        |  17 +-
+ .../shell/src/hooks/AppQueryParamsContext.tsx      | 103 ----
+ .../packages/shell/src/hooks/useAuth.tsx           |  52 --
+ .../packages/shell/src/hooks/useContextManager.tsx |  74 ---
+ .../shell/src/hooks/useLogoutOnWindowClose.tsx     |  71 ---
+ .../layouts/TopNavLayout/TopNavLayout.styles.ts    |  94 ---
+ .../src/layouts/TopNavLayout/TopNavLayout.tsx      |  23 -
+ .../shell/src/layouts/TopNavLayout/index.ts        |   2 -
+ .../packages/shell/src/locales/ca/home.json        |  13 -
+ .../packages/shell/src/locales/ca/index.ts         |   9 -
+ .../packages/shell/src/locales/ca/login.json       |  36 --
+ .../shell/src/locales/ca/translations.json         |  14 -
+ .../packages/shell/src/locales/en/home.json        |  13 -
+ .../packages/shell/src/locales/en/index.ts         |   9 -
+ .../packages/shell/src/locales/en/login.json       |  49 --
+ .../shell/src/locales/en/translations.json         |  14 -
+ .../packages/shell/src/locales/es/home.json        |  13 -
+ .../packages/shell/src/locales/es/index.ts         |   9 -
+ .../packages/shell/src/locales/es/login.json       |  49 --
+ .../shell/src/locales/es/translations.json         |  14 -
+ .../packages/shell/src/locales/index.ts            |   9 -
+ .../packages/shell/src/pages/About/About.page.tsx  |   9 -
+ .../shell/src/pages/Access/Access.page.tsx         |  13 -
+ .../packages/shell/src/pages/Auth/Auth.page.tsx    |  41 --
+ .../packages/shell/src/pages/Chat/Chat.page.tsx    |  49 --
+ .../packages/shell/src/pages/Chat/Chat.styles.tsx  |  27 -
+ .../shell/src/pages/Chat/ChatQueryParamsRoute.tsx  |  16 -
+ .../packages/shell/src/pages/Home/Home.page.tsx    |  20 -
+ .../shell/src/pages/NotFound/NotFound.page.tsx     |  15 -
+ .../pages/SessionDetails/SessionDetail.page.tsx    |  51 --
+ .../pages/SessionDetails/SessionDetail.styles.tsx  |  24 -
+ .../src/pages/SessionList/SessionList.page.tsx     | 207 -------
+ .../src/pages/SessionList/SessionList.styles.tsx   |  41 --
+ .../shell/src/pages/SessionList/sesiones_mock.ts   | 655 ---------------------
+ .../packages/shell/src/router/router.config.ts     |  17 -
+ .../packages/shell/src/services/ChatService.ts     | 262 ---------
+ .../packages/shell/src/services/ContextService.ts  | 124 ----
+ .../packages/shell/src/services/CustomFetch.ts     |  14 -
+ .../packages/shell/src/services/SesionService.ts   |  45 --
+ .../packages/shell/src/services/errorSchema.ts     |   6 -
+ .../packages/shell/src/services/index.ts           |   1 -
+ .../packages/shell/src/services/items_mock.tsx     | 147 -----
+ .../packages/shell/src/shared/api/MonitorApi.ts    |  49 +-
+ .../packages/shell/src/shared/config/useCases.ts   |  17 +-
+ .../src/shared/contracts/monitor.contracts.ts      |   1 +
+ .../packages/shell/src/theme/index.tsx             |  34 +-
+ .../packages/shell/src/theme/reboot.ts             |  11 +-
+ .../packages/shell/src/theme/reset.ts              |  20 +-
+ .../components/AuthContext/AuthContext.spec.tsx    | 627 --------------------
+ .../tests/components/ChatInput/ChatInput.spec.tsx  | 350 -----------
+ .../ChatInterface/ChatInterface.spec.tsx           | 192 ------
+ .../components/ChatMessage/ChatMessage.spec.tsx    |  58 --
+ .../components/ContextPanel/ContextPanel.spec.tsx  | 129 ----
+ .../tests/components/DataItems/DataItems.spec.tsx  | 317 ----------
+ .../PrivateRoutes/PrivateRoutes.spec.tsx           | 138 -----
+ .../shell/tests/context/ToastContext.spec.tsx      |  54 --
+ .../shell/tests/domains/Login.domain.spec.ts       | 101 ----
+ .../tests/hooks/AppQueryParamsContext.spec.tsx     | 167 ------
+ .../packages/shell/tests/hooks/useAuth.spec.tsx    |  45 --
+ .../shell/tests/hooks/useContextManager.spec.ts    | 129 ----
+ .../packages/shell/tests/pages/.gitkeep            |   1 -
+ .../shell/tests/services/ChatService.spec.ts       | 213 -------
+ .../shell/tests/services/ContextService.spec.ts    | 124 ----
+ .../shell/tests/services/errorSchema.spec.ts       |  16 -
+ .../packages/shell/tests/services/index.spec.ts    |  21 -
+ .../packages/shell/tsconfig.json                   |  33 +-
+ .../packages/shell/webpack.config.js               | 226 ++++---
+ monitorizacion-ia-python/README.md                 |  20 +-
+ monitorizacion-ia-python/docs/legacy-scope.md      |   2 +-
+ .../src/orchestrator/adapters/base.py              |   3 +-
+ .../src/orchestrator/adapters/http_proxy.py        |   8 +-
+ .../src/orchestrator/adapters/native.py            |  77 ++-
+ .../src/orchestrator/adapters/registry.py          |   2 +-
+ .../src/orchestrator/api/routes.py                 |  17 +-
+ .../src/orchestrator/api/schemas.py                | 138 +++--
+ .../src/orchestrator/config/use_cases.yaml         |  18 +-
+ .../contracts/v1/cards_response.schema.json        |  15 +-
+ .../v1/dashboard_detail_response.schema.json       | 107 +++-
+ .../contracts/v1/dashboard_response.schema.json    |  58 +-
+ .../contracts/v1/error_response.schema.json        |   5 +-
+ .../contracts/v1/query_request.schema.json         |  26 +-
+ .../src/orchestrator/core/errors.py                |  28 +-
+ .../src/orchestrator/core/settings.py              |   2 +-
+ .../src/orchestrator/core/use_case_loader.py       |  17 +-
+ monitorizacion-ia-python/src/orchestrator/main.py  |  30 +-
+ .../tests/test_orchestrator_smoke.py               |  27 +-
+ 140 files changed, 892 insertions(+), 8680 deletions(-)
+
+## git log --oneline --decorate -n 20
+be6c2cb (HEAD -> main, tag: baseline-monitor-only-20260221-170009, origin/main, origin/HEAD) New version
+9416cf7 Integrate monitorizacion-ia-front into main repository
+849573d Add monitorizacion-ia-python project
+bd0ecb8 Initialize repository

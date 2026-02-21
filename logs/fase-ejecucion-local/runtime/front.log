@@ -1,0 +1,44 @@
+
+> @iagmvps-front-hipotecas/shell@0.0.1 start
+> dotenv -e .env.mock npm run webpack -- -- serve
+
+
+> @iagmvps-front-hipotecas/shell@0.0.1 webpack
+> webpack serve
+
+<i> [webpack-dev-server] Project is running at:
+<i> [webpack-dev-server] Loopback: http://localhost:3100/
+<i> [webpack-dev-server] On Your Network (IPv4): http://192.168.18.153:3100/
+<i> [webpack-dev-server] On Your Network (IPv6): http://[fe80::1]:3100/
+<i> [webpack-dev-server] Content not from webpack is served from '/Users/usuario/personal/monitorizacion-ia/monitorizacion-ia-front/packages/shell/public' directory
+<i> [webpack-dev-server] 404s will fallback to '/'
+assets by path *.js 5.24 MiB
+  assets by chunk 3.82 MiB (id hint: vendors)
+    asset vendors-node_modules_react-dom_index_js.76fb0885541a0fc71fd9.js 2.55 MiB [emitted] [immutable] (id hint: vendors)
+    asset vendors-node_modules_react-router-dom_dist_index_js.76058af85d469f56ee43.js 614 KiB [emitted] [immutable] (id hint: vendors)
+    asset vendors-node_modules_zod_lib_index_mjs.c2014ea63da4f6818805.js 357 KiB [emitted] [immutable] (id hint: vendors)
+    asset vendors-node_modules_react_index_js.b6385a665f7d9a5e0bc7.js 223 KiB [emitted] [immutable] (id hint: vendors)
+    asset vendors-node_modules_react-dom_client_js-node_modules_react_jsx-runtime_js.948d45f086fcb2c1eac6.js 109 KiB [emitted] [immutable] (id hint: vendors)
+  asset main.96a0fed27325399769fc.js 1.21 MiB [emitted] [immutable] (name: main)
+  asset src_features_monitor_pages_MonitorDashboard_page_tsx.422ddb6799fdf914e3dd.js 175 KiB [emitted] [immutable]
+  asset src_bootstrap_tsx-webpack_sharing_consume_default_react-dom_react-dom.1d0f0b2dff56fab4317d.js 23.2 KiB [emitted] [immutable]
+  asset src_App_tsx.72a7ca23927614f770fd.js 11.6 KiB [emitted] [immutable]
+asset index.html 619 bytes [emitted]
+asset favicon.ico 451 bytes [emitted] [from: public/favicon.ico] [copied]
+runtime modules 44.6 KiB 18 modules
+modules by path ./node_modules/ 1.85 MiB 199 modules
+modules by path ./src/ 99.8 KiB
+  javascript modules 96.1 KiB 17 modules
+  json modules 3.68 KiB 8 modules
+provide-module modules 168 bytes
+  provide shared module (default) react-dom@18.2.0 = ./node_modules/react-dom/index.js 42 bytes [built] [code generated]
+  provide shared module (default) react-router-dom@6.11.1 = ./node_modules/react-router-dom/dist/index.js 42 bytes [built] [code generated]
+  provide shared module (default) react@18.2.0 = ./node_modules/react/index.js 42 bytes [built] [code generated]
+  provide shared module (default) zod@3.21.4 = ./node_modules/zod/lib/index.mjs 42 bytes [built] [code generated]
+consume-shared-module modules 168 bytes
+  consume shared module (default) react@=18.2.0 (singleton) (fallback: ./node_modules/react/index.js) 42 bytes [built] [code generated]
+  consume shared module (default) react-dom@=18.2.0 (singleton) (fallback: ./node_modules/react-dom/index.js) 42 bytes [built] [code generated]
+  consume shared module (default) zod@=3.21.4 (strict) (fallback: ./node_modules/zod/lib/index.mjs) 42 bytes [built] [code generated]
+  consume shared module (default) react-router-dom@=6.11.1 (strict) (fallback: ./node_modules/react-router-dom/dist/index.js) 42 bytes [built] [code generated]
+webpack 5.75.0 compiled successfully in 396 ms
+<i> [webpack-dev-server] Gracefully shutting down. To force exit, press ^C again. Please wait...

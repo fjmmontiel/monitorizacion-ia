@@ -1,4 +1,5 @@
 import { DashboardResponse, QueryRequest } from '#/shell/shared/contracts/monitor.contracts';
+import { ViewConfig } from '#/shell/shared/config/views';
 
 type Props = {
   data: DashboardResponse | null;
@@ -7,9 +8,10 @@ type Props = {
   query: QueryRequest;
   onQueryChange: (next: QueryRequest) => void;
   onOpenDetail: (id: string) => void;
+  view: ViewConfig;
 };
 
-export const DynamicTable = ({ data, loading, error, query, onQueryChange, onOpenDetail }: Props) => {
+export const DynamicTable = ({ data, loading, error, query, onQueryChange, onOpenDetail, view }: Props) => {
   if (loading) {
     return <p>Cargando tabla...</p>;
   }
@@ -24,16 +26,47 @@ export const DynamicTable = ({ data, loading, error, query, onQueryChange, onOpe
 
   const { columns, rows, nextCursor } = data.table;
   const hasRequiredColumns = columns.some(column => column.key === 'id') && columns.some(column => column.key === 'detail');
+  const filterableColumns = columns.filter(column => column.filterable);
 
   if (!hasRequiredColumns) {
     return <p>Configuración inválida: faltan columnas obligatorias id/detail.</p>;
   }
 
   return (
-    <section>
+    <section
+      style={{
+        background: view.theme.surfaceBackground,
+        border: `1px solid ${view.theme.surfaceBorder}`,
+        borderRadius: 8,
+        marginTop: 12,
+        padding: 12,
+      }}
+    >
+      {filterableColumns.length > 0 && (
+        <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+          {filterableColumns.map(column => (
+            <label key={column.key}>
+              <span>{column.label}</span>
+              <input
+                value={String(query.filters?.[column.key] ?? '')}
+                onChange={event =>
+                  onQueryChange({
+                    ...query,
+                    cursor: undefined,
+                    filters: {
+                      ...(query.filters ?? {}),
+                      [column.key]: event.target.value,
+                    },
+                  })
+                }
+              />
+            </label>
+          ))}
+        </div>
+      )}
       <table style={{ width: '100%' }}>
         <thead>
-          <tr>
+          <tr style={{ background: view.theme.pageBackground }}>
             {columns.map(column => (
               <th key={column.key}>
                 <span>{column.label}</span>

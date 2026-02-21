@@ -1,0 +1,10 @@
+# 06b_e2e_cases.log
+
+## Fecha (UTC)
+2026-02-21T16:41:50Z
+
+## ./scripts/e2e-cases-local.sh
+Running E2E case: caso_de_uso=hipotecas, vista=operativa, timeRange=24h, search=<empty>, limit=25
+Running E2E case: caso_de_uso=prestamos, vista=supervision, timeRange=7d, search=Pendiente, limit=10
+Running E2E case: caso_de_uso=hipotecas, vista=ejecutiva, timeRange=30d, search=Ana, limit=5
+E2E cases local OK

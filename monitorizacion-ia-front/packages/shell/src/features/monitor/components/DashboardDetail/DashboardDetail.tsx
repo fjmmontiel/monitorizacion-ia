@@ -1,4 +1,5 @@
 import { DashboardDetailResponse } from '#/shell/shared/contracts/monitor.contracts';
+import { ViewConfig } from '#/shell/shared/config/views';
 
 type Props = {
   data: DashboardDetailResponse | null;
@@ -6,15 +7,24 @@ type Props = {
   error: string | null;
   selectedId: string | null;
   onClose: () => void;
+  view: ViewConfig;
 };
 
-export const DashboardDetail = ({ data, loading, error, selectedId, onClose }: Props) => {
+export const DashboardDetail = ({ data, loading, error, selectedId, onClose, view }: Props) => {
   if (!selectedId) {
     return null;
   }
 
   return (
-    <section style={{ border: '1px solid #ccc', marginTop: 16, padding: 12 }}>
+    <section
+      style={{
+        border: `1px solid ${view.theme.surfaceBorder}`,
+        borderTop: `4px solid ${view.theme.accent}`,
+        background: view.theme.surfaceBackground,
+        marginTop: 16,
+        padding: 12,
+      }}
+    >
       <h3>Detalle {selectedId}</h3>
       <button onClick={onClose}>Cerrar</button>
       {loading && <p>Cargando detalle...</p>}

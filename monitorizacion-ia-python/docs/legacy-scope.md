@@ -19,6 +19,13 @@ Reducir el backend a un orquestador agnóstico de dominio basado en `caso_de_uso
 - Endpoints canónicos:
   - `POST /cards?caso_de_uso=...`
   - `POST /dashboard?caso_de_uso=...`
-  - `POST /dashboard_detail?caso_de_uso=...`
+  - `POST /dashboard_detail?caso_de_uso=...&id=...`
 - `/health` operativo.
 - Errores estándar y contratos versionados v1.
+
+## Preservación de limitaciones corporativas
+- Se mantiene un esquema dual de configuración:
+  - Perfil local (`src/orchestrator/config/dev.yaml`) para ejecución funcional local.
+  - Perfiles corporativos (`src/orchestrator/config/stg.yaml`, `src/orchestrator/config/prod.yaml`) para retomar integración por proxy.
+- No se reintroduce middleware corporativo en runtime en esta fase.
+- El objetivo es poder ejecutar localmente hoy sin perder la vía de reactivación corporativa mañana.

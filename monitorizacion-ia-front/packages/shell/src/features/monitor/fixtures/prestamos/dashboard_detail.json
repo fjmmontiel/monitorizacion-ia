@@ -1,0 +1,23 @@
+{
+  "left": {
+    "messages": [
+      { "role": "cliente", "text": "Quiero revisar las condiciones del prestamo", "timestamp": "11:15" },
+      { "role": "agente", "text": "Te muestro el resumen de condiciones", "timestamp": "11:16" }
+    ]
+  },
+  "right": [
+    {
+      "type": "list",
+      "title": "Documentacion",
+      "items": ["DNI", "Nominas", "Declaracion de renta"]
+    },
+    {
+      "type": "timeline",
+      "title": "Hitos",
+      "events": [
+        { "label": "Solicitud recibida", "time": "2026-02-20 09:30" },
+        { "label": "Analisis riesgo", "time": "2026-02-20 12:15" }
+      ]
+    }
+  ]
+}

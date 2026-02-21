@@ -14,7 +14,7 @@ class AdapterRegistry:
         cfg = self.routing.use_cases.get(caso_de_uso)
         if not cfg:
             raise OrchestratorError(
-                ErrorCode.UNKNOWN_CASO_DE_USO,
+                ErrorCode.UNKNOWN_USE_CASE,
                 f'caso_de_uso not registered: {caso_de_uso}',
                 404,
             )

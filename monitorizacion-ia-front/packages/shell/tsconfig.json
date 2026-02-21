@@ -1,14 +1,19 @@
 {
-  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "ignoreDeprecations": "6.0",
     "target": "ES2017",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "jsx": "react-jsx",
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "types": ["node", "react", "react-dom"],
     "baseUrl": ".",
     "paths": {
       "#/shell": ["./src"],
       "#/shell/*": ["./src/*"]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx", "../../typings.d.ts", "global.d.ts"],
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/global.d.ts"],
   "exclude": ["**/*/node_modules", "tmp", "build", "cypress.config.ts", "cypress"]
 }

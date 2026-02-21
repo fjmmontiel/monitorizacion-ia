@@ -1,0 +1,27 @@
+# 04_back_perfiles.log
+
+## Fecha (UTC)
+2026-02-21T16:30:36Z
+
+## uvicorn src.main:app --port 8002 + checks de endpoints
+--- GET /health
+{"status":"ok","service":"monitorizacion-ia-orchestrator","version":"0.1.0"}
+--- POST /cards?caso_de_uso=hipotecas
+{"cards":[{"title":"Conversaciones activas","subtitle":null,"value":128,"format":"int"},{"title":"Tiempo medio de respuesta","subtitle":null,"value":2.31,"format":"seconds"},{"title":"Tasa de resolucion","subtitle":null,"value":0.92,"format":"percent"}]}
+--- POST /dashboard?caso_de_uso=prestamos
+{"table":{"columns":[{"key":"id","label":"Id","filterable":null,"sortable":true},{"key":"cliente","label":"Cliente","filterable":true,"sortable":null},{"key":"estado","label":"Estado","filterable":true,"sortable":true},{"key":"detail","label":"Detalle","filterable":null,"sortable":null}],"rows":[{"id":"conv-001","detail":{"action":"Ver detalle"},"cliente":"Ana Lopez","estado":"Completada"},{"id":"conv-002","detail":{"action":"Ver detalle"},"cliente":"Luis Perez","estado":"En curso"}],"nextCursor":"page-2"}}
+--- POST /dashboard_detail?caso_de_uso=hipotecas&id=conv-001
+{"left":{"messages":[{"role":"cliente","text":"Necesito informacion sobre una hipoteca fija","timestamp":"10:01"},{"role":"agente","text":"Claro, que importe necesitas?","timestamp":"10:02"}]},"right":[{"type":"kv","title":"Contexto","items":[{"key":"Canal","value":"Web"},{"key":"Caso de uso","value":"hipotecas"}]},{"type":"metrics","title":"Metricas","metrics":[{"label":"Mensajes","value":12},{"label":"Id","value":"conv-001"}]}]}
+--- tail backend log
+INFO:     Started server process [31866]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8002 (Press CTRL+C to quit)
+2026-02-21 17:30:39,718 INFO [orchestrator.main] request_id=aa7cdc13-6a4d-43c0-9c8f-16b7e6916d9a method=GET path=/health status=200 latency_ms=0.83 caso_de_uso=-
+INFO:     127.0.0.1:62744 - "GET /health HTTP/1.1" 200 OK
+2026-02-21 17:30:39,732 INFO [orchestrator.main] request_id=fa74b8a8-ca4d-4df7-b3d9-3822440740c5 method=POST path=/cards status=200 latency_ms=0.95 caso_de_uso=hipotecas
+INFO:     127.0.0.1:62745 - "POST /cards?caso_de_uso=hipotecas HTTP/1.1" 200 OK
+2026-02-21 17:30:39,743 INFO [orchestrator.main] request_id=02951c13-ea5b-4b1f-b9fc-d998aea41f99 method=POST path=/dashboard status=200 latency_ms=0.83 caso_de_uso=prestamos
+INFO:     127.0.0.1:62746 - "POST /dashboard?caso_de_uso=prestamos HTTP/1.1" 200 OK
+2026-02-21 17:30:39,753 INFO [orchestrator.main] request_id=1ca87367-6fe8-4286-8224-e787dfefe5f5 method=POST path=/dashboard_detail status=200 latency_ms=0.75 caso_de_uso=hipotecas
+INFO:     127.0.0.1:62747 - "POST /dashboard_detail?caso_de_uso=hipotecas&id=conv-001 HTTP/1.1" 200 OK

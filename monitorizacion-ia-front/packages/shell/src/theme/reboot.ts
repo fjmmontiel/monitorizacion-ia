@@ -1,4 +1,3 @@
-import { css } from '@internal-channels-components/theme';
 /**
  * Inicializa estilos base
  * 1. Change from `box-sizing: content-box` so that `width` is not affected
@@ -13,7 +12,7 @@ import { css } from '@internal-channels-components/theme';
  * 6. Change the default tap highlight to be completely transparent in iOS.
  * 7. Implement full height to let children control own height.
  */
-export const reboot = css`
+export const reboot = `
   *,
   *::before,
   *::after {
@@ -24,7 +23,7 @@ export const reboot = css`
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
     -ms-overflow-style: scrollbar;
-    -webkit-tap-highlight-color: rgba(#000, 0);
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     -webkit-tap-highlight-color: transparent;
     height: 100%;
   }
