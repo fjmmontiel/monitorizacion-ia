@@ -1,3 +1,28 @@
 [project]
-name = "FastAPI Microservice"
-version = "1.1.0"
+name = "monitorizacion-ia-python"
+version = "0.2.0"
+description = "Backend orquestador por caso_de_uso"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.115.0",
+  "uvicorn>=0.30.0",
+  "pydantic>=2.7.0",
+  "pydantic-settings>=2.3.0",
+  "httpx>=0.27.0",
+  "PyYAML>=6.0.1"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.2.0",
+  "pytest-asyncio>=0.23.0"
+]
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+asyncio_mode = "auto"

@@ -3,6 +3,18 @@
   "ignorePatterns": ["**/node_modules/**", "lib/**", "build/**", "coverage/**"],
   "overrides": [
     {
+      "files": ["src/**/*.ts", "src/**/*.tsx"],
+      "excludedFiles": ["src/shared/api/MonitorApi.ts"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": ["axios", "@internal-channels-components/http"]
+          }
+        ]
+      }
+    },
+    {
       "files": ["cypress/**/*.ts", "cypress/**/*.tsx"],
       "rules": {
         "testing-library/prefer-screen-queries": "off",

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "DashboardDetailResponse",
+  "type": "object",
+  "required": ["schema_version", "id", "left", "right"],
+  "properties": {
+    "schema_version": {"type": "string", "const": "v1"},
+    "id": {"type": "string"},
+    "left": {"type": "object"},
+    "right": {"type": "object"}
+  }
+}

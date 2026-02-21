@@ -26,6 +26,11 @@ const envVariablesSchema = z.object({
   REACT_APP_API_URL: z
     .string()
     .default('https://apis-nopr.unicajasc.corp/interno/inte-unicaja/ia/iag-frontales/hipotecas'),
+  MONITOR_API_BASE_URL: z.string().default('http://localhost:8080'),
+  REACT_APP_MONITOR_MOCK_MODE: z
+    .enum(['true', 'false'])
+    .transform(value => value === 'true')
+    .default('true'),
   REACT_APP_SUBIR_FICHEROS: z
     .enum(['true', 'false'])
     .transform(value => value === 'true')

@@ -1,0 +1,68 @@
+import logging
+
+from fastapi import APIRouter, Header, Query, Request
+
+from orchestrator.adapters.base import AdapterContext
+from orchestrator.adapters.registry import AdapterRegistry
+from orchestrator.api.schemas import (
+    CardsResponse,
+    DashboardDetailRequest,
+    DashboardDetailResponse,
+    DashboardResponse,
+    QueryRequest,
+)
+from orchestrator.core.settings import settings
+
+logger = logging.getLogger(__name__)
+router = APIRouter()
+
+
+def get_registry(request: Request) -> AdapterRegistry:
+    return request.app.state.adapter_registry
+
+
+@router.get('/health', tags=['Root'])
+async def health() -> dict:
+    return {'status': 'ok', 'service': settings.PROJECT_NAME, 'version': settings.PROJECT_VERSION}
+
+
+@router.post('/cards', response_model=CardsResponse)
+async def cards(
+    request: Request,
+    req: QueryRequest,
+    caso_de_uso: str = Query(..., min_length=1),
+    x_request_id: str | None = Header(default=None),
+    x_trace_id: str | None = Header(default=None),
+) -> CardsResponse:
+    registry = get_registry(request)
+    adapter = registry.resolve(caso_de_uso)
+    ctx = AdapterContext(caso_de_uso, x_request_id, x_trace_id, registry.timeout_for(caso_de_uso))
+    return await adapter.get_cards(ctx, req)
+
+
+@router.post('/dashboard', response_model=DashboardResponse)
+async def dashboard(
+    request: Request,
+    req: QueryRequest,
+    caso_de_uso: str = Query(..., min_length=1),
+    x_request_id: str | None = Header(default=None),
+    x_trace_id: str | None = Header(default=None),
+) -> DashboardResponse:
+    registry = get_registry(request)
+    adapter = registry.resolve(caso_de_uso)
+    ctx = AdapterContext(caso_de_uso, x_request_id, x_trace_id, registry.timeout_for(caso_de_uso))
+    return await adapter.get_dashboard(ctx, req)
+
+
+@router.post('/dashboard_detail', response_model=DashboardDetailResponse)
+async def dashboard_detail(
+    request: Request,
+    req: DashboardDetailRequest,
+    caso_de_uso: str = Query(..., min_length=1),
+    x_request_id: str | None = Header(default=None),
+    x_trace_id: str | None = Header(default=None),
+) -> DashboardDetailResponse:
+    registry = get_registry(request)
+    adapter = registry.resolve(caso_de_uso)
+    ctx = AdapterContext(caso_de_uso, x_request_id, x_trace_id, registry.timeout_for(caso_de_uso))
+    return await adapter.get_detail(ctx, req)

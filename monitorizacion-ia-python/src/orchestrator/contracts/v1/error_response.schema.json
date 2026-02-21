@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ErrorResponse",
+  "type": "object",
+  "required": ["schema_version", "code", "message"],
+  "properties": {
+    "schema_version": {"type": "string", "const": "v1"},
+    "code": {
+      "type": "string",
+      "enum": [
+        "UNKNOWN_CASO_DE_USO",
+        "VALIDATION_ERROR",
+        "UPSTREAM_ERROR",
+        "UPSTREAM_TIMEOUT",
+        "UNAUTHORIZED",
+        "FORBIDDEN"
+      ]
+    },
+    "message": {"type": "string"},
+    "detail": {"type": ["object", "null"]}
+  }
+}

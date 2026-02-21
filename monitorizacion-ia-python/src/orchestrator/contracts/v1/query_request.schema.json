@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "QueryRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["query"],
+  "properties": {
+    "query": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "filters": {"type": "array", "items": {"type": "object"}},
+        "search": {"type": ["string", "null"]},
+        "sort": {"type": "array", "items": {"type": "object"}},
+        "cursor": {"type": ["string", "null"]},
+        "limit": {"type": ["integer", "null"], "minimum": 1}
+      }
+    }
+  }
+}

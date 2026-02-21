@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "DashboardResponse",
+  "type": "object",
+  "required": ["schema_version", "columns", "rows"],
+  "properties": {
+    "schema_version": {"type": "string", "const": "v1"},
+    "columns": {"type": "array", "items": {"type": "string"}},
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "data", "detail"],
+        "properties": {
+          "id": {"type": "string"},
+          "data": {"type": "object"},
+          "detail": {
+            "type": "object",
+            "required": ["type", "payload"],
+            "properties": {
+              "type": {"type": "string"},
+              "payload": {
+                "type": "object",
+                "required": ["id"],
+                "properties": {"id": {"type": "string"}}
+              }
+            }
+          }
+        }
+      }
+    },
+    "next_cursor": {"type": ["string", "null"]}
+  }
+}
