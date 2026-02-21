@@ -1,0 +1,37 @@
+{
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "nx/tasks-runners/default",
+      "options": {
+        "cacheableOperations": ["build", "test", "lint", "typecheck"]
+      }
+    }
+  },
+  "targetDefaults": {
+    "build": {
+      "inputs": ["production", "^production", "{projectRoot}/tsconfig.json"],
+      "outputs": ["{projectRoot}/build"]
+    },
+    "test": {
+      "inputs": ["default", "^default", "{workspaceRoot}/jest.preset.ts", "{projectRoot}/jest.config.ts"],
+      "outputs": ["{projectRoot}/coverage"]
+    },
+    "lint": {
+      "inputs": ["default", "^default", "{workspaceRoot}/.eslintrc.json", "{projectRoot}/.eslintrc.json"]
+    },
+    "typecheck": {
+      "inputs": ["default", "^default", "{workspaceRoot}/tsconfig.json", "{projectRoot}/tsconfig.json"]
+    }
+  },
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "sharedGlobals": ["{workspaceRoot}/.swcrc", "{projectRoot}/.swcrc", "{workspaceRoot}/tsconfig.json"],
+    "production": [
+      "default",
+      "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
+      "!{projectRoot}/tsconfig.spec.json",
+      "!{projectRoot}/jest.config.[jt]s",
+      "!{projectRoot}/.eslintrc.json"
+    ]
+  }
+}

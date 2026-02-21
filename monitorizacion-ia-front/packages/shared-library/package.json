@@ -1,0 +1,25 @@
+{
+  "name": "@iagmvps-front-hipotecas/shared-library",
+  "version": "0.0.1",
+  "description": "Shared Library for packages in this repository",
+  "main": "./src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "lint": "npm run lint:eslint",
+    "lint:eslint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint:eslint:fix": "npm run lint:eslint -- --fix",
+    "test": "jest",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
+  "devDependencies": {
+    "@architecture-components/eslint-config": "0.1.0",
+    "@architecture-components/scripts": "1.0.0",
+    "@architecture-components/test-config": "0.3.0",
+    "@architecture-components/typescript-config": "0.2.0",
+    "@types/styled-components": "5.1.26"
+  }
+}

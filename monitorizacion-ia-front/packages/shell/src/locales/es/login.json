@@ -1,0 +1,49 @@
+{
+  "title": "Bienvenido a Unicaja Eloy",
+  "headerLinks": {
+    "signUp": "Alta en Banca Digital",
+    "BecomeAClient": "Link de ejemplo"
+  },
+  "form": {
+    "title": "Registro",
+    "username": "DNI, NIE, Passaporte o usuario",
+    "pin": "Clave de acceso",
+    "signIn": "Acceder",
+    "recoverPass": "Recuperar clave de acceso"
+  },
+  "errorMessages": {
+    "invalidUsername": "Usuario no válido",
+    "invalidPin": "La contraseña debe tener más de 6 caracteres",
+    "signIn": {
+      "codes": {
+        "400": "Identificación errónea",
+        "401": "Unauthorized",
+        "403": "Forbidden",
+        "404": "Not Found",
+        "407": "Proxy Authentication Required",
+        "500": "Internal Server Error",
+        "501": "Not Implemented",
+        "502": "Bad Gateway",
+        "503": "Service Unavailable"
+      }
+    }
+  },
+  "securityContent": {
+    "text": "Modal de ejemplo",
+    "button": "Abrir modal de ejemplo"
+  },
+  "copyright": "© Unicaja Banco 2023. Todos los derechos reservados.",
+  "modalRecommendations": {
+    "modalTitle": "Recomendaciones y medidas de seguridad de Unicaja Banco",
+    "textContainer": {
+      "securityText": "La seguridad de tu dinero y de tus datos es nuestra máxima prioridad. Por eso te pedimos que sigas estos sencillos consejos: ",
+      "firstTip": "1. <strong>Claves:</strong> no las compartas con nadie. Unicaja Banco nunca te pedirá tu clave personal. ",
+      "secondTip": "2. <strong>Actualizaciones de seguridad:</strong> actualiza tus dispositivos con frecuencia. ",
+      "thirdTip": "3. <strong>Conexión:</strong> evita acceder desde dispositivos públicos o compartidos y redes WiFi públicas. ",
+      "fourthTip": "4. <strong>Correos, llamadas o SMS:</strong> si recibes un email, llamada o SMS que te lleva directamente a una pantalla parecida a esta no introduzcas tus datos bajo ningún concepto, es un fraude. ",
+      "callUs": "Y ante la menor sospecha llámanos:",
+      "link": "ver teléfono ",
+      "phone": "952 07 62 63"
+    }
+  }
+}

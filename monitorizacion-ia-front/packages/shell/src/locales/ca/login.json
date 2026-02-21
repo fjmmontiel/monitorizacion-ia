@@ -1,0 +1,36 @@
+{
+  "title": "Acceso a Unicaja Banco",
+  "headerLinks": {
+    "signUp": "Alta en Banca Digital",
+    "BecomeAClient": "Hazte cliente"
+  },
+  "form": {
+    "title": "Registro",
+    "username": "DNI, NIE, Passaporte o usuario",
+    "pin": "Clave de acceso",
+    "signIn": "Acceder",
+    "recoverPass": "Recuperar clave de acceso"
+  },
+  "errorMessages": {
+    "invalidUsername": "Usuario no válido",
+    "invalidPin": "La contraseña debe tener más de 6 caracteres",
+    "signIn": {
+      "codes": {
+        "400": "Identificación errónea",
+        "401": "Unauthorized",
+        "403": "Forbidden",
+        "404": "Not Found",
+        "407": "Proxy Authentication Required",
+        "500": "Internal Server Error",
+        "501": "Not Implemented",
+        "502": "Bad Gateway",
+        "503": "Service Unavailable"
+      }
+    }
+  },
+  "securityContent": {
+    "text": "Protégete de los ciber ataques",
+    "button": " Recomendaciones de seguridad"
+  },
+  "copyright": "© Unicaja Banco 2023. Todos los derechos reservados."
+}

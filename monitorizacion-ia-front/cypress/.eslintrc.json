@@ -1,0 +1,13 @@
+{
+  "extends": ["@architecture-components/eslint-config", "plugin:cypress/recommended"],
+  "ignorePatterns": ["**/node_modules/**", "lib/**", "build/**", "coverage/**"],
+  "overrides": [
+    {
+      "files": ["**/*.ts", "**/*.tsx"],
+      "rules": {
+        "testing-library/prefer-screen-queries": "off",
+        "testing-library/await-async-query": "off"
+      }
+    }
+  ]
+}

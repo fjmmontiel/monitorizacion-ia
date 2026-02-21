@@ -1,0 +1,4 @@
+{
+  "extends": "@architecture-components/eslint-config",
+  "ignorePatterns": ["**/node_modules/**", "lib/**", "build/**", "coverage/**"]
+}

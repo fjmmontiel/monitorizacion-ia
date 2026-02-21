@@ -1,0 +1,30 @@
+{
+  "name": "@iagmvps-front-atencion-cliente/cypress",
+  "private": true,
+  "description": "Cypress common package",
+  "scripts": {
+    "lint": "npm run lint:eslint",
+    "lint:eslint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint:eslint:fix": "npm run lint:eslint -- --fix",
+    "typecheck": "tsc --noEmit",
+    "cypress:e2e": "cypress run --e2e",
+    "cypress:open": "cypress open",
+    "cypress:report": "npm run cypress:report:merge && npm run cypress:report:generate",
+    "cypress:report_e2e": "npm run cypress:report:merge && npm run cypress:report:generate",
+    "cypress:report:merge": "mochawesome-merge ./report/*.json -o ./report/merged_reports.json",
+    "cypress:report:generate": "marge ./report/merged_reports.json -f index -o ../report/e2e --charts"
+  },
+  "devDependencies": {
+    "@architecture-components/eslint-config": "0.1.0",
+    "@architecture-components/scripts": "1.0.0",
+    "@architecture-components/test-config": "0.3.0",
+    "@architecture-components/typescript-config": "0.2.0",
+    "@testing-library/cypress": "9.0.0",
+    "eslint-plugin-cypress": "2.13.3"
+  },
+  "version": "0.0.1",
+  "dependencies": {
+    "cypress": "12.12.0",
+    "@iagmvps-front-atencion-cliente/cypress": "file:"
+  }
+}

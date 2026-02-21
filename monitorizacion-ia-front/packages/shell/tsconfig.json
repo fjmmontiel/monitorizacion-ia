@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "ignoreDeprecations": "6.0",
+    "target": "ES2017",
+    "baseUrl": ".",
+    "paths": {
+      "#/shell": ["./src"],
+      "#/shell/*": ["./src/*"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.tsx", "../../typings.d.ts", "global.d.ts"],
+  "exclude": ["**/*/node_modules", "tmp", "build", "cypress.config.ts", "cypress"]
+}

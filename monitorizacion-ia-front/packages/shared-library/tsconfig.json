@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.json",
+  "include": ["**/*.ts", "**/*.tsx", "../../typings.d.ts"],
+  "exclude": ["**/*/node_modules", "tmp", "build"],
+  "compilerOptions": {
+    "declaration": true,
+    "outDir": "./build",
+    "noEmit": false
+  }
+}

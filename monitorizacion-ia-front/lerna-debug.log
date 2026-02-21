@@ -1,0 +1,17 @@
+0 silly argv {
+0 silly argv   _: [ 'clean' ],
+0 silly argv   yes: true,
+0 silly argv   y: true,
+0 silly argv   lernaVersion: '7.3.0',
+0 silly argv   '$0': 'node_modules\\lerna\\dist\\cli.js'
+0 silly argv }
+1 notice cli v7.3.0
+2 verbose packageConfigs Resolving packages based on package.json "workspaces" configuration.
+3 verbose rootPath C:\Users\UX9833M\Documents\CODIGO\iagmvps-front-hipotecas
+4 info clean removing C:\Users\UX9833M\Documents\CODIGO\iagmvps-front-hipotecas\cypress\node_modules
+5 silly rimrafDir C:\Users\UX9833M\Documents\CODIGO\iagmvps-front-hipotecas\cypress\node_modules
+6 info clean removing C:\Users\UX9833M\Documents\CODIGO\iagmvps-front-hipotecas\packages\shared-library\node_modules
+7 silly rimrafDir C:\Users\UX9833M\Documents\CODIGO\iagmvps-front-hipotecas\packages\shared-library\node_modules
+8 info clean removing C:\Users\UX9833M\Documents\CODIGO\iagmvps-front-hipotecas\packages\shell\node_modules
+9 silly rimrafDir C:\Users\UX9833M\Documents\CODIGO\iagmvps-front-hipotecas\packages\shell\node_modules
+10 error

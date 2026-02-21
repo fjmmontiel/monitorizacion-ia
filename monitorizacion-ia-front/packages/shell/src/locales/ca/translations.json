@@ -1,0 +1,14 @@
+{
+  "gridLayout": {
+    "menu": {
+      "options": {
+        "home": "Inicio",
+        "movements": "Movimientos",
+        "moveMoney": "Mover dinero",
+        "payments": "Pagos",
+        "more": "Más"
+      }
+    },
+    "lastConection": "Ultima conexión"
+  }
+}
