@@ -1,28 +1,58 @@
-INFO:     Started server process [91309]
+INFO:     Started server process [99067]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://127.0.0.1:8002 (Press CTRL+C to quit)
-2026-03-02 09:54:02,575 INFO [orchestrator.main] request event | request_id=7f093367-a227-4c0d-aee3-79b8704f808f method=GET path=/health status=200 latency_ms=0.58 caso_de_uso=- adapter=-
-INFO:     127.0.0.1:56746 - "GET /health HTTP/1.1" 200 OK
-2026-03-02 09:54:03,990 INFO [orchestrator.main] request event | request_id=fd066084-9d21-4b2c-a8e1-12744d1ebd36 method=POST path=/cards status=200 latency_ms=0.97 caso_de_uso=hipotecas adapter=native
-INFO:     127.0.0.1:56750 - "POST /cards?caso_de_uso=hipotecas HTTP/1.1" 200 OK
-2026-03-02 09:54:04,000 INFO [orchestrator.main] request event | request_id=57055854-1786-4fa2-8572-46abb51bb467 method=POST path=/dashboard status=200 latency_ms=0.91 caso_de_uso=hipotecas adapter=native
-INFO:     127.0.0.1:56751 - "POST /dashboard?caso_de_uso=hipotecas HTTP/1.1" 200 OK
-2026-03-02 09:54:04,012 INFO [orchestrator.main] request event | request_id=f30b4e6d-bbde-49ec-9225-51a4469e0dff method=POST path=/dashboard_detail status=200 latency_ms=0.92 caso_de_uso=hipotecas adapter=native
-INFO:     127.0.0.1:56752 - "POST /dashboard_detail?caso_de_uso=hipotecas&id=conv-001 HTTP/1.1" 200 OK
-2026-03-02 09:54:04,035 INFO [orchestrator.main] request event | request_id=6a2e6e76-5d19-495b-86ae-3353fc0fb32f method=POST path=/cards status=200 latency_ms=0.6 caso_de_uso=prestamos adapter=native
-INFO:     127.0.0.1:56754 - "POST /cards?caso_de_uso=prestamos HTTP/1.1" 200 OK
-2026-03-02 09:54:04,045 INFO [orchestrator.main] request event | request_id=72dd34a3-5bb3-4187-993c-46017d958c3b method=POST path=/dashboard status=200 latency_ms=0.76 caso_de_uso=prestamos adapter=native
-INFO:     127.0.0.1:56755 - "POST /dashboard?caso_de_uso=prestamos HTTP/1.1" 200 OK
-2026-03-02 09:54:04,057 INFO [orchestrator.main] request event | request_id=431608b0-a0cd-4cb8-9d6b-f92ffcaa04d3 method=POST path=/dashboard_detail status=200 latency_ms=0.64 caso_de_uso=prestamos adapter=native
-INFO:     127.0.0.1:56756 - "POST /dashboard_detail?caso_de_uso=prestamos&id=conv-001 HTTP/1.1" 200 OK
-2026-03-02 09:54:04,081 INFO [orchestrator.main] request event | request_id=09adc203-8f15-464b-92b2-69747a04c3e8 method=POST path=/cards status=200 latency_ms=0.48 caso_de_uso=hipotecas adapter=native
-INFO:     127.0.0.1:56758 - "POST /cards?caso_de_uso=hipotecas HTTP/1.1" 200 OK
-2026-03-02 09:54:04,090 INFO [orchestrator.main] request event | request_id=fb90eceb-223b-4358-b5cd-f485254d6127 method=POST path=/dashboard status=200 latency_ms=0.47 caso_de_uso=hipotecas adapter=native
-INFO:     127.0.0.1:56759 - "POST /dashboard?caso_de_uso=hipotecas HTTP/1.1" 200 OK
-2026-03-02 09:54:04,103 INFO [orchestrator.main] request event | request_id=0781e770-d12c-466a-b154-65ef5fce2ac6 method=POST path=/dashboard_detail status=200 latency_ms=0.59 caso_de_uso=hipotecas adapter=native
-INFO:     127.0.0.1:56760 - "POST /dashboard_detail?caso_de_uso=hipotecas&id=conv-001 HTTP/1.1" 200 OK
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [91309]
+2026-03-02 09:59:32,184 INFO [orchestrator.main] request event | request_id=7d29e528-d944-48ff-b60c-4dba7bc09c51 method=GET path=/health status=200 latency_ms=0.6 caso_de_uso=- adapter=-
+INFO:     127.0.0.1:57133 - "GET /health HTTP/1.1" 200 OK
+2026-03-02 09:59:36,756 INFO [orchestrator.main] request event | request_id=20398874-69c9-4398-8ca7-ce966ff3b1f1 method=OPTIONS path=/admin/view-configs status=200 latency_ms=4.14 caso_de_uso=- adapter=-
+INFO:     127.0.0.1:57149 - "OPTIONS /admin/view-configs?system=hipotecas&enabled=true HTTP/1.1" 200 OK
+2026-03-02 09:59:36,762 INFO [orchestrator.main] request event | request_id=ce23cf49-987d-4e29-8f22-d56f6544ec99 method=OPTIONS path=/cards status=200 latency_ms=9.04 caso_de_uso=hipotecas adapter=native
+INFO:     127.0.0.1:57150 - "OPTIONS /cards?caso_de_uso=hipotecas HTTP/1.1" 200 OK
+2026-03-02 09:59:36,763 INFO [orchestrator.main] request event | request_id=837ae815-5364-47a9-9a6e-7e79d5223aad method=OPTIONS path=/dashboard status=200 latency_ms=9.59 caso_de_uso=hipotecas adapter=native
+INFO:     127.0.0.1:57151 - "OPTIONS /dashboard?caso_de_uso=hipotecas HTTP/1.1" 200 OK
+2026-03-02 09:59:36,768 INFO [orchestrator.main] request event | request_id=5981a229-f138-4082-8915-24eb30107b3b method=GET path=/admin/view-configs status=200 latency_ms=2.35 caso_de_uso=- adapter=-
+INFO:     127.0.0.1:57153 - "GET /admin/view-configs?system=hipotecas&enabled=true HTTP/1.1" 200 OK
+2026-03-02 09:59:36,771 INFO [orchestrator.main] request event | request_id=fc6ae607-68de-4042-be63-d63e81cb7714 method=POST path=/cards status=200 latency_ms=4.98 caso_de_uso=hipotecas adapter=native
+INFO:     127.0.0.1:57155 - "POST /cards?caso_de_uso=hipotecas HTTP/1.1" 200 OK
+2026-03-02 09:59:36,771 INFO [orchestrator.main] request event | request_id=7f5ad2f4-5188-48ba-888f-9397b570835a method=POST path=/dashboard status=200 latency_ms=5.16 caso_de_uso=hipotecas adapter=native
+INFO:     127.0.0.1:57157 - "POST /dashboard?caso_de_uso=hipotecas HTTP/1.1" 200 OK
+2026-03-02 09:59:39,416 INFO [orchestrator.main] request event | request_id=ae5c6841-8481-431b-96b3-858e789d1769 method=GET path=/admin/view-configs status=200 latency_ms=4.93 caso_de_uso=- adapter=-
+INFO:     127.0.0.1:57157 - "GET /admin/view-configs?system=prestamos&enabled=true HTTP/1.1" 200 OK
+2026-03-02 09:59:39,420 INFO [orchestrator.main] request event | request_id=01e22aa2-a0fa-4421-adb5-f08b47ad65f3 method=OPTIONS path=/cards status=200 latency_ms=1.39 caso_de_uso=prestamos adapter=native
+INFO:     127.0.0.1:57155 - "OPTIONS /cards?caso_de_uso=prestamos HTTP/1.1" 200 OK
+2026-03-02 09:59:39,421 INFO [orchestrator.main] request event | request_id=1914be40-96dc-4c72-b2f7-519e5646eb17 method=OPTIONS path=/dashboard status=200 latency_ms=2.52 caso_de_uso=prestamos adapter=native
+INFO:     127.0.0.1:57153 - "OPTIONS /dashboard?caso_de_uso=prestamos HTTP/1.1" 200 OK
+2026-03-02 09:59:39,429 INFO [orchestrator.main] request event | request_id=42fa84a6-03e1-4eeb-bfb6-d54b1205210d method=POST path=/cards status=200 latency_ms=5.24 caso_de_uso=prestamos adapter=native
+INFO:     127.0.0.1:57153 - "POST /cards?caso_de_uso=prestamos HTTP/1.1" 200 OK
+2026-03-02 09:59:39,430 INFO [orchestrator.main] request event | request_id=86d75795-2531-4b75-99a9-9b9cc46ddbb8 method=POST path=/dashboard status=200 latency_ms=4.42 caso_de_uso=prestamos adapter=native
+INFO:     127.0.0.1:57155 - "POST /dashboard?caso_de_uso=prestamos HTTP/1.1" 200 OK
+2026-03-02 09:59:40,342 INFO [orchestrator.main] request event | request_id=1b9f1c99-8cbf-410f-bf45-0facda042992 method=GET path=/admin/view-configs status=200 latency_ms=2.33 caso_de_uso=- adapter=-
+INFO:     127.0.0.1:57155 - "GET /admin/view-configs?system=hipotecas&enabled=true HTTP/1.1" 200 OK
+2026-03-02 09:59:40,347 INFO [orchestrator.main] request event | request_id=910f7f97-e51f-483b-96c8-bb8f9a41dd6f method=POST path=/cards status=200 latency_ms=4.27 caso_de_uso=hipotecas adapter=native
+INFO:     127.0.0.1:57153 - "POST /cards?caso_de_uso=hipotecas HTTP/1.1" 200 OK
+2026-03-02 09:59:40,354 INFO [orchestrator.main] request event | request_id=bb1cffb6-a2ad-48b6-8fac-b6da07715e05 method=POST path=/dashboard status=200 latency_ms=9.2 caso_de_uso=hipotecas adapter=native
+INFO:     127.0.0.1:57157 - "POST /dashboard?caso_de_uso=hipotecas HTTP/1.1" 200 OK
+2026-03-02 09:59:46,872 INFO [orchestrator.main] request event | request_id=c1d9fff0-c309-4b1d-8aa8-b77f26b7c57e method=OPTIONS path=/dashboard_detail status=200 latency_ms=0.28 caso_de_uso=hipotecas adapter=native
+INFO:     127.0.0.1:57161 - "OPTIONS /dashboard_detail?caso_de_uso=hipotecas&id=conv-001 HTTP/1.1" 200 OK
+2026-03-02 09:59:46,879 INFO [orchestrator.main] request event | request_id=fdddb29f-07b1-48a2-89d8-1ee5498a567d method=POST path=/dashboard_detail status=200 latency_ms=3.97 caso_de_uso=hipotecas adapter=native
+INFO:     127.0.0.1:57161 - "POST /dashboard_detail?caso_de_uso=hipotecas&id=conv-001 HTTP/1.1" 200 OK
+2026-03-02 09:59:50,731 INFO [orchestrator.main] request event | request_id=7e19f568-444c-4ef7-9fcb-ff0e28a30c3e method=OPTIONS path=/admin/view-configs status=200 latency_ms=0.1 caso_de_uso=- adapter=-
+INFO:     127.0.0.1:57161 - "OPTIONS /admin/view-configs?system=prestamos&enabled=true HTTP/1.1" 200 OK
+2026-03-02 09:59:50,737 INFO [orchestrator.main] request event | request_id=4d6deea6-d34d-4f23-847d-6e54d126409c method=POST path=/cards status=200 latency_ms=2.07 caso_de_uso=prestamos adapter=native
+INFO:     127.0.0.1:57163 - "POST /cards?caso_de_uso=prestamos HTTP/1.1" 200 OK
+2026-03-02 09:59:50,753 INFO [orchestrator.main] request event | request_id=db57fa2d-be7a-48b7-800f-213092281586 method=POST path=/dashboard status=200 latency_ms=13.02 caso_de_uso=prestamos adapter=native
+INFO:     127.0.0.1:57161 - "POST /dashboard?caso_de_uso=prestamos HTTP/1.1" 200 OK
+2026-03-02 09:59:50,754 INFO [orchestrator.main] request event | request_id=c6ef7e2a-175c-46d5-a76b-f439e2391581 method=GET path=/admin/view-configs status=200 latency_ms=1.21 caso_de_uso=- adapter=-
+INFO:     127.0.0.1:57165 - "GET /admin/view-configs?system=prestamos&enabled=true HTTP/1.1" 200 OK
+2026-03-02 09:59:52,903 INFO [orchestrator.main] request event | request_id=a89aba6f-b1ee-40b4-bef0-f4ff4420f449 method=OPTIONS path=/datops/overview status=200 latency_ms=0.27 caso_de_uso=- adapter=-
+INFO:     127.0.0.1:57165 - "OPTIONS /datops/overview HTTP/1.1" 200 OK
+2026-03-02 09:59:52,910 INFO [orchestrator.main] request event | request_id=9798f9e6-6e14-4a4a-ad45-27ef6c2759f8 method=GET path=/datops/overview status=200 latency_ms=2.17 caso_de_uso=- adapter=-
+INFO:     127.0.0.1:57165 - "GET /datops/overview HTTP/1.1" 200 OK
+2026-03-02 09:59:56,547 INFO [orchestrator.main] request event | request_id=898b898e-9c97-49ea-b0b1-7d2e517a3104 method=GET path=/admin/view-configs status=200 latency_ms=0.35 caso_de_uso=- adapter=-
+INFO:     127.0.0.1:57165 - "GET /admin/view-configs?system=hipotecas&enabled=true HTTP/1.1" 200 OK
+2026-03-02 09:59:56,551 INFO [orchestrator.main] request event | request_id=e35d1604-1a09-4f1b-8e1c-e929a695696b method=POST path=/cards status=200 latency_ms=0.68 caso_de_uso=hipotecas adapter=native
+INFO:     127.0.0.1:57169 - "POST /cards?caso_de_uso=hipotecas HTTP/1.1" 200 OK
+2026-03-02 09:59:56,561 INFO [orchestrator.main] request event | request_id=be161156-86a6-436d-a469-7a68e88421e9 method=POST path=/dashboard status=200 latency_ms=4.19 caso_de_uso=hipotecas adapter=native
+INFO:     127.0.0.1:57165 - "POST /dashboard?caso_de_uso=hipotecas HTTP/1.1" 200 OK
+2026-03-02 09:59:59,263 INFO [orchestrator.main] request event | request_id=acacde4e-8f6f-4886-951c-ef3ee6cd36a2 method=GET path=/datops/overview status=200 latency_ms=0.23 caso_de_uso=- adapter=-
+INFO:     127.0.0.1:57165 - "GET /datops/overview HTTP/1.1" 200 OK

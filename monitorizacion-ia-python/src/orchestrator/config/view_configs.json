@@ -11,10 +11,22 @@
         "title": "KPIs Hipotecas (5)",
         "data_source": "/cards",
         "position": 0,
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
         "config": {
           "max_cards": 5,
           "columns": 5
         }
+=======
+        "config": { "max_cards": 5, "columns": 5 }
+>>>>>>> theirs
+=======
+        "config": { "max_cards": 5, "columns": 5 }
+>>>>>>> theirs
+=======
+        "config": { "max_cards": 5, "columns": 5 }
+>>>>>>> theirs
       },
       {
         "id": "table-hipo",
@@ -22,6 +34,9 @@
         "title": "Conversaciones Hipotecas",
         "data_source": "/dashboard",
         "position": 1,
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
         "config": {
           "required_columns": [
             "detail"
@@ -34,6 +49,15 @@
             "detail"
           ]
         }
+=======
+        "config": { "required_columns": ["detail"], "visible_columns": ["fecha_hora", "nombre_cliente", "razones_llamada", "resolucion", "detail"] }
+>>>>>>> theirs
+=======
+        "config": { "required_columns": ["detail"], "visible_columns": ["fecha_hora", "nombre_cliente", "razones_llamada", "resolucion", "detail"] }
+>>>>>>> theirs
+=======
+        "config": { "required_columns": ["detail"], "visible_columns": ["fecha_hora", "nombre_cliente", "razones_llamada", "resolucion", "detail"] }
+>>>>>>> theirs
       }
     ]
   },
@@ -49,9 +73,21 @@
         "title": "Resumen",
         "data_source": "/none",
         "position": 0,
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
         "config": {
           "text": "Vista compacta de seguros"
         }
+=======
+        "config": { "text": "Vista compacta de seguros" }
+>>>>>>> theirs
+=======
+        "config": { "text": "Vista compacta de seguros" }
+>>>>>>> theirs
+=======
+        "config": { "text": "Vista compacta de seguros" }
+>>>>>>> theirs
       },
       {
         "id": "cards-seg-3",
@@ -59,10 +95,22 @@
         "title": "KPIs Seguros (3)",
         "data_source": "/cards",
         "position": 1,
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
         "config": {
           "max_cards": 3,
           "columns": 3
         }
+=======
+        "config": { "max_cards": 3, "columns": 3 }
+>>>>>>> theirs
+=======
+        "config": { "max_cards": 3, "columns": 3 }
+>>>>>>> theirs
+=======
+        "config": { "max_cards": 3, "columns": 3 }
+>>>>>>> theirs
       },
       {
         "id": "table-seg",
@@ -70,6 +118,9 @@
         "title": "Casos Seguros",
         "data_source": "/dashboard",
         "position": 2,
+<<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
         "config": {
           "required_columns": [
             "detail"
@@ -86,3 +137,20 @@
     ]
   }
 ]
+=======
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+        "config": { "required_columns": ["detail"], "visible_columns": ["fecha_hora", "numero_entrante", "nombre_cliente", "resolucion", "detail"] }
+      }
+    ]
+  }
+]
+<<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
