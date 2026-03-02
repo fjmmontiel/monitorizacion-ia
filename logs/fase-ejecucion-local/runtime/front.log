@@ -101,3 +101,21 @@ modules by layer 187 KiB
     ./src/shared/config/use_cases.json 184 bytes [built]
   ./src/router/router.tsx 7.26 KiB [built]
 webpack 5.75.0 compiled successfully in 98 ms
+assets by status 5.47 MiB [cached] 13 assets
+asset index.html 619 bytes [emitted]
+cached modules 1.87 MiB (javascript) 168 bytes (share-init) 168 bytes (consume-shared) 44.7 KiB (runtime) [cached] 244 modules
+modules by layer 187 KiB
+  modules by path ./src/features/ 144 KiB
+    modules by path ./src/features/monitor/ 87.4 KiB
+      modules by path ./src/features/monitor/components/DashboardDetail/ 17 KiB 3 modules
+      ./src/features/monitor/pages/MonitorDashboard.page.tsx 53.5 KiB [built]
+      ./src/features/monitor/components/CardsGrid/CardsGrid.tsx 5.86 KiB [built]
+      ./src/features/monitor/components/DynamicTable/DynamicTable.tsx 11.1 KiB [built]
+    ./src/features/home/pages/Home.page.tsx 22.9 KiB [built]
+    ./src/features/admin/pages/AdminViews.page.tsx 34.1 KiB [built]
+  modules by path ./src/shared/ 35.3 KiB
+    ./src/shared/api/MonitorApi.ts 23.8 KiB [built]
+    ./src/shared/contracts/monitor.contracts.ts 11.3 KiB [built]
+    ./src/shared/config/use_cases.json 184 bytes [built]
+  ./src/router/router.tsx 7.26 KiB [built]
+webpack 5.75.0 compiled successfully in 82 ms

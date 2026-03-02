@@ -14,10 +14,14 @@
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
         "config": {
           "max_cards": 5,
           "columns": 5
         }
+=======
+        "config": { "max_cards": 5, "columns": 5 }
+>>>>>>> theirs
 =======
         "config": { "max_cards": 5, "columns": 5 }
 >>>>>>> theirs
@@ -37,6 +41,7 @@
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
         "config": {
           "required_columns": [
             "detail"
@@ -49,6 +54,9 @@
             "detail"
           ]
         }
+=======
+        "config": { "required_columns": ["detail"], "visible_columns": ["fecha_hora", "nombre_cliente", "razones_llamada", "resolucion", "detail"] }
+>>>>>>> theirs
 =======
         "config": { "required_columns": ["detail"], "visible_columns": ["fecha_hora", "nombre_cliente", "razones_llamada", "resolucion", "detail"] }
 >>>>>>> theirs
@@ -76,9 +84,13 @@
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
         "config": {
           "text": "Vista compacta de seguros"
         }
+=======
+        "config": { "text": "Vista compacta de seguros" }
+>>>>>>> theirs
 =======
         "config": { "text": "Vista compacta de seguros" }
 >>>>>>> theirs
@@ -98,10 +110,14 @@
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
         "config": {
           "max_cards": 3,
           "columns": 3
         }
+=======
+        "config": { "max_cards": 3, "columns": 3 }
+>>>>>>> theirs
 =======
         "config": { "max_cards": 3, "columns": 3 }
 >>>>>>> theirs
@@ -118,6 +134,7 @@
         "title": "Casos Seguros",
         "data_source": "/dashboard",
         "position": 2,
+<<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
@@ -142,6 +159,8 @@
 >>>>>>> theirs
 =======
 >>>>>>> theirs
+=======
+>>>>>>> theirs
         "config": { "required_columns": ["detail"], "visible_columns": ["fecha_hora", "numero_entrante", "nombre_cliente", "resolucion", "detail"] }
       }
     ]
@@ -149,6 +168,9 @@
 ]
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs

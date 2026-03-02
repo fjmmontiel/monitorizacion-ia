@@ -24,6 +24,7 @@ mkdir -p "${RUNTIME_LOG_DIR}" "${PID_DIR}"
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
 has_cmd() {
   command -v "$1" >/dev/null 2>&1
 }
@@ -47,6 +48,8 @@ get_listener_info() {
 >>>>>>> theirs
 =======
 >>>>>>> theirs
+=======
+>>>>>>> theirs
 get_listener_info() {
   local port="$1"
   if command -v lsof >/dev/null 2>&1; then
@@ -59,6 +62,9 @@ get_listener_info() {
   fi
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
@@ -96,6 +102,7 @@ listener_pid() {
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
   if has_cmd lsof; then
     lsof -nP -iTCP:"${port}" -sTCP:LISTEN -t 2>/dev/null | head -n 1
   elif has_cmd ss; then
@@ -107,12 +114,17 @@ listener_pid() {
 >>>>>>> theirs
 =======
 >>>>>>> theirs
+=======
+>>>>>>> theirs
   if command -v lsof >/dev/null 2>&1; then
     lsof -nP -iTCP:"${port}" -sTCP:LISTEN -t 2>/dev/null | head -n 1
   elif command -v ss >/dev/null 2>&1; then
     ss -ltnp "sport = :${port}" 2>/dev/null | awk -F"pid=" "NR==2{print \\$2}" | cut -d, -f1
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+>>>>>>> theirs
+=======
 >>>>>>> theirs
 =======
 >>>>>>> theirs
