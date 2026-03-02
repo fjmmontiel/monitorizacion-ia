@@ -8,11 +8,14 @@ import {
   DashboardResponse,
   MonitorApiError,
   QueryRequest,
+  ViewConfiguration,
   cardsResponseSchema,
   datopsOverviewResponseSchema,
   dashboardDetailResponseSchema,
   dashboardResponseSchema,
   queryRequestSchema,
+  viewConfigurationListSchema,
+  viewConfigurationSchema,
 } from '#/shell/shared/contracts/monitor.contracts';
 
 const normalizeError = (error: unknown): MonitorApiError => {
@@ -65,7 +68,11 @@ const buildUrl = (path: string, params: Record<string, string>) => {
   return url.toString();
 };
 
-const request = async <T>(url: string, body?: QueryRequest, method: 'POST' | 'GET' = 'POST'): Promise<T> => {
+const request = async <T>(
+  url: string,
+  body?: unknown,
+  method: 'POST' | 'GET' | 'PUT' | 'DELETE' = 'POST',
+): Promise<T> => {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 10000);
 
@@ -73,7 +80,7 @@ const request = async <T>(url: string, body?: QueryRequest, method: 'POST' | 'GE
     const response = await fetch(url, {
       method,
       headers: { 'Content-Type': 'application/json' },
-      body: method === 'POST' ? JSON.stringify(body ?? {}) : undefined,
+      body: method === 'GET' || method === 'DELETE' ? undefined : JSON.stringify(body ?? {}),
       signal: controller.signal,
     });
 
@@ -88,6 +95,10 @@ const request = async <T>(url: string, body?: QueryRequest, method: 'POST' | 'GE
         mapBackendErrorCode(payload?.code),
         payload?.message ?? `HTTP ${response.status}`,
       );
+    }
+
+    if (response.status === 204) {
+      return undefined as T;
     }
 
     return (await response.json()) as T;
@@ -192,5 +203,35 @@ export const MonitorApi = {
       }
       throw normalizeError(error);
     }
+  },
+
+  async getViewConfigurations(filters?: { system?: string; enabled?: boolean }): Promise<ViewConfiguration[]> {
+    const params: Record<string, string> = {};
+    if (filters?.system) {
+      params.system = filters.system;
+    }
+    if (typeof filters?.enabled === 'boolean') {
+      params.enabled = String(filters.enabled);
+    }
+    const payload = await request<ViewConfiguration[]>(buildUrl('/admin/view-configs', params), undefined, 'GET');
+    return viewConfigurationListSchema.parse(payload);
+  },
+
+  async createViewConfiguration(body: ViewConfiguration): Promise<ViewConfiguration> {
+    const payload = await request<ViewConfiguration>(buildUrl('/admin/view-configs', {}), body);
+    return viewConfigurationSchema.parse(payload);
+  },
+
+  async updateViewConfiguration(viewId: string, body: Partial<ViewConfiguration>): Promise<ViewConfiguration> {
+    const payload = await request<ViewConfiguration>(
+      buildUrl(`/admin/view-configs/${viewId}`, {}),
+      body,
+      'PUT',
+    );
+    return viewConfigurationSchema.parse(payload);
+  },
+
+  async deleteViewConfiguration(viewId: string): Promise<void> {
+    await request(buildUrl(`/admin/view-configs/${viewId}`, {}), undefined, 'DELETE');
   },
 };

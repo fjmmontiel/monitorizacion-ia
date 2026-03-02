@@ -2,6 +2,7 @@ from enum import StrEnum
 
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
+from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
@@ -45,7 +46,7 @@ def install_error_handlers(app: FastAPI) -> None:
             content=ErrorResponse(
                 code=ErrorCode.VALIDATION_ERROR,
                 message='Validation failed',
-                detail={'errors': exc.errors()},
+                detail={'errors': jsonable_encoder(exc.errors())},
             ).model_dump(),
         )
 

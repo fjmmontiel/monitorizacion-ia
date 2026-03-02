@@ -98,11 +98,85 @@ export const datopsOverviewResponseSchema = z.object({
   use_cases: z.array(datopsUseCaseSchema),
 });
 
+const cardsComponentSchema = z.object({
+  id: z.string().min(1),
+  type: z.literal('cards'),
+  title: z.string().min(1),
+  data_source: z.literal('/cards'),
+  position: z.number().int().nonnegative(),
+  config: z.object({
+    max_cards: z.number().int().positive().max(10).optional(),
+    columns: z.number().int().positive().max(6).optional(),
+  }).optional(),
+});
+
+const tableComponentSchema = z.object({
+  id: z.string().min(1),
+  type: z.literal('table'),
+  title: z.string().min(1),
+  data_source: z.literal('/dashboard'),
+  position: z.number().int().nonnegative(),
+  config: z.object({
+    visible_columns: z.array(z.string().min(1)).max(20).optional(),
+    required_columns: z.array(z.string().min(1)).max(10).optional(),
+  }).optional(),
+});
+
+const detailComponentSchema = z.object({
+  id: z.string().min(1),
+  type: z.literal('detail'),
+  title: z.string().min(1),
+  data_source: z.enum(['/dashboard_detail', '/none']),
+  position: z.number().int().nonnegative(),
+  config: z.record(z.string(), z.unknown()).optional(),
+});
+
+const textComponentSchema = z.object({
+  id: z.string().min(1),
+  type: z.literal('text'),
+  title: z.string().min(1),
+  data_source: z.literal('/none'),
+  position: z.number().int().nonnegative(),
+  config: z.object({ text: z.string().max(3000).optional() }).optional(),
+});
+
+const chartComponentSchema = z.object({
+  id: z.string().min(1),
+  type: z.literal('chart'),
+  title: z.string().min(1),
+  data_source: z.enum(['/dashboard', '/cards', '/none']),
+  position: z.number().int().nonnegative(),
+  config: z.object({
+    height: z.number().int().positive().max(700).optional(),
+    color: z.string().min(3).max(30).optional(),
+  }).optional(),
+});
+
+export const viewComponentSchema = z.discriminatedUnion('type', [
+  cardsComponentSchema,
+  tableComponentSchema,
+  detailComponentSchema,
+  textComponentSchema,
+  chartComponentSchema,
+]);
+
+export const viewConfigurationSchema = z.object({
+  id: z.string().min(1),
+  name: z.string().min(1),
+  system: z.string().min(1),
+  enabled: z.boolean(),
+  components: z.array(viewComponentSchema).min(1).max(20),
+});
+
+export const viewConfigurationListSchema = z.array(viewConfigurationSchema);
+
 export type QueryRequest = z.infer<typeof queryRequestSchema>;
 export type CardsResponse = z.infer<typeof cardsResponseSchema>;
 export type DashboardResponse = z.infer<typeof dashboardResponseSchema>;
 export type DashboardDetailResponse = z.infer<typeof dashboardDetailResponseSchema>;
 export type DatopsOverviewResponse = z.infer<typeof datopsOverviewResponseSchema>;
+export type ViewComponent = z.infer<typeof viewComponentSchema>;
+export type ViewConfiguration = z.infer<typeof viewConfigurationSchema>;
 
 export type NormalizedApiErrorCode =
   | 'UNKNOWN_USE_CASE'

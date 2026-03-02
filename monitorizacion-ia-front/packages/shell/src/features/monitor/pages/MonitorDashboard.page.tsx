@@ -14,6 +14,7 @@ import {
   DashboardResponse,
   MonitorApiError,
   QueryRequest,
+  ViewConfiguration,
 } from '#/shell/shared/contracts/monitor.contracts';
 
 const normalizeErrorMessage = (error: unknown) => {
@@ -30,21 +31,12 @@ type SidebarFilters = {
   fecha: string;
 };
 
-const emptySidebarFilters: SidebarFilters = {
-  gestor: '',
-  telefonoCliente: '',
-  resolucion: '',
-  fecha: '',
-};
+const emptySidebarFilters: SidebarFilters = { gestor: '', telefonoCliente: '', resolucion: '', fecha: '' };
 
 const parseLimit = (value: string | null): number | undefined => {
-  if (!value) {
-    return undefined;
-  }
+  if (!value) return undefined;
   const parsed = Number(value);
-  if (!Number.isFinite(parsed) || parsed <= 0) {
-    return undefined;
-  }
+  if (!Number.isFinite(parsed) || parsed <= 0) return undefined;
   return Math.trunc(parsed);
 };
 
@@ -57,18 +49,10 @@ const queryFiltersToSidebar = (filters?: QueryRequest['filters']): SidebarFilter
 
 const sidebarToQueryFilters = (filters: SidebarFilters): QueryRequest['filters'] => {
   const payload: Record<string, string> = {};
-  if (filters.gestor.trim()) {
-    payload.gestor = filters.gestor.trim();
-  }
-  if (filters.telefonoCliente.trim()) {
-    payload.telefono_cliente = filters.telefonoCliente.trim();
-  }
-  if (filters.resolucion.trim()) {
-    payload.resolucion = filters.resolucion.trim();
-  }
-  if (filters.fecha.trim()) {
-    payload.fecha = filters.fecha.trim();
-  }
+  if (filters.gestor.trim()) payload.gestor = filters.gestor.trim();
+  if (filters.telefonoCliente.trim()) payload.telefono_cliente = filters.telefonoCliente.trim();
+  if (filters.resolucion.trim()) payload.resolucion = filters.resolucion.trim();
+  if (filters.fecha.trim()) payload.fecha = filters.fecha.trim();
   return Object.keys(payload).length > 0 ? payload : undefined;
 };
 
@@ -78,18 +62,10 @@ const buildQueryFromSearchParams = (params: URLSearchParams): QueryRequest => {
   const telefonoCliente = params.get('telefono_cliente');
   const resolucion = params.get('resolucion');
   const fecha = params.get('fecha');
-  if (gestor) {
-    filtersPayload.gestor = gestor;
-  }
-  if (telefonoCliente) {
-    filtersPayload.telefono_cliente = telefonoCliente;
-  }
-  if (resolucion) {
-    filtersPayload.resolucion = resolucion;
-  }
-  if (fecha) {
-    filtersPayload.fecha = fecha;
-  }
+  if (gestor) filtersPayload.gestor = gestor;
+  if (telefonoCliente) filtersPayload.telefono_cliente = telefonoCliente;
+  if (resolucion) filtersPayload.resolucion = resolucion;
+  if (fecha) filtersPayload.fecha = fecha;
 
   return {
     timeRange: params.get('timeRange') ?? '24h',
@@ -99,49 +75,32 @@ const buildQueryFromSearchParams = (params: URLSearchParams): QueryRequest => {
   };
 };
 
-const buildMonitorUrl = (casoDeUso: string, query: QueryRequest) => {
+const buildMonitorUrl = (casoDeUso: string, query: QueryRequest, vista?: string) => {
   const params = new URLSearchParams();
   params.set('caso_de_uso', casoDeUso);
-  if (query.timeRange) {
-    params.set('timeRange', query.timeRange);
-  }
-  if (query.search) {
-    params.set('search', query.search);
-  }
-  if (query.limit) {
-    params.set('limit', String(query.limit));
-  }
-  if (typeof query.filters?.gestor === 'string') {
-    params.set('gestor', query.filters.gestor);
-  }
-  if (typeof query.filters?.telefono_cliente === 'string') {
-    params.set('telefono_cliente', query.filters.telefono_cliente);
-  }
-  if (typeof query.filters?.resolucion === 'string') {
-    params.set('resolucion', query.filters.resolucion);
-  }
-  if (typeof query.filters?.fecha === 'string') {
-    params.set('fecha', query.filters.fecha);
-  }
+  if (vista) params.set('vista', vista);
+  if (query.timeRange) params.set('timeRange', query.timeRange);
+  if (query.search) params.set('search', query.search);
+  if (query.limit) params.set('limit', String(query.limit));
+  if (typeof query.filters?.gestor === 'string') params.set('gestor', query.filters.gestor);
+  if (typeof query.filters?.telefono_cliente === 'string') params.set('telefono_cliente', query.filters.telefono_cliente);
+  if (typeof query.filters?.resolucion === 'string') params.set('resolucion', query.filters.resolucion);
+  if (typeof query.filters?.fecha === 'string') params.set('fecha', query.filters.fecha);
   return `/monitor?${params.toString()}`;
 };
 
-const monitorLayoutCss = `
-  .monitor-shell-grid {
-    display: grid;
-    grid-template-columns: 280px minmax(0, 1fr);
-    gap: 16px;
-  }
-  .monitor-main-stack {
-    display: grid;
-    gap: 12px;
-  }
-  @media (max-width: 1100px) {
-    .monitor-shell-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-`;
+const monitorLayoutCss = `.monitor-shell-grid{display:grid;grid-template-columns:280px minmax(0,1fr);gap:16px}.monitor-main-stack{display:grid;gap:12px}@media (max-width:1100px){.monitor-shell-grid{grid-template-columns:1fr}}`;
+
+const fallbackViewForUseCase = (casoDeUso: string): ViewConfiguration => ({
+  id: `${casoDeUso}-default`,
+  name: `Vista ${casoDeUso}`,
+  system: casoDeUso,
+  enabled: true,
+  components: [
+    { id: 'cards-main', type: 'cards', title: 'Resumen de cards', data_source: '/cards', position: 0 },
+    { id: 'table-main', type: 'table', title: 'Tabla operativa', data_source: '/dashboard', position: 1 },
+  ],
+});
 
 const MonitorDashboardPage = () => {
   const [searchParams] = useSearchParams();
@@ -155,10 +114,11 @@ const MonitorDashboardPage = () => {
   const [selectedRowSnapshot, setSelectedRowSnapshot] = useState<Record<string, unknown> | null>(null);
 
   const [query, setQuery] = useState<QueryRequest>(() => buildQueryFromSearchParams(searchParams));
-  const [sidebarFilters, setSidebarFilters] = useState<SidebarFilters>(() =>
-    queryFiltersToSidebar(buildQueryFromSearchParams(searchParams).filters),
-  );
+  const [sidebarFilters, setSidebarFilters] = useState<SidebarFilters>(() => queryFiltersToSidebar(buildQueryFromSearchParams(searchParams).filters));
   const [selectedUseCase, setSelectedUseCase] = useState<string | undefined>(undefined);
+
+  const [viewConfigs, setViewConfigs] = useState<ViewConfiguration[]>([]);
+  const [viewError, setViewError] = useState<string | null>(null);
 
   const [loadingCards, setLoadingCards] = useState(false);
   const [loadingDashboard, setLoadingDashboard] = useState(false);
@@ -176,30 +136,38 @@ const MonitorDashboardPage = () => {
     }
   }, [searchParams, selectedUseCase]);
 
+  const selectedVista = searchParams.get('vista') ?? undefined;
   const systemLayout = useMemo(() => resolveSystemLayout(casoDeUso), [casoDeUso]);
+
+  const availableViews = useMemo(
+    () => viewConfigs.filter(item => item.enabled && item.system === casoDeUso).sort((a, b) => a.name.localeCompare(b.name)),
+    [viewConfigs, casoDeUso],
+  );
+
+  const activeView = useMemo(() => {
+    const selected = availableViews.find(item => item.id === selectedVista);
+    return selected ?? availableViews[0] ?? fallbackViewForUseCase(casoDeUso);
+  }, [availableViews, selectedVista, casoDeUso]);
+
+  const sortedActiveComponents = useMemo(
+    () => [...activeView.components].sort((a, b) => a.position - b.position),
+    [activeView],
+  );
 
   const loadCards = async () => {
     setLoadingCards(true);
     setCardsError(null);
-    try {
-      setCards(await MonitorApi.postCards(casoDeUso, query));
-    } catch (error) {
-      setCardsError(normalizeErrorMessage(error));
-    } finally {
-      setLoadingCards(false);
-    }
+    try { setCards(await MonitorApi.postCards(casoDeUso, query)); }
+    catch (error) { setCardsError(normalizeErrorMessage(error)); }
+    finally { setLoadingCards(false); }
   };
 
   const loadDashboard = async () => {
     setLoadingDashboard(true);
     setDashboardError(null);
-    try {
-      setDashboard(await MonitorApi.postDashboard(casoDeUso, query));
-    } catch (error) {
-      setDashboardError(normalizeErrorMessage(error));
-    } finally {
-      setLoadingDashboard(false);
-    }
+    try { setDashboard(await MonitorApi.postDashboard(casoDeUso, query)); }
+    catch (error) { setDashboardError(normalizeErrorMessage(error)); }
+    finally { setLoadingDashboard(false); }
   };
 
   const loadDetail = async (id: string) => {
@@ -207,52 +175,50 @@ const MonitorDashboardPage = () => {
     setDetailError(null);
     setSelectedId(id);
     setSelectedRowSnapshot(dashboard?.table.rows.find(row => row.id === id) ?? null);
+    try { setDetail(await MonitorApi.postDashboardDetail(casoDeUso, id, query)); }
+    catch (error) { setDetailError(normalizeErrorMessage(error)); }
+    finally { setLoadingDetail(false); }
+  };
 
+  const loadViews = async () => {
     try {
-      setDetail(await MonitorApi.postDashboardDetail(casoDeUso, id, query));
+      setViewConfigs(await MonitorApi.getViewConfigurations({ system: casoDeUso, enabled: true }));
+      setViewError(null);
     } catch (error) {
-      setDetailError(normalizeErrorMessage(error));
-    } finally {
-      setLoadingDetail(false);
+      setViewError(normalizeErrorMessage(error));
+      setViewConfigs([]);
     }
   };
 
   const applySidebarFilters = () => {
-    const nextQuery: QueryRequest = {
-      ...query,
-      cursor: undefined,
-      filters: sidebarToQueryFilters(sidebarFilters),
-    };
+    const nextQuery: QueryRequest = { ...query, cursor: undefined, filters: sidebarToQueryFilters(sidebarFilters) };
     setQuery(nextQuery);
-    navigate(buildMonitorUrl(casoDeUso, nextQuery));
+    navigate(buildMonitorUrl(casoDeUso, nextQuery, activeView.id));
   };
 
   const resetSidebarFilters = () => {
     setSidebarFilters(emptySidebarFilters);
-    const nextQuery: QueryRequest = {
-      ...query,
-      cursor: undefined,
-      search: undefined,
-      filters: undefined,
-    };
+    const nextQuery: QueryRequest = { ...query, cursor: undefined, search: undefined, filters: undefined };
     setQuery(nextQuery);
-    navigate(buildMonitorUrl(casoDeUso, nextQuery));
+    navigate(buildMonitorUrl(casoDeUso, nextQuery, activeView.id));
   };
 
   useEffect(() => {
     const urlQuery = buildQueryFromSearchParams(searchParams);
     setSidebarFilters(queryFiltersToSidebar(urlQuery.filters));
+
     setQuery(previous => {
       const nextFilters = JSON.stringify(urlQuery.filters ?? {});
       const previousFilters = JSON.stringify(previous.filters ?? {});
       if (
-        previous.timeRange === urlQuery.timeRange &&
-        previous.search === urlQuery.search &&
-        previous.limit === urlQuery.limit &&
-        previousFilters === nextFilters
+        previous.timeRange === urlQuery.timeRange
+        && previous.search === urlQuery.search
+        && previous.limit === urlQuery.limit
+        && previousFilters === nextFilters
       ) {
         return previous;
       }
+
       return {
         ...previous,
         timeRange: urlQuery.timeRange,
@@ -263,33 +229,67 @@ const MonitorDashboardPage = () => {
     });
   }, [searchParams]);
 
+  useEffect(() => { void loadViews(); }, [casoDeUso]);
+
   useEffect(() => {
-    loadCards();
-    loadDashboard();
+    void loadCards();
+    void loadDashboard();
     setDetail(null);
     setSelectedId(null);
     setSelectedRowSnapshot(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [casoDeUso, query]);
 
+  const renderComponent = (type: string, title: string, id: string, config?: Record<string, unknown>) => {
+    if (type === 'cards') {
+      return (
+        <section key={id} style={{ background: styleConfig.theme.surfaceBackground, border: `1px solid ${styleConfig.theme.surfaceBorder}`, borderRadius: 10, padding: 12 }}>
+          <h2 style={{ marginBottom: 10 }}>{title}</h2>
+          <CardsGrid data={cards} loading={loadingCards} error={cardsError} onRefresh={loadCards} view={styleConfig} config={config} />
+        </section>
+      );
+    }
+
+    if (type === 'table') {
+      return (
+        <section key={id} style={{ background: styleConfig.theme.surfaceBackground, border: `1px solid ${styleConfig.theme.surfaceBorder}`, borderRadius: 10, padding: 12 }}>
+          <h2 style={{ marginBottom: 10 }}>{title}</h2>
+          <DynamicTable data={dashboard} loading={loadingDashboard} error={dashboardError} query={query} onQueryChange={setQuery} onOpenDetail={loadDetail} view={styleConfig} config={config} />
+        </section>
+      );
+    }
+
+    if (type === 'text') {
+      return (
+        <section key={id} style={{ background: styleConfig.theme.surfaceBackground, border: `1px solid ${styleConfig.theme.surfaceBorder}`, borderRadius: 10, padding: 12 }}>
+          <h2 style={{ marginBottom: 8 }}>{title}</h2>
+          <p style={{ margin: 0 }}>{typeof config?.text === 'string' ? config.text : 'Componente textual configurable desde Admin.'}</p>
+        </section>
+      );
+    }
+
+    if (type === 'chart') {
+      return (
+        <section key={id} style={{ background: styleConfig.theme.surfaceBackground, border: `1px solid ${styleConfig.theme.surfaceBorder}`, borderRadius: 10, padding: 12 }}>
+          <h2 style={{ marginBottom: 8 }}>{title}</h2>
+          <p style={{ marginBottom: 8 }}>Placeholder de gráfico (componente reusable de alto rendimiento por contrato JSON).</p>
+          <div style={{ height: Number(config?.height ?? 160), borderRadius: 8, background: String(config?.color ?? '#dbe7ff') }} />
+        </section>
+      );
+    }
+
+    return (
+      <section key={id} style={{ background: styleConfig.theme.surfaceBackground, border: `1px solid ${styleConfig.theme.surfaceBorder}`, borderRadius: 10, padding: 12 }}>
+        <h2 style={{ marginBottom: 8 }}>{title}</h2>
+        <p style={{ margin: 0 }}>El detalle se abre desde la tabla (id seleccionado: {selectedId ?? 'ninguno'}).</p>
+      </section>
+    );
+  };
+
   return (
-    <main
-      style={{
-        background: styleConfig.theme.pageBackground,
-        color: styleConfig.theme.text,
-        minHeight: '100vh',
-        padding: 24,
-      }}
-    >
+    <main style={{ background: styleConfig.theme.pageBackground, color: styleConfig.theme.text, minHeight: '100vh', padding: 24 }}>
       <style>{monitorLayoutCss}</style>
-      <section
-        style={{
-          background: `linear-gradient(135deg, ${systemLayout.accent} 0%, ${styleConfig.theme.accent} 100%)`,
-          borderRadius: 12,
-          color: '#ffffff',
-          marginBottom: 14,
-          padding: 16,
-        }}
-      >
+      <section style={{ background: `linear-gradient(135deg, ${systemLayout.accent} 0%, ${styleConfig.theme.accent} 100%)`, borderRadius: 12, color: '#fff', marginBottom: 14, padding: 16 }}>
         <div style={{ alignItems: 'center', display: 'flex', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
           <div>
             <h1 style={{ marginBottom: 6 }}>{systemLayout.headerTitle}</h1>
@@ -300,172 +300,60 @@ const MonitorDashboardPage = () => {
       </section>
 
       <div className='monitor-shell-grid'>
-        <aside
-          style={{
-            background: styleConfig.theme.surfaceBackground,
-            border: `1px solid ${styleConfig.theme.surfaceBorder}`,
-            borderRadius: 10,
-            height: 'fit-content',
-            padding: 14,
-          }}
-        >
+        <aside style={{ background: styleConfig.theme.surfaceBackground, border: `1px solid ${styleConfig.theme.surfaceBorder}`, borderRadius: 10, height: 'fit-content', padding: 14 }}>
           <h3 style={{ marginBottom: 6 }}>{systemLayout.sidebarTitle}</h3>
           <p style={{ margin: '0 0 12px 0', fontSize: 13 }}>{systemLayout.sidebarHint}</p>
 
           <section aria-label='Sistemas monitor' style={{ marginBottom: 12 }}>
             <p style={{ margin: '0 0 6px 0' }}>Sistemas</p>
             <div role='tablist' style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-              {useCasesConfig
-                .filter(item => item.enabled)
-                .map(item => {
-                  const isActive = item.id === casoDeUso;
-                  const systemAccent = resolveSystemLayout(item.id).accent;
-                  return (
-                    <button
-                      key={item.id}
-                      role='tab'
-                      aria-selected={isActive}
-                      onClick={() => {
-                        setSelectedUseCase(item.id);
-                        navigate(buildMonitorUrl(item.id, query));
-                      }}
-                      style={{
-                        background: isActive ? systemAccent : styleConfig.theme.surfaceBackground,
-                        border: `1px solid ${isActive ? systemAccent : styleConfig.theme.surfaceBorder}`,
-                        borderRadius: 999,
-                        color: isActive ? '#ffffff' : styleConfig.theme.text,
-                        padding: '6px 12px',
-                      }}
-                    >
-                      {item.label}
-                    </button>
-                  );
-                })}
+              {useCasesConfig.filter(item => item.enabled).map(item => {
+                const isActive = item.id === casoDeUso;
+                const systemAccent = resolveSystemLayout(item.id).accent;
+                return (
+                  <button key={item.id} role='tab' aria-selected={isActive} onClick={() => { setSelectedUseCase(item.id); navigate(buildMonitorUrl(item.id, query, undefined)); }} style={{ background: isActive ? systemAccent : styleConfig.theme.surfaceBackground, border: `1px solid ${isActive ? systemAccent : styleConfig.theme.surfaceBorder}`, borderRadius: 999, color: isActive ? '#ffffff' : styleConfig.theme.text, padding: '6px 12px' }}>
+                    {item.label}
+                  </button>
+                );
+              })}
             </div>
           </section>
 
-          <label htmlFor='timeRange' style={{ display: 'block', marginBottom: 8 }}>
-            <span>Rango temporal</span>
-            <input
-              id='timeRange'
-              style={{ marginTop: 4, width: '100%' }}
-              value={query.timeRange ?? ''}
-              onChange={event => setQuery({ ...query, timeRange: event.target.value })}
-            />
-          </label>
+          <section aria-label='Vistas configuradas' style={{ marginBottom: 12 }}>
+            <p style={{ margin: '0 0 6px 0' }}>Vistas</p>
+            {viewError && <p style={{ margin: '0 0 6px 0', color: '#b42318' }}>{viewError}</p>}
+            <div role='tablist' style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+              {availableViews.map(view => {
+                const isActive = view.id === activeView.id;
+                return (
+                  <button key={view.id} role='tab' aria-selected={isActive} onClick={() => navigate(buildMonitorUrl(casoDeUso, query, view.id))} style={{ background: isActive ? '#0b5fff' : styleConfig.theme.surfaceBackground, border: `1px solid ${isActive ? '#0b5fff' : styleConfig.theme.surfaceBorder}`, borderRadius: 999, color: isActive ? '#fff' : styleConfig.theme.text, padding: '6px 12px' }}>
+                    {view.name}
+                  </button>
+                );
+              })}
+              {availableViews.length === 0 && <small>Sin vistas admin, usando fallback por defecto.</small>}
+            </div>
+          </section>
 
-          <label htmlFor='search' style={{ display: 'block', marginBottom: 8 }}>
-            <span>Buscar</span>
-            <input
-              id='search'
-              style={{ marginTop: 4, width: '100%' }}
-              value={query.search ?? ''}
-              onChange={event => setQuery({ ...query, search: event.target.value || undefined })}
-            />
-          </label>
+          <label htmlFor='timeRange' style={{ display: 'block', marginBottom: 8 }}><span>Rango temporal</span><input id='timeRange' style={{ marginTop: 4, width: '100%' }} value={query.timeRange ?? ''} onChange={event => setQuery({ ...query, timeRange: event.target.value })} /></label>
+          <label htmlFor='search' style={{ display: 'block', marginBottom: 8 }}><span>Buscar</span><input id='search' style={{ marginTop: 4, width: '100%' }} value={query.search ?? ''} onChange={event => setQuery({ ...query, search: event.target.value || undefined })} /></label>
+          <label htmlFor='limit' style={{ display: 'block', marginBottom: 8 }}><span>Límite</span><input id='limit' style={{ marginTop: 4, width: '100%' }} type='number' min={1} value={query.limit ?? ''} onChange={event => setQuery({ ...query, limit: parseLimit(event.target.value) })} /></label>
+          <label htmlFor='gestor' style={{ display: 'block', marginBottom: 8 }}><span>Gestor</span><input id='gestor' style={{ marginTop: 4, width: '100%' }} value={sidebarFilters.gestor} onChange={event => setSidebarFilters({ ...sidebarFilters, gestor: event.target.value })} /></label>
+          <label htmlFor='telefonoCliente' style={{ display: 'block', marginBottom: 8 }}><span>Teléfono cliente</span><input id='telefonoCliente' style={{ marginTop: 4, width: '100%' }} value={sidebarFilters.telefonoCliente} onChange={event => setSidebarFilters({ ...sidebarFilters, telefonoCliente: event.target.value })} /></label>
+          <label htmlFor='resolucion' style={{ display: 'block', marginBottom: 8 }}><span>Resolución</span><input id='resolucion' style={{ marginTop: 4, width: '100%' }} value={sidebarFilters.resolucion} onChange={event => setSidebarFilters({ ...sidebarFilters, resolucion: event.target.value })} /></label>
+          <label htmlFor='fecha' style={{ display: 'block', marginBottom: 12 }}><span>Fecha</span><input id='fecha' style={{ marginTop: 4, width: '100%' }} value={sidebarFilters.fecha} onChange={event => setSidebarFilters({ ...sidebarFilters, fecha: event.target.value })} /></label>
 
-          <label htmlFor='limit' style={{ display: 'block', marginBottom: 8 }}>
-            <span>Límite</span>
-            <input
-              id='limit'
-              style={{ marginTop: 4, width: '100%' }}
-              type='number'
-              min={1}
-              value={query.limit ?? ''}
-              onChange={event => setQuery({ ...query, limit: parseLimit(event.target.value) })}
-            />
-          </label>
-
-          <label htmlFor='gestor' style={{ display: 'block', marginBottom: 8 }}>
-            <span>Gestor</span>
-            <input
-              id='gestor'
-              style={{ marginTop: 4, width: '100%' }}
-              value={sidebarFilters.gestor}
-              onChange={event => setSidebarFilters({ ...sidebarFilters, gestor: event.target.value })}
-            />
-          </label>
-
-          <label htmlFor='telefonoCliente' style={{ display: 'block', marginBottom: 8 }}>
-            <span>Teléfono cliente</span>
-            <input
-              id='telefonoCliente'
-              style={{ marginTop: 4, width: '100%' }}
-              value={sidebarFilters.telefonoCliente}
-              onChange={event => setSidebarFilters({ ...sidebarFilters, telefonoCliente: event.target.value })}
-            />
-          </label>
-
-          <label htmlFor='resolucion' style={{ display: 'block', marginBottom: 8 }}>
-            <span>Resolución</span>
-            <input
-              id='resolucion'
-              style={{ marginTop: 4, width: '100%' }}
-              value={sidebarFilters.resolucion}
-              onChange={event => setSidebarFilters({ ...sidebarFilters, resolucion: event.target.value })}
-            />
-          </label>
-
-          <label htmlFor='fecha' style={{ display: 'block', marginBottom: 12 }}>
-            <span>Fecha</span>
-            <input
-              id='fecha'
-              style={{ marginTop: 4, width: '100%' }}
-              value={sidebarFilters.fecha}
-              onChange={event => setSidebarFilters({ ...sidebarFilters, fecha: event.target.value })}
-            />
-          </label>
-
-          <div style={{ display: 'flex', gap: 8 }}>
-            <button onClick={applySidebarFilters}>Aplicar filtros</button>
-            <button onClick={resetSidebarFilters}>Limpiar filtros</button>
-          </div>
+          <div style={{ display: 'flex', gap: 8 }}><button onClick={applySidebarFilters}>Aplicar filtros</button><button onClick={resetSidebarFilters}>Limpiar filtros</button></div>
         </aside>
 
         <section className='monitor-main-stack'>
-          <section
-            style={{
-              background: styleConfig.theme.surfaceBackground,
-              border: `1px solid ${styleConfig.theme.surfaceBorder}`,
-              borderRadius: 10,
-              padding: 12,
-            }}
-          >
-            <h2 style={{ marginBottom: 10 }}>Resumen de cards</h2>
-            <CardsGrid data={cards} loading={loadingCards} error={cardsError} onRefresh={loadCards} view={styleConfig} />
-          </section>
-
-          <section
-            style={{
-              background: styleConfig.theme.surfaceBackground,
-              border: `1px solid ${styleConfig.theme.surfaceBorder}`,
-              borderRadius: 10,
-              padding: 12,
-            }}
-          >
-            <h2 style={{ marginBottom: 10 }}>{systemLayout.tableTitle}</h2>
-            <DynamicTable
-              data={dashboard}
-              loading={loadingDashboard}
-              error={dashboardError}
-              query={query}
-              onQueryChange={setQuery}
-              onOpenDetail={loadDetail}
-              view={styleConfig}
-            />
-          </section>
+          {sortedActiveComponents.map(component =>
+            renderComponent(component.type, component.title, component.id, component.config),
+          )}
         </section>
       </div>
 
-      <DashboardDetail
-        data={detail}
-        loading={loadingDetail}
-        error={detailError}
-        selectedId={selectedId}
-        selectedRowSnapshot={selectedRowSnapshot}
-        onClose={() => setSelectedId(null)}
-        view={styleConfig}
-      />
+      <DashboardDetail data={detail} loading={loadingDetail} error={detailError} selectedId={selectedId} selectedRowSnapshot={selectedRowSnapshot} onClose={() => setSelectedId(null)} view={styleConfig} />
     </main>
   );
 };

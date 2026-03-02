@@ -15,9 +15,10 @@ type Props = {
   error: string | null;
   onRefresh: () => void;
   view: MonitorStyleConfig;
+  config?: Record<string, unknown>;
 };
 
-export const CardsGrid = ({ data, loading, error, onRefresh, view }: Props) => {
+export const CardsGrid = ({ data, loading, error, onRefresh, view, config }: Props) => {
   if (loading) {
     return <p>Cargando tarjetas...</p>;
   }
@@ -35,14 +36,18 @@ export const CardsGrid = ({ data, loading, error, onRefresh, view }: Props) => {
     return <p>Sin datos de tarjetas.</p>;
   }
 
+  const maxCards = typeof config?.max_cards === 'number' ? Math.max(1, Math.trunc(config.max_cards)) : data.cards.length;
+  const columns = typeof config?.columns === 'number' ? Math.max(1, Math.trunc(config.columns)) : view.cards.columns;
+  const cards = data.cards.slice(0, maxCards);
+
   return (
     <section>
       <div style={{ alignItems: 'center', display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
         <p style={{ margin: 0 }}>Indicadores principales</p>
         <button onClick={onRefresh}>Actualizar cards</button>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: `repeat(${view.cards.columns}, minmax(0, 1fr))`, gap: 10 }}>
-        {data.cards.map(card => {
+      <div style={{ display: 'grid', gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`, gap: 10 }}>
+        {cards.map(card => {
           const formatter = card.format ? formatters[card.format] : undefined;
           const value = formatter ? formatter(card.value) : card.value;
           const title = view.cards.titleAliases[card.title] ?? card.title;

@@ -21,6 +21,7 @@ const HomePage = () => {
   const [datops, setDatops] = useState<DatopsOverviewResponse | null>(null);
   const [loadingDatops, setLoadingDatops] = useState(false);
   const [datopsError, setDatopsError] = useState<string | null>(null);
+  const [homeTab, setHomeTab] = useState<'overview' | 'admin'>('overview');
 
   const selectedDatopsUseCase = useMemo(() => {
     return datops?.use_cases.find(item => item.id === selectedUseCase) ?? null;
@@ -63,6 +64,27 @@ const HomePage = () => {
         }}
       >
         <h1 style={{ marginBottom: 8 }}>Home de monitorización</h1>
+        <div style={{ marginBottom: 8, display: 'flex', gap: 8 }}>
+          <button
+            role='tab'
+            aria-selected={homeTab === 'overview'}
+            onClick={() => setHomeTab('overview')}
+            style={{ borderRadius: 999, padding: '6px 12px' }}
+          >
+            Overview
+          </button>
+          <button
+            role='tab'
+            aria-selected={homeTab === 'admin'}
+            onClick={() => {
+              setHomeTab('admin');
+              navigate('/admin');
+            }}
+            style={{ borderRadius: 999, padding: '6px 12px' }}
+          >
+            ADMIN · Configuración de vistas
+          </button>
+        </div>
         <p style={{ margin: 0 }}>
           Vista general por sistema para navegar al monitor con `caso_de_uso` preconfigurado y trazabilidad DatOps.
         </p>

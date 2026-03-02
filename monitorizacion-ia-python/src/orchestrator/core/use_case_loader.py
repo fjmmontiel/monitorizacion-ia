@@ -24,6 +24,7 @@ class UseCaseConfig(BaseModel):
     upstream: UpstreamConfig | None = None
     timeouts: UseCaseTimeouts = Field(default_factory=UseCaseTimeouts)
     headers_passthrough: dict | None = None
+    local_data_dir: str | None = None
 
     @model_validator(mode='after')
     def validate_by_adapter(self):

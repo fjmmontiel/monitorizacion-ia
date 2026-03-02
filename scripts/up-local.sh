@@ -4,7 +4,6 @@ set -euo pipefail
 source "$(cd "$(dirname "$0")" && pwd)/common.sh"
 
 require_cmd curl
-require_cmd lsof
 require_cmd npm
 
 BACK_PID="$(read_pid_file "${BACK_PID_FILE}")"

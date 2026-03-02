@@ -1,0 +1,22 @@
+{
+  "cards": [
+    {
+      "title": "Pólizas activas",
+      "subtitle": "Total en seguimiento",
+      "value": 203,
+      "format": "int"
+    },
+    {
+      "title": "Siniestros abiertos",
+      "subtitle": "Casos en curso",
+      "value": 18,
+      "format": "int"
+    },
+    {
+      "title": "Ratio resolución",
+      "subtitle": "Casos cerrados",
+      "value": 0.87,
+      "format": "percent"
+    }
+  ]
+}

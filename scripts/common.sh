@@ -20,6 +20,20 @@ BACK_LOG_FILE="${RUNTIME_LOG_DIR}/back.log"
 
 mkdir -p "${RUNTIME_LOG_DIR}" "${PID_DIR}"
 
+
+get_listener_info() {
+  local port="$1"
+  if command -v lsof >/dev/null 2>&1; then
+    lsof -nP -iTCP:"${port}" -sTCP:LISTEN 2>/dev/null
+    return
+  fi
+  if command -v ss >/dev/null 2>&1; then
+    ss -ltnp "sport = :${port}" 2>/dev/null
+    return
+  fi
+  return 1
+}
+
 require_cmd() {
   if ! command -v "$1" >/dev/null 2>&1; then
     echo "Missing required command: $1" >&2
@@ -41,12 +55,16 @@ read_pid_file() {
 
 is_port_listening() {
   local port="$1"
-  lsof -nP -iTCP:"${port}" -sTCP:LISTEN >/dev/null 2>&1
+  get_listener_info "${port}" >/dev/null 2>&1
 }
 
 listener_pid() {
   local port="$1"
-  lsof -nP -iTCP:"${port}" -sTCP:LISTEN -t 2>/dev/null | head -n 1
+  if command -v lsof >/dev/null 2>&1; then
+    lsof -nP -iTCP:"${port}" -sTCP:LISTEN -t 2>/dev/null | head -n 1
+  elif command -v ss >/dev/null 2>&1; then
+    ss -ltnp "sport = :${port}" 2>/dev/null | awk -F"pid=" "NR==2{print \\$2}" | cut -d, -f1
+  fi
 }
 
 wait_http_ok() {

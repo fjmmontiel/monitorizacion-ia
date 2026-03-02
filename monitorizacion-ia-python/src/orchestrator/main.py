@@ -10,8 +10,11 @@ from orchestrator.adapters.registry import AdapterRegistry
 from orchestrator.api.routes import router
 from orchestrator.core.errors import install_error_handlers
 from orchestrator.core.logging import configure_logging
+from orchestrator.core.admin_rate_limit import InMemoryAdminRateLimiter
+from orchestrator.core.metrics import InMemoryMetrics
 from orchestrator.core.settings import settings
 from orchestrator.core.use_case_loader import UseCaseLoader
+from orchestrator.core.view_config_store import ViewConfigStore
 
 logger = logging.getLogger(__name__)
 
@@ -29,6 +32,12 @@ def create_app() -> FastAPI:
     loader = UseCaseLoader(settings.ORCH_CONFIG_PATH)
     routing = loader.load()
     app.state.adapter_registry = AdapterRegistry(routing, settings.UPSTREAM_TIMEOUT_MS)
+    app.state.view_config_store = ViewConfigStore(settings.VIEW_CONFIG_STORAGE_PATH)
+    app.state.metrics = InMemoryMetrics()
+    app.state.admin_rate_limiter = InMemoryAdminRateLimiter(
+        max_requests=settings.ADMIN_RATE_LIMIT_REQUESTS,
+        window_seconds=settings.ADMIN_RATE_LIMIT_WINDOW_SECONDS,
+    )
     app.include_router(router)
     install_error_handlers(app)
 
@@ -41,14 +50,22 @@ def create_app() -> FastAPI:
         latency_ms = round((time.perf_counter() - start) * 1000, 2)
         caso_de_uso = request.query_params.get('caso_de_uso', '-')
         response.headers['x-request-id'] = request_id
+        adapter_name = '-'
+        use_case_cfg = routing.use_cases.get(caso_de_uso)
+        if use_case_cfg is not None:
+            adapter_name = use_case_cfg.adapter
+
+        app.state.metrics.observe_request(request.method, request.url.path, response.status_code, latency_ms, caso_de_uso)
+
         logger.info(
-            'request_id=%s method=%s path=%s status=%s latency_ms=%s caso_de_uso=%s',
+            'request event | request_id=%s method=%s path=%s status=%s latency_ms=%s caso_de_uso=%s adapter=%s',
             request_id,
             request.method,
             request.url.path,
             response.status_code,
             latency_ms,
             caso_de_uso,
+            adapter_name,
         )
         return response
 

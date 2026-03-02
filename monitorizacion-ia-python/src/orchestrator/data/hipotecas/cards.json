@@ -1,0 +1,34 @@
+{
+  "cards": [
+    {
+      "title": "Conversaciones activas",
+      "subtitle": "Sesiones abiertas",
+      "value": 128,
+      "format": "int"
+    },
+    {
+      "title": "Tiempo medio de respuesta",
+      "subtitle": "SLA de atención",
+      "value": 2.31,
+      "format": "seconds"
+    },
+    {
+      "title": "Tasa de resolucion",
+      "subtitle": "Consultas resueltas",
+      "value": 0.92,
+      "format": "percent"
+    },
+    {
+      "title": "Coste medio por llamada",
+      "subtitle": "Canal voz + IA",
+      "value": 0.116,
+      "format": "currencyEUR"
+    },
+    {
+      "title": "NPS estimado",
+      "subtitle": "Encuesta pos-llamada",
+      "value": 0.78,
+      "format": "percent"
+    }
+  ]
+}
