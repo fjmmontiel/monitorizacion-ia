@@ -44,3 +44,20 @@ consume-shared-module modules 168 bytes
   consume shared module (default) zod@=3.21.4 (strict) (fallback: ./node_modules/zod/lib/index.mjs) 42 bytes [built] [code generated]
   consume shared module (default) react-router-dom@=6.11.1 (strict) (fallback: ./node_modules/react-router-dom/dist/index.js) 42 bytes [built] [code generated]
 webpack 5.75.0 compiled successfully in 466 ms
+assets by status 3.98 MiB [cached] 10 assets
+assets by path . 1.39 MiB
+  assets by path *.js 1.39 MiB
+    assets by chunk 1.22 MiB (name: main)
+      asset main.b604ca15413ddc3c87d1.js 1.21 MiB [emitted] [immutable] (name: main)
+      asset main.124f271d665e2fd1f539.hot-update.js 3.21 KiB [emitted] [immutable] [hmr] (name: main)
+    asset src_features_monitor_pages_MonitorDashboard_page_tsx.b9e70df64dfe51f1ae3d.js 166 KiB [emitted] [immutable]
+    asset src_features_monitor_pages_MonitorDashboard_page_tsx.124f271d665e2fd1f539.hot-update.js 8.66 KiB [emitted] [immutable] [hmr]
+  asset index.html 619 bytes [emitted]
+  asset main.124f271d665e2fd1f539.hot-update.json 83 bytes [emitted] [immutable] [hmr]
+Entrypoint main 1.22 MiB = main.b604ca15413ddc3c87d1.js 1.21 MiB main.124f271d665e2fd1f539.hot-update.js 3.21 KiB
+cached modules 2 MiB (javascript) 168 bytes (share-init) 168 bytes (consume-shared) [cached] 233 modules
+runtime modules 44.7 KiB 18 modules
+modules by layer 3.06 KiB
+  ./src/features/monitor/config/systemLayouts.ts 2.32 KiB [built] [code generated]
+  ./src/features/monitor/config/system_layouts.json 765 bytes [built] [code generated]
+webpack 5.75.0 compiled successfully in 108 ms

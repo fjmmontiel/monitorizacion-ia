@@ -1,3 +1,5 @@
+import { z } from 'zod';
+
 import { useCasesConfig } from '#/shell/shared/config/useCases';
 
 export type SystemLayoutConfig = {
@@ -11,28 +13,22 @@ export type SystemLayoutConfig = {
   accent: string;
 };
 
-const bySystem: Record<string, SystemLayoutConfig> = {
-  hipotecas: {
-    id: 'hipotecas',
-    headerTitle: 'Panel de seguimiento de hipotecas',
-    headerSubtitle: 'Resumen operativo con foco en conversaciones y resoluciones.',
-    sidebarTitle: 'Filtros de hipotecas',
-    sidebarHint: 'Configura gestor, cliente y resolución para el análisis diario.',
-    tableTitle: 'Historial de conversaciones',
-    detailTitle: 'Detalle de conversación',
-    accent: '#0a7d3b',
-  },
-  prestamos: {
-    id: 'prestamos',
-    headerTitle: 'Panel de seguimiento de préstamos',
-    headerSubtitle: 'Vista de solicitudes, aprobaciones y trazabilidad de hitos.',
-    sidebarTitle: 'Filtros de préstamos',
-    sidebarHint: 'Ajusta resolución y fecha para revisar el flujo de aprobación.',
-    tableTitle: 'Historial de solicitudes',
-    detailTitle: 'Detalle de solicitud',
-    accent: '#0b5fff',
-  },
-};
+const layoutSchema = z.record(
+  z.object({
+    id: z.string().min(1),
+    headerTitle: z.string().min(1),
+    headerSubtitle: z.string().min(1),
+    sidebarTitle: z.string().min(1),
+    sidebarHint: z.string().min(1),
+    tableTitle: z.string().min(1),
+    detailTitle: z.string().min(1),
+    accent: z.string().min(1),
+  }),
+);
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const rawLayouts = require('./system_layouts.json') as unknown;
+const bySystem = layoutSchema.parse(rawLayouts) as Record<string, SystemLayoutConfig>;
 
 export const resolveSystemLayout = (systemId: string): SystemLayoutConfig => {
   return bySystem[systemId] ?? {

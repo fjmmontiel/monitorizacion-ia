@@ -1,0 +1,47 @@
+{
+  "systems": [
+    {
+      "id": "hipotecas",
+      "label": "Hipotecas",
+      "enabled": true,
+      "default": true,
+      "adapter": "native",
+      "timeout_ms": 2500,
+      "layout": {
+        "headerTitle": "Panel de seguimiento de hipotecas",
+        "headerSubtitle": "Resumen operativo con foco en conversaciones y resoluciones.",
+        "sidebarTitle": "Filtros de hipotecas",
+        "sidebarHint": "Configura gestor, cliente y resolución para el análisis diario.",
+        "tableTitle": "Historial de conversaciones",
+        "detailTitle": "Detalle de conversación",
+        "accent": "#0a7d3b"
+      }
+    },
+    {
+      "id": "prestamos",
+      "label": "Prestamos",
+      "enabled": true,
+      "default": false,
+      "adapter": "native",
+      "timeout_ms": 2500,
+      "layout": {
+        "headerTitle": "Panel de seguimiento de préstamos",
+        "headerSubtitle": "Vista de solicitudes, aprobaciones y trazabilidad de hitos.",
+        "sidebarTitle": "Filtros de préstamos",
+        "sidebarHint": "Ajusta resolución y fecha para revisar el flujo de aprobación.",
+        "tableTitle": "Historial de solicitudes",
+        "detailTitle": "Detalle de solicitud",
+        "accent": "#0b5fff"
+      }
+    }
+  ],
+  "views": [
+    {
+      "id": "operativa",
+      "label": "Operativa",
+      "enabled": true,
+      "default": true,
+      "components": ["cards", "table", "detail"]
+    }
+  ]
+}

@@ -25,8 +25,9 @@ make run
 - creación/uso de `monitorizacion-ia-python/.venv`
 - instalación backend (`pip install -e ".[dev]"`)
 - instalación frontend shell (`npm install --workspaces=false`)
+- sincronización automática de configuraciones BE/FE desde `config/catalog/monitor_catalog.json`
 - arranque backend + frontend
-- impresión de sistemas habilitados
+- impresión de sistemas y vistas habilitadas
 
 URLs:
 - Front Home: `http://127.0.0.1:3100/home`
@@ -43,6 +44,35 @@ En `monitor` el layout operativo queda fijo en este orden:
 
 Para entorno local se activa fallback mock del frontend:
 - `REACT_APP_MONITOR_FAILOVER_TO_MOCK=true` en `monitorizacion-ia-front/packages/shell/.env.mock`
+
+## Automatización de alta de sistemas y vistas
+
+Fuente de verdad única:
+- `config/catalog/monitor_catalog.json`
+
+Sincronizar manualmente backend + frontend desde el catálogo:
+
+```bash
+make sync-config
+```
+
+Alta de nuevo sistema (genera BE + FE + layout por defecto):
+
+```bash
+make add-system ARGS="--id reclamaciones --label Reclamaciones"
+```
+
+Alta de nueva vista (genera `views.json` con componentes habilitados):
+
+```bash
+make add-view ARGS="--id ejecutiva --label Ejecutiva --components cards,table"
+```
+
+Después de cada alta, el script sincroniza automáticamente:
+- `monitorizacion-ia-python/src/orchestrator/config/use_cases.yaml`
+- `monitorizacion-ia-front/packages/shell/src/shared/config/use_cases.json`
+- `monitorizacion-ia-front/packages/shell/src/shared/config/views.json`
+- `monitorizacion-ia-front/packages/shell/src/features/monitor/config/system_layouts.json`
 
 ## Parada
 

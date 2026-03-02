@@ -1,0 +1,13 @@
+[
+  {
+    "id": "operativa",
+    "label": "Operativa",
+    "enabled": true,
+    "default": true,
+    "components": [
+      "cards",
+      "table",
+      "detail"
+    ]
+  }
+]

@@ -10,7 +10,7 @@ FRONT_PORT ?= 3100
 BACK_PORT ?= 8002
 BACK_ORCH_CONFIG_PATH ?= src/orchestrator/config/dev.yaml
 
-.PHONY: help install install-back install-front setup-env run up stop restart status smoke e2e logs show-config
+.PHONY: help install install-back install-front setup-env sync-config add-system add-view run up stop restart status smoke e2e logs show-config
 
 help:
 	@echo "Targets disponibles:"
@@ -24,6 +24,9 @@ help:
 	@echo "  make status   -> estado de puertos/procesos"
 	@echo "  make logs     -> tail de logs runtime"
 	@echo "  make show-config -> muestra sistemas/vistas y urls de ejemplo"
+	@echo "  make sync-config -> regenera config BE/FE desde config/catalog/monitor_catalog.json"
+	@echo "  make add-system ARGS="--id nuevo --label Nuevo" -> alta automatizada de sistema"
+	@echo "  make add-view ARGS="--id ejecutiva --label Ejecutiva" -> alta automatizada de vista"
 
 install: install-back install-front
 
@@ -37,8 +40,17 @@ install-back:
 install-front:
 	@cd "$(FRONT_SHELL_DIR)" && npm install --workspaces=false
 
-run: install up show-config
+run: install sync-config up show-config
 	@echo "Stack lista. Usa 'make logs' para ver runtime logs."
+
+sync-config:
+	@cd "$(ROOT_DIR)" && python3 scripts/catalog_manager.py sync
+
+add-system:
+	@cd "$(ROOT_DIR)" && python3 scripts/catalog_manager.py add-system $(ARGS)
+
+add-view:
+	@cd "$(ROOT_DIR)" && python3 scripts/catalog_manager.py add-view $(ARGS)
 
 up:
 	@cd "$(ROOT_DIR)" && FRONT_PORT="$(FRONT_PORT)" BACK_PORT="$(BACK_PORT)" BACK_ORCH_CONFIG_PATH="$(BACK_ORCH_CONFIG_PATH)" ./scripts/up-local.sh
