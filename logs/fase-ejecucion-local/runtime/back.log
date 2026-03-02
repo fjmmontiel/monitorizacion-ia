@@ -1,72 +1,28 @@
-INFO:     Started server process [85528]
+INFO:     Started server process [91309]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://127.0.0.1:8002 (Press CTRL+C to quit)
-2026-02-21 19:14:57,770 INFO [orchestrator.main] request_id=b2809f18-ee90-4c8b-87c7-6dcf61891b17 method=GET path=/health status=200 latency_ms=0.51 caso_de_uso=-
-INFO:     127.0.0.1:53510 - "GET /health HTTP/1.1" 200 OK
-2026-02-21 19:15:06,642 INFO [orchestrator.main] request_id=3207aef5-5723-41f6-aa32-ab57847278c4 method=OPTIONS path=/cards status=200 latency_ms=1.09 caso_de_uso=hipotecas
-INFO:     127.0.0.1:53529 - "OPTIONS /cards?caso_de_uso=hipotecas HTTP/1.1" 200 OK
-2026-02-21 19:15:06,643 INFO [orchestrator.main] request_id=15bb7a27-df05-41ed-93fc-9d49cd6df66f method=OPTIONS path=/dashboard status=200 latency_ms=1.88 caso_de_uso=hipotecas
-INFO:     127.0.0.1:53530 - "OPTIONS /dashboard?caso_de_uso=hipotecas HTTP/1.1" 200 OK
-2026-02-21 19:15:06,656 INFO [orchestrator.main] request_id=a1a6f199-25ba-4b34-9f69-ad6aec1a3e22 method=POST path=/cards status=200 latency_ms=3.64 caso_de_uso=hipotecas
-INFO:     127.0.0.1:53530 - "POST /cards?caso_de_uso=hipotecas HTTP/1.1" 200 OK
-2026-02-21 19:15:06,658 INFO [orchestrator.main] request_id=c12f3109-028f-43a1-a527-be6d114abb61 method=POST path=/dashboard status=200 latency_ms=7.33 caso_de_uso=hipotecas
-INFO:     127.0.0.1:53532 - "POST /dashboard?caso_de_uso=hipotecas HTTP/1.1" 200 OK
-2026-02-21 19:15:09,161 INFO [orchestrator.main] request_id=45d8fba4-47f1-434d-a0c4-84ab38d88b14 method=OPTIONS path=/cards status=200 latency_ms=0.45 caso_de_uso=prestamos
-INFO:     127.0.0.1:53532 - "OPTIONS /cards?caso_de_uso=prestamos HTTP/1.1" 200 OK
-2026-02-21 19:15:09,163 INFO [orchestrator.main] request_id=0b8b3742-5af7-4d8b-97f7-1cf3ee063127 method=OPTIONS path=/dashboard status=200 latency_ms=0.31 caso_de_uso=prestamos
-INFO:     127.0.0.1:53530 - "OPTIONS /dashboard?caso_de_uso=prestamos HTTP/1.1" 200 OK
-2026-02-21 19:15:09,175 INFO [orchestrator.main] request_id=73bba391-3f73-4b5a-8dcd-85dbf829dd9a method=POST path=/cards status=200 latency_ms=5.58 caso_de_uso=prestamos
-INFO:     127.0.0.1:53530 - "POST /cards?caso_de_uso=prestamos HTTP/1.1" 200 OK
-2026-02-21 19:15:09,176 INFO [orchestrator.main] request_id=7826f8fe-aaa0-4dc3-aa87-95ed541445a8 method=POST path=/dashboard status=200 latency_ms=3.81 caso_de_uso=prestamos
-INFO:     127.0.0.1:53532 - "POST /dashboard?caso_de_uso=prestamos HTTP/1.1" 200 OK
-2026-02-21 19:15:10,710 INFO [orchestrator.main] request_id=c9180391-3253-42b9-a31b-5733a6715b05 method=POST path=/cards status=200 latency_ms=0.46 caso_de_uso=hipotecas
-INFO:     127.0.0.1:53532 - "POST /cards?caso_de_uso=hipotecas HTTP/1.1" 200 OK
-2026-02-21 19:15:10,714 INFO [orchestrator.main] request_id=918a4d23-876d-4aff-849f-8f4c42238407 method=POST path=/dashboard status=200 latency_ms=1.45 caso_de_uso=hipotecas
-INFO:     127.0.0.1:53530 - "POST /dashboard?caso_de_uso=hipotecas HTTP/1.1" 200 OK
-2026-02-21 19:15:12,596 INFO [orchestrator.main] request_id=7cf1a13f-9ae1-4daa-9719-ca9677ace542 method=OPTIONS path=/dashboard_detail status=200 latency_ms=0.1 caso_de_uso=hipotecas
-INFO:     127.0.0.1:53530 - "OPTIONS /dashboard_detail?caso_de_uso=hipotecas&id=conv-001 HTTP/1.1" 200 OK
-2026-02-21 19:15:12,599 INFO [orchestrator.main] request_id=37787916-b229-4e02-bd1d-996deba8fdc5 method=POST path=/dashboard_detail status=200 latency_ms=1.99 caso_de_uso=hipotecas
-INFO:     127.0.0.1:53530 - "POST /dashboard_detail?caso_de_uso=hipotecas&id=conv-001 HTTP/1.1" 200 OK
-2026-02-21 19:15:18,057 INFO [orchestrator.main] request_id=8e7c4a96-5975-4820-8401-479d10081205 method=POST path=/cards status=200 latency_ms=0.47 caso_de_uso=prestamos
-INFO:     127.0.0.1:53534 - "POST /cards?caso_de_uso=prestamos HTTP/1.1" 200 OK
-2026-02-21 19:15:18,061 INFO [orchestrator.main] request_id=ffc91887-c000-4e3f-a2d2-1f03ad4abec3 method=POST path=/dashboard status=200 latency_ms=0.32 caso_de_uso=prestamos
-INFO:     127.0.0.1:53537 - "POST /dashboard?caso_de_uso=prestamos HTTP/1.1" 200 OK
-2026-02-21 21:05:22,119 INFO [orchestrator.main] request_id=14b3d4c3-5148-4956-abd0-a70f3486c4a3 method=POST path=/cards status=200 latency_ms=1.54 caso_de_uso=prestamos
-INFO:     127.0.0.1:54534 - "POST /cards?caso_de_uso=prestamos HTTP/1.1" 200 OK
-2026-02-21 21:05:22,119 INFO [orchestrator.main] request_id=4d465670-324f-462c-8092-ecaca82cec96 method=POST path=/dashboard status=200 latency_ms=2.0 caso_de_uso=prestamos
-INFO:     127.0.0.1:54536 - "POST /dashboard?caso_de_uso=prestamos HTTP/1.1" 200 OK
-2026-03-02 09:16:16,061 INFO [orchestrator.main] request_id=a7e618a2-69e9-403b-85f0-960279e25684 method=OPTIONS path=/cards status=200 latency_ms=4.59 caso_de_uso=prestamos
-INFO:     127.0.0.1:55075 - "OPTIONS /cards?caso_de_uso=prestamos HTTP/1.1" 200 OK
-2026-03-02 09:16:16,064 INFO [orchestrator.main] request_id=75438eb7-b40f-49b6-b8ea-820636f7dc5b method=OPTIONS path=/dashboard status=200 latency_ms=7.32 caso_de_uso=prestamos
-INFO:     127.0.0.1:55076 - "OPTIONS /dashboard?caso_de_uso=prestamos HTTP/1.1" 200 OK
-2026-03-02 09:16:16,078 INFO [orchestrator.main] request_id=81d010ad-7114-428c-981f-abe731fc4251 method=POST path=/cards status=200 latency_ms=7.33 caso_de_uso=prestamos
-INFO:     127.0.0.1:55079 - "POST /cards?caso_de_uso=prestamos HTTP/1.1" 200 OK
-2026-03-02 09:16:16,078 INFO [orchestrator.main] request_id=18328e46-ef26-4225-9f6f-697be74090a3 method=POST path=/dashboard status=200 latency_ms=7.48 caso_de_uso=prestamos
-INFO:     127.0.0.1:55081 - "POST /dashboard?caso_de_uso=prestamos HTTP/1.1" 200 OK
-2026-03-02 09:16:18,691 INFO [orchestrator.main] request_id=1195ce09-218b-456c-bca2-31fc7478f4a8 method=OPTIONS path=/cards status=200 latency_ms=2.69 caso_de_uso=hipotecas
-INFO:     127.0.0.1:55081 - "OPTIONS /cards?caso_de_uso=hipotecas HTTP/1.1" 200 OK
-2026-03-02 09:16:18,694 INFO [orchestrator.main] request_id=befb72a1-e8aa-4b74-b544-39722fadfc0a method=OPTIONS path=/dashboard status=200 latency_ms=4.97 caso_de_uso=hipotecas
-INFO:     127.0.0.1:55079 - "OPTIONS /dashboard?caso_de_uso=hipotecas HTTP/1.1" 200 OK
-2026-03-02 09:16:18,704 INFO [orchestrator.main] request_id=edf90193-ae65-4be0-bfa5-84fa59d6d47c method=POST path=/cards status=200 latency_ms=3.69 caso_de_uso=hipotecas
-INFO:     127.0.0.1:55079 - "POST /cards?caso_de_uso=hipotecas HTTP/1.1" 200 OK
-2026-03-02 09:16:18,704 INFO [orchestrator.main] request_id=47be20e1-d050-4b30-9f45-a5e764a8dc05 method=POST path=/dashboard status=200 latency_ms=4.15 caso_de_uso=hipotecas
-INFO:     127.0.0.1:55081 - "POST /dashboard?caso_de_uso=hipotecas HTTP/1.1" 200 OK
-2026-03-02 09:16:22,476 INFO [orchestrator.main] request_id=ca983806-cecb-431f-a9ed-697dc7201e09 method=POST path=/cards status=200 latency_ms=1.7 caso_de_uso=hipotecas
-INFO:     127.0.0.1:55081 - "POST /cards?caso_de_uso=hipotecas HTTP/1.1" 200 OK
-2026-03-02 09:16:24,104 INFO [orchestrator.main] request_id=6ff64801-8ac2-4506-8747-6a889d3edcff method=POST path=/cards status=200 latency_ms=0.43 caso_de_uso=prestamos
-INFO:     127.0.0.1:55081 - "POST /cards?caso_de_uso=prestamos HTTP/1.1" 200 OK
-2026-03-02 09:16:24,126 INFO [orchestrator.main] request_id=5c1cc5cb-e0ab-4d6d-9aa5-5966e28e0c7f method=POST path=/dashboard status=200 latency_ms=12.88 caso_de_uso=prestamos
-INFO:     127.0.0.1:55081 - "POST /dashboard?caso_de_uso=prestamos HTTP/1.1" 200 OK
-2026-03-02 09:16:25,187 INFO [orchestrator.main] request_id=9e64a577-4ea0-4e88-b332-727327adf3bb method=POST path=/cards status=200 latency_ms=7.06 caso_de_uso=hipotecas
-INFO:     127.0.0.1:55081 - "POST /cards?caso_de_uso=hipotecas HTTP/1.1" 200 OK
-2026-03-02 09:16:25,191 INFO [orchestrator.main] request_id=0386da1a-e28b-4881-ae90-79a1f778c2f2 method=POST path=/dashboard status=200 latency_ms=7.7 caso_de_uso=hipotecas
-INFO:     127.0.0.1:55100 - "POST /dashboard?caso_de_uso=hipotecas HTTP/1.1" 200 OK
-2026-03-02 09:16:25,686 INFO [orchestrator.main] request_id=1a29821e-6eee-4490-ab50-a55439666bf1 method=POST path=/cards status=200 latency_ms=0.81 caso_de_uso=prestamos
-INFO:     127.0.0.1:55100 - "POST /cards?caso_de_uso=prestamos HTTP/1.1" 200 OK
-2026-03-02 09:16:25,690 INFO [orchestrator.main] request_id=9d30c810-1b75-440f-98ca-8a307cede38c method=POST path=/dashboard status=200 latency_ms=0.77 caso_de_uso=prestamos
-INFO:     127.0.0.1:55081 - "POST /dashboard?caso_de_uso=prestamos HTTP/1.1" 200 OK
-2026-03-02 09:16:28,341 INFO [orchestrator.main] request_id=8e1e5891-27c1-446e-a6f8-6adbdc1b96fa method=OPTIONS path=/dashboard_detail status=200 latency_ms=0.1 caso_de_uso=prestamos
-INFO:     127.0.0.1:55081 - "OPTIONS /dashboard_detail?caso_de_uso=prestamos&id=pres-100 HTTP/1.1" 200 OK
-2026-03-02 09:16:28,351 INFO [orchestrator.main] request_id=282b2752-85de-488a-b397-e7cc7ee2e49f method=POST path=/dashboard_detail status=200 latency_ms=9.55 caso_de_uso=prestamos
-INFO:     127.0.0.1:55081 - "POST /dashboard_detail?caso_de_uso=prestamos&id=pres-100 HTTP/1.1" 200 OK
+2026-03-02 09:54:02,575 INFO [orchestrator.main] request event | request_id=7f093367-a227-4c0d-aee3-79b8704f808f method=GET path=/health status=200 latency_ms=0.58 caso_de_uso=- adapter=-
+INFO:     127.0.0.1:56746 - "GET /health HTTP/1.1" 200 OK
+2026-03-02 09:54:03,990 INFO [orchestrator.main] request event | request_id=fd066084-9d21-4b2c-a8e1-12744d1ebd36 method=POST path=/cards status=200 latency_ms=0.97 caso_de_uso=hipotecas adapter=native
+INFO:     127.0.0.1:56750 - "POST /cards?caso_de_uso=hipotecas HTTP/1.1" 200 OK
+2026-03-02 09:54:04,000 INFO [orchestrator.main] request event | request_id=57055854-1786-4fa2-8572-46abb51bb467 method=POST path=/dashboard status=200 latency_ms=0.91 caso_de_uso=hipotecas adapter=native
+INFO:     127.0.0.1:56751 - "POST /dashboard?caso_de_uso=hipotecas HTTP/1.1" 200 OK
+2026-03-02 09:54:04,012 INFO [orchestrator.main] request event | request_id=f30b4e6d-bbde-49ec-9225-51a4469e0dff method=POST path=/dashboard_detail status=200 latency_ms=0.92 caso_de_uso=hipotecas adapter=native
+INFO:     127.0.0.1:56752 - "POST /dashboard_detail?caso_de_uso=hipotecas&id=conv-001 HTTP/1.1" 200 OK
+2026-03-02 09:54:04,035 INFO [orchestrator.main] request event | request_id=6a2e6e76-5d19-495b-86ae-3353fc0fb32f method=POST path=/cards status=200 latency_ms=0.6 caso_de_uso=prestamos adapter=native
+INFO:     127.0.0.1:56754 - "POST /cards?caso_de_uso=prestamos HTTP/1.1" 200 OK
+2026-03-02 09:54:04,045 INFO [orchestrator.main] request event | request_id=72dd34a3-5bb3-4187-993c-46017d958c3b method=POST path=/dashboard status=200 latency_ms=0.76 caso_de_uso=prestamos adapter=native
+INFO:     127.0.0.1:56755 - "POST /dashboard?caso_de_uso=prestamos HTTP/1.1" 200 OK
+2026-03-02 09:54:04,057 INFO [orchestrator.main] request event | request_id=431608b0-a0cd-4cb8-9d6b-f92ffcaa04d3 method=POST path=/dashboard_detail status=200 latency_ms=0.64 caso_de_uso=prestamos adapter=native
+INFO:     127.0.0.1:56756 - "POST /dashboard_detail?caso_de_uso=prestamos&id=conv-001 HTTP/1.1" 200 OK
+2026-03-02 09:54:04,081 INFO [orchestrator.main] request event | request_id=09adc203-8f15-464b-92b2-69747a04c3e8 method=POST path=/cards status=200 latency_ms=0.48 caso_de_uso=hipotecas adapter=native
+INFO:     127.0.0.1:56758 - "POST /cards?caso_de_uso=hipotecas HTTP/1.1" 200 OK
+2026-03-02 09:54:04,090 INFO [orchestrator.main] request event | request_id=fb90eceb-223b-4358-b5cd-f485254d6127 method=POST path=/dashboard status=200 latency_ms=0.47 caso_de_uso=hipotecas adapter=native
+INFO:     127.0.0.1:56759 - "POST /dashboard?caso_de_uso=hipotecas HTTP/1.1" 200 OK
+2026-03-02 09:54:04,103 INFO [orchestrator.main] request event | request_id=0781e770-d12c-466a-b154-65ef5fce2ac6 method=POST path=/dashboard_detail status=200 latency_ms=0.59 caso_de_uso=hipotecas adapter=native
+INFO:     127.0.0.1:56760 - "POST /dashboard_detail?caso_de_uso=hipotecas&id=conv-001 HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [91309]

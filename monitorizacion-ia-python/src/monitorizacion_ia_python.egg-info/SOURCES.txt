@@ -18,9 +18,15 @@ src/orchestrator/api/routes.py
 src/orchestrator/api/schemas.py
 src/orchestrator/contracts/__init__.py
 src/orchestrator/core/__init__.py
+src/orchestrator/core/admin_rate_limit.py
 src/orchestrator/core/errors.py
 src/orchestrator/core/logging.py
+src/orchestrator/core/metrics.py
 src/orchestrator/core/settings.py
 src/orchestrator/core/use_case_loader.py
+src/orchestrator/core/view_config_store.py
+tests/test_adapter_registry.py
+tests/test_native_adapter_local_json.py
 tests/test_orchestrator_smoke.py
 tests/test_use_case_loader_validation.py
+tests/test_view_config_store.py

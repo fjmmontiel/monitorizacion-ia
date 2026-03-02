@@ -84,5 +84,21 @@
         }
       }
     ]
+  },
+  {
+    "id": "vista-rate-limit-19360ec4",
+    "name": "Vista Rate Limit",
+    "system": "hipotecas",
+    "enabled": true,
+    "components": [
+      {
+        "id": "cards-main",
+        "type": "cards",
+        "title": "KPIs",
+        "data_source": "/cards",
+        "position": 0,
+        "config": null
+      }
+    ]
   }
 ]

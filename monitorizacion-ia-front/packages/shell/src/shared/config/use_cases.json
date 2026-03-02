@@ -9,10 +9,5 @@
     "id": "prestamos",
     "label": "Prestamos",
     "enabled": true
-  },
-  {
-    "id": "seguros",
-    "label": "Seguros",
-    "enabled": true
   }
 ]
