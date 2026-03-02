@@ -10,7 +10,7 @@ FRONT_PORT ?= 3100
 BACK_PORT ?= 8002
 BACK_ORCH_CONFIG_PATH ?= src/orchestrator/config/dev.yaml
 
-.PHONY: help install install-back install-front run up stop restart status smoke e2e logs show-config
+.PHONY: help install install-back install-front setup-env run up stop restart status smoke e2e logs show-config
 
 help:
 	@echo "Targets disponibles:"
@@ -26,6 +26,9 @@ help:
 	@echo "  make show-config -> muestra sistemas/vistas y urls de ejemplo"
 
 install: install-back install-front
+
+setup-env:
+	@cd "$(ROOT_DIR)" && ./scripts/setup-local.sh
 
 install-back:
 	@test -d "$(PY_VENV)" || $(PYTHON) -m venv "$(PY_VENV)"

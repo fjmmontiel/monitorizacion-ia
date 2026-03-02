@@ -1,0 +1,63 @@
+{
+  "left": {
+    "messages": [
+      {
+        "role": "cliente",
+        "text": "Quiero abrir un parte por daños de agua",
+        "timestamp": "09:20"
+      },
+      {
+        "role": "agente",
+        "text": "Te indico los documentos necesarios",
+        "timestamp": "09:21"
+      }
+    ]
+  },
+  "right": [
+    {
+      "type": "kv",
+      "title": "Datos póliza",
+      "items": [
+        {
+          "key": "Producto",
+          "value": "Hogar"
+        },
+        {
+          "key": "Canal",
+          "value": "Teléfono"
+        }
+      ]
+    },
+    {
+      "type": "timeline",
+      "title": "Evolución",
+      "events": [
+        {
+          "label": "Parte abierto",
+          "time": "2026-02-21 09:20"
+        },
+        {
+          "label": "Peritación",
+          "time": "2026-02-21 16:00"
+        }
+      ]
+    },
+    {
+      "type": "list",
+      "title": "Productos ofrecidos",
+      "items": [
+        "Producto principal",
+        "Producto complementario"
+      ]
+    },
+    {
+      "type": "list",
+      "title": "Servicios utilizados",
+      "items": [
+        "Verificación identidad",
+        "Consulta scoring",
+        "Asistente IA"
+      ]
+    }
+  ]
+}

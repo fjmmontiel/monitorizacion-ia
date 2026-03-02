@@ -17,6 +17,13 @@ export const router = createBrowserRouter([
     },
   },
   {
+    path: '/admin',
+    lazy: async () => {
+      const module = await import('#/shell/features/admin/pages/AdminViews.page');
+      return { Component: module.default };
+    },
+  },
+  {
     path: '/',
     element: <Navigate to='/home' replace />,
   },

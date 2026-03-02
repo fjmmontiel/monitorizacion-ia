@@ -9,9 +9,10 @@ type Props = {
   onQueryChange: (next: QueryRequest) => void;
   onOpenDetail: (id: string) => void;
   view: MonitorStyleConfig;
+  config?: Record<string, unknown>;
 };
 
-export const DynamicTable = ({ data, loading, error, query, onQueryChange, onOpenDetail, view }: Props) => {
+export const DynamicTable = ({ data, loading, error, query, onQueryChange, onOpenDetail, view, config }: Props) => {
   if (loading) {
     return <p>Cargando tabla...</p>;
   }
@@ -24,9 +25,17 @@ export const DynamicTable = ({ data, loading, error, query, onQueryChange, onOpe
     return null;
   }
 
-  const { columns, rows, nextCursor } = data.table;
-  const hasRequiredColumns = columns.some(column => column.key === 'detail');
-  const filterableColumns = columns.filter(column => column.filterable);
+  const tableConfig = config ?? {};
+  const { columns: sourceColumns, rows, nextCursor } = data.table;
+  const visibleColumns = Array.isArray(tableConfig.visible_columns)
+    ? sourceColumns.filter(column => (tableConfig.visible_columns as string[]).includes(column.key))
+    : sourceColumns;
+  const requiredColumns = Array.isArray(tableConfig.required_columns)
+    ? (tableConfig.required_columns as string[])
+    : ['detail'];
+
+  const hasRequiredColumns = requiredColumns.every(required => sourceColumns.some(column => column.key === required));
+  const filterableColumns = visibleColumns.filter(column => column.filterable);
 
   if (!hasRequiredColumns) {
     return <p>Configuración inválida: falta columna obligatoria detail.</p>;
@@ -66,7 +75,7 @@ export const DynamicTable = ({ data, loading, error, query, onQueryChange, onOpe
       <table style={{ border: `1px solid ${view.theme.surfaceBorder}`, borderRadius: 6, overflow: 'hidden', width: '100%' }}>
         <thead>
           <tr style={{ background: view.theme.pageBackground, textAlign: 'left' }}>
-            {columns.map(column => (
+          {visibleColumns.map(column => (
               <th key={column.key} style={{ borderBottom: `1px solid ${view.theme.surfaceBorder}`, padding: 10 }}>
                 <span>{column.label}</span>
                 {column.sortable && (
@@ -89,7 +98,7 @@ export const DynamicTable = ({ data, loading, error, query, onQueryChange, onOpe
         <tbody>
           {rows.map(row => (
             <tr key={row.id} style={{ borderBottom: `1px solid ${view.theme.surfaceBorder}` }}>
-              {columns.map(column => {
+            {visibleColumns.map(column => {
                 if (column.key === 'detail') {
                   return (
                     <td key={`${row.id}-${column.key}`} style={{ padding: 10 }}>

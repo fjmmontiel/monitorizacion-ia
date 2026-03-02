@@ -1,0 +1,26 @@
+{
+  "table": {
+    "columns": [
+      {"key": "fecha_hora", "label": "Fecha · Hora", "sortable": true},
+      {"key": "numero_entrante", "label": "Numero entrante", "filterable": true},
+      {"key": "nombre_cliente", "label": "Nombre del cliente", "filterable": true},
+      {"key": "razones_llamada", "label": "Motivo", "filterable": true},
+      {"key": "duracion", "label": "Duracion", "sortable": true},
+      {"key": "resolucion", "label": "Estado", "filterable": true, "sortable": true},
+      {"key": "detail", "label": "Detalle"}
+    ],
+    "rows": [
+      {
+        "id": "seg-001",
+        "detail": {"action": "Ver detalle"},
+        "fecha_hora": "21-02-2026 · 09:20",
+        "numero_entrante": "+34645599111",
+        "nombre_cliente": "Sara Mendez",
+        "razones_llamada": "Parte de siniestro hogar",
+        "duracion": "2 min 02 s",
+        "resolucion": "En revisión"
+      }
+    ],
+    "nextCursor": "page-2"
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "left": {
+    "messages": [
+      {
+        "role": "cliente",
+        "text": "Necesito informacion sobre una hipoteca fija",
+        "timestamp": "10:01"
+      },
+      {
+        "role": "agente",
+        "text": "Claro, que importe necesitas?",
+        "timestamp": "10:02"
+      },
+      {
+        "role": "cliente",
+        "text": "Unos 180.000 euros a 30 anos",
+        "timestamp": "10:03"
+      }
+    ]
+  },
+  "right": [
+    {
+      "type": "kv",
+      "title": "Contexto",
+      "items": [
+        {
+          "key": "Canal",
+          "value": "Web"
+        },
+        {
+          "key": "Caso de uso",
+          "value": "hipotecas"
+        },
+        {
+          "key": "Pais",
+          "value": "ES"
+        }
+      ]
+    },
+    {
+      "type": "metrics",
+      "title": "Metricas",
+      "metrics": [
+        {
+          "label": "Sentimiento",
+          "value": "Positivo"
+        },
+        {
+          "label": "Mensajes",
+          "value": 12
+        },
+        {
+          "label": "Id",
+          "value": "conv-001"
+        }
+      ]
+    },
+    {
+      "type": "list",
+      "title": "Productos ofrecidos",
+      "items": [
+        "Producto principal",
+        "Producto complementario"
+      ]
+    },
+    {
+      "type": "list",
+      "title": "Servicios utilizados",
+      "items": [
+        "Verificación identidad",
+        "Consulta scoring",
+        "Asistente IA"
+      ]
+    }
+  ]
+}
