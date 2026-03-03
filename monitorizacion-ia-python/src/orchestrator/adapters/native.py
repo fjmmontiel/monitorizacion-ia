@@ -4,14 +4,13 @@ from pathlib import Path
 from orchestrator.adapters.base import Adapter, AdapterContext
 from orchestrator.api.schemas import CardsResponse, DashboardDetailResponse, DashboardResponse, QueryRequest
 from orchestrator.core.errors import ErrorCode, OrchestratorError
-from orchestrator.core.use_case_loader import UseCaseConfig
 
 
 class NativeAdapter(Adapter):
     """Adapter nativo basado en JSON local por caso de uso (sin hardcodes)."""
 
-    def __init__(self, cfg: UseCaseConfig | None = None):
-        self._cfg = cfg
+    def __init__(self, local_data_dir: str | None = None):
+        self._local_data_dir = local_data_dir
         self._cache: dict[str, dict] = {}
 
     async def get_cards(self, ctx: AdapterContext, req: QueryRequest) -> CardsResponse:
@@ -27,8 +26,8 @@ class NativeAdapter(Adapter):
         return DashboardDetailResponse.model_validate(payload)
 
     def _resolve_base_path(self, caso_de_uso: str) -> Path:
-        if self._cfg and self._cfg.local_data_dir:
-            return Path(self._cfg.local_data_dir)
+        if self._local_data_dir:
+            return Path(self._local_data_dir)
         return Path(__file__).resolve().parents[1] / 'data' / caso_de_uso
 
     def _read_payload(self, caso_de_uso: str, filename: str) -> dict:

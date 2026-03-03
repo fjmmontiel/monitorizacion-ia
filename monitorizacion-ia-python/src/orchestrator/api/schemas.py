@@ -1,12 +1,15 @@
+from __future__ import annotations
+
 from typing import Annotated, Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
-
-SUPPORTED_COMPONENT_TYPES = {'cards', 'table', 'detail', 'chart', 'text'}
+SUPPORTED_COMPONENT_TYPES = {'cards', 'table', 'detail', 'chart', 'text', 'stack', 'split'}
+CONTAINER_COMPONENT_TYPES = {'stack', 'split'}
 MAX_COMPONENTS_PER_VIEW = 20
 MAX_COMPONENTS_PER_TYPE = 8
+MAX_COMPONENT_DEPTH = 4
 MAX_CONFIG_ENTRIES = 40
 COMPONENT_DATA_SOURCES = {
     'cards': {'/cards'},
@@ -14,7 +17,10 @@ COMPONENT_DATA_SOURCES = {
     'detail': {'/dashboard_detail', '/none'},
     'chart': {'/dashboard', '/cards', '/none'},
     'text': {'/none'},
+    'stack': {'/none'},
+    'split': {'/none'},
 }
+
 
 class SortItem(BaseModel):
     model_config = ConfigDict(extra='forbid')
@@ -41,6 +47,8 @@ class CardItem(BaseModel):
     subtitle: str | None = None
     value: str | int | float
     format: Literal['seconds', 'percent', 'currencyEUR', 'int', 'float'] | None = None
+    unit: str | None = None
+    variant: Literal['neutral', 'positive', 'warning', 'danger'] | None = None
 
 
 class CardsResponse(BaseModel):
@@ -174,6 +182,7 @@ class DatopsUseCase(BaseModel):
     model_config = ConfigDict(extra='forbid')
 
     id: str
+    label: str
     adapter: str
     timeout_ms: int
     upstream_base_url: str | None = None
@@ -189,15 +198,23 @@ class DatopsOverviewResponse(BaseModel):
     use_cases: list[DatopsUseCase]
 
 
+class ViewRuntimeConfig(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+
+    adapter: Literal['http_proxy']
+    upstream_base_url: str = Field(min_length=1, max_length=500)
+
+
 class ViewComponent(BaseModel):
     model_config = ConfigDict(extra='forbid')
 
     id: str = Field(min_length=1, max_length=80)
-    type: Literal['cards', 'table', 'detail', 'chart', 'text']
+    type: Literal['cards', 'table', 'detail', 'chart', 'text', 'stack', 'split']
     title: str = Field(min_length=1, max_length=120)
     data_source: str = Field(min_length=1, max_length=120)
     position: int = Field(default=0, ge=0, le=200)
     config: dict[str, Any] | None = None
+    children: list[ViewComponent] | None = None
 
     @model_validator(mode='after')
     def validate_component(self):
@@ -206,7 +223,21 @@ class ViewComponent(BaseModel):
             raise ValueError(f'invalid data_source {self.data_source} for component type {self.type}')
         if self.config is not None and len(self.config) > MAX_CONFIG_ENTRIES:
             raise ValueError(f'config too large for component {self.id}; max entries: {MAX_CONFIG_ENTRIES}')
+        if self.type in CONTAINER_COMPONENT_TYPES and not self.children:
+            raise ValueError(f'container component {self.id} requires children')
+        if self.type not in CONTAINER_COMPONENT_TYPES and self.children:
+            raise ValueError(f'non-container component {self.id} cannot declare children')
         return self
+
+
+ViewComponent.model_rebuild()
+
+
+def _walk_components(components: list[ViewComponent], depth: int = 1):
+    for component in components:
+        yield component, depth
+        if component.children:
+            yield from _walk_components(component.children, depth + 1)
 
 
 class ViewConfiguration(BaseModel):
@@ -216,26 +247,33 @@ class ViewConfiguration(BaseModel):
     name: str = Field(min_length=1, max_length=150)
     system: str = Field(min_length=1, max_length=80)
     enabled: bool = True
+    runtime: ViewRuntimeConfig | None = None
     components: list[ViewComponent]
 
     @model_validator(mode='after')
     def validate_components_semantics(self):
         if len(self.components) == 0:
             raise ValueError('components cannot be empty')
-        if len(self.components) > MAX_COMPONENTS_PER_VIEW:
+
+        flattened = list(_walk_components(self.components))
+        if len(flattened) > MAX_COMPONENTS_PER_VIEW:
             raise ValueError(f'too many components; max: {MAX_COMPONENTS_PER_VIEW}')
 
-        ids = [component.id for component in self.components]
+        ids = [component.id for component, _depth in flattened]
         if len(ids) != len(set(ids)):
             raise ValueError('duplicated component ids are not allowed')
 
-        supported_types = {component.type for component in self.components}
+        supported_types = {component.type for component, _depth in flattened}
         unsupported = supported_types.difference(SUPPORTED_COMPONENT_TYPES)
         if unsupported:
             raise ValueError(f'unsupported component types: {sorted(unsupported)}')
 
+        overflowing_depth = [depth for _component, depth in flattened if depth > MAX_COMPONENT_DEPTH]
+        if overflowing_depth:
+            raise ValueError(f'component nesting exceeds max depth {MAX_COMPONENT_DEPTH}')
+
         type_counts: dict[str, int] = {}
-        for component in self.components:
+        for component, _depth in flattened:
             type_counts[component.type] = type_counts.get(component.type, 0) + 1
         overflowing = [component_type for component_type, count in type_counts.items() if count > MAX_COMPONENTS_PER_TYPE]
         if overflowing:
@@ -254,4 +292,32 @@ class ViewConfigUpdate(BaseModel):
     name: str | None = Field(default=None, min_length=1, max_length=150)
     system: str | None = Field(default=None, min_length=1, max_length=80)
     enabled: bool | None = None
+    runtime: ViewRuntimeConfig | None = None
     components: list[ViewComponent] | None = None
+
+
+class UIShellTab(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+
+    id: str
+    label: str
+    path: str
+
+
+class UIShellSystem(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+
+    id: str
+    label: str
+    default: bool = False
+    route_path: str
+    view: ViewConfiguration
+
+
+class UIShellResponse(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+
+    schema_version: str = 'v1'
+    generated_at: str
+    home: UIShellTab
+    systems: list[UIShellSystem]

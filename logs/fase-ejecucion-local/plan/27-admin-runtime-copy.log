@@ -1,0 +1,15 @@
+Objetivo de la subtarea
+- Alinear la vista de ADMIN con el comportamiento real en runtime sin tocar contratos ni flujo de datos.
+
+Que cambio
+- Se actualizo el copy principal para indicar que el ADMIN crea y edita vistas en runtime.
+- Se sustituyo el bloque "Como dar de alta un sistema" por una explicacion de runtime.
+- Se dejo explicito que los datos de cada sistema se cargan al entrar en su monitor, no al levantar la shell.
+- Se ajusto la ayuda del campo `caso_de_uso` para indicar que la vista queda disponible al navegar a ese sistema.
+
+Ficheros tocados
+- monitorizacion-ia-front/packages/shell/src/features/admin/pages/AdminViews.page.tsx
+
+Comandos ejecutados + resultado
+- `./node_modules/.bin/tsc --noEmit -p tsconfig.json` en `monitorizacion-ia-front/packages/shell`: OK
+- `npm run build` en `monitorizacion-ia-front/packages/shell`: OK (`webpack compiled successfully`)

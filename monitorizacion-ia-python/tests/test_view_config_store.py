@@ -38,3 +38,35 @@ def test_view_store_semantic_validation_rejects_invalid_component(tmp_path: Path
             enabled=True,
             components=[{'id': 'bad', 'type': 'cards', 'title': 'bad', 'data_source': '/dashboard', 'position': 0}],
         )
+
+
+def test_view_store_accepts_nested_layout_components(tmp_path: Path):
+    storage = tmp_path / 'view_configs.json'
+    storage.write_text('[]', encoding='utf-8')
+
+    store = ViewConfigStore(str(storage))
+    payload = ViewConfigCreate(
+        id='vista-layout',
+        name='Vista Layout',
+        system='hipotecas',
+        enabled=True,
+        components=[
+            {
+                'id': 'layout-root',
+                'type': 'stack',
+                'title': 'Layout',
+                'data_source': '/none',
+                'position': 0,
+                'children': [
+                    {'id': 'cards', 'type': 'cards', 'title': 'KPIs', 'data_source': '/cards', 'position': 0},
+                    {'id': 'table', 'type': 'table', 'title': 'Tabla', 'data_source': '/dashboard', 'position': 1},
+                ],
+            }
+        ],
+    )
+
+    created = store.create(payload)
+
+    assert created.components[0].type == 'stack'
+    assert created.components[0].children is not None
+    assert len(created.components[0].children) == 2

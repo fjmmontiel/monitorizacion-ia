@@ -20,11 +20,6 @@ BACK_LOG_FILE="${RUNTIME_LOG_DIR}/back.log"
 
 mkdir -p "${RUNTIME_LOG_DIR}" "${PID_DIR}"
 
-
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
 has_cmd() {
   command -v "$1" >/dev/null 2>&1
 }
@@ -43,33 +38,6 @@ get_listener_info() {
     netstat -an 2>/dev/null | grep -E "[\\.:]${port}[[:space:]].*LISTEN"
     return
   fi
-=======
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-get_listener_info() {
-  local port="$1"
-  if command -v lsof >/dev/null 2>&1; then
-    lsof -nP -iTCP:"${port}" -sTCP:LISTEN 2>/dev/null
-    return
-  fi
-  if command -v ss >/dev/null 2>&1; then
-    ss -ltnp "sport = :${port}" 2>/dev/null
-    return
-  fi
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
   return 1
 }
 
@@ -99,37 +67,33 @@ is_port_listening() {
 
 listener_pid() {
   local port="$1"
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
   if has_cmd lsof; then
     lsof -nP -iTCP:"${port}" -sTCP:LISTEN -t 2>/dev/null | head -n 1
   elif has_cmd ss; then
     ss -ltnp "sport = :${port}" 2>/dev/null | awk -F"pid=" "NR==2{print \\$2}" | cut -d, -f1
   else
     echo "unknown"
-=======
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-  if command -v lsof >/dev/null 2>&1; then
-    lsof -nP -iTCP:"${port}" -sTCP:LISTEN -t 2>/dev/null | head -n 1
-  elif command -v ss >/dev/null 2>&1; then
-    ss -ltnp "sport = :${port}" 2>/dev/null | awk -F"pid=" "NR==2{print \\$2}" | cut -d, -f1
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
+  fi
+}
+
+free_port() {
+  local port="$1"
+  local service_name="$2"
+  local pid
+
+  pid="$(listener_pid "${port}")"
+  if [ -z "${pid}" ] || [ "${pid}" = "unknown" ]; then
+    return 0
+  fi
+
+  echo "Freeing ${service_name} port ${port} (pid=${pid})"
+  pkill -TERM -P "${pid}" >/dev/null 2>&1 || true
+  kill -TERM "${pid}" >/dev/null 2>&1 || true
+  sleep 1
+
+  if is_pid_alive "${pid}"; then
+    pkill -KILL -P "${pid}" >/dev/null 2>&1 || true
+    kill -9 "${pid}" >/dev/null 2>&1 || true
   fi
 }
 

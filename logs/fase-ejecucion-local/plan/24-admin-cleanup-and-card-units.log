@@ -1,0 +1,21 @@
+Objetivo de la subtarea
+- Limpiar visualmente el Admin de vistas sin tocar su lógica de persistencia y eliminar la unidad duplicada bajo las cards formateadas.
+
+Qué cambió
+- Se simplificó la cabecera del Admin para dejar como foco el JSON principal.
+- La ayuda de alta de sistemas pasó a un bloque `details`, plegado por defecto.
+- El listado de sistemas backend quedó resumido en una sola línea.
+- Se redujo el ruido del formulario: texto más corto, textarea principal algo más compacto.
+- El `Constructor rápido` pasó a un bloque `details`, plegado por defecto, para no ocupar espacio si no se usa.
+- En `CardsGrid` se eliminó la línea inferior que repetía `s`, `%`, etc. cuando el valor ya estaba formateado y visible en negrita.
+
+Ficheros tocados
+- monitorizacion-ia-front/packages/shell/src/features/admin/pages/AdminViews.page.tsx
+- monitorizacion-ia-front/packages/shell/src/features/monitor/components/CardsGrid/CardsGrid.tsx
+- logs/fase-ejecucion-local/plan/24-admin-cleanup-and-card-units.log
+
+Comandos ejecutados + resultado
+- `packages/shell/node_modules/.bin/tsc --noEmit -p packages/shell/tsconfig.json`: OK.
+- `npm run build` en `monitorizacion-ia-front/packages/shell`: OK, `webpack compiled successfully`.
+- Captura Admin: `logs/fase-ejecucion-local/runtime/admin-cleaned.png`.
+- Captura Monitor: `logs/fase-ejecucion-local/runtime/cards-no-duplicate-unit.png`.

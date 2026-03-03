@@ -1,115 +1,119 @@
-<h1>iagmvps-front-atencion-cliente</h1>
+# monitorizacion-ia-front
 
-- [Introducción](#introducción)
-- [Documentación](#documentación)
-  - [Nueva Arquitectura](#nueva-arquitectura)
-    - [Storybook](#storybook)
-- [Requisitos Previos](#requisitos-previos)
-  - [Node 16+](#node-16)
-  - [NPM 8+](#npm-8)
-- [Instalación](#instalación)
-  - [Repositorio](#repositorio)
-- [Utilización](#utilización)
-  - [Uso con mocks locales](#uso-con-mocks-locales)
-  - [Uso con entronos de desarrollo](#uso-con-entornos-de-desarrollo)
-- [Principales librerías y herramientas utilizadas](#principales-librerías-y-herramientas-utilizadas)
-  - [React](#react)
-  - [TypeScript](#typescript)
-  - [styled-components](#styled-components)
-  - [Jest](#jest)
-  - [React Testing Library](#react-testing-library)
+Monorepo frontend del monitor. Su objetivo es empaquetar la shell runtime y las piezas auxiliares para desarrollo, build y pruebas.
 
-# Introducción
+El runtime principal esta en `packages/shell`, pero el repositorio incluye tambien una libreria compartida y un workspace de Cypress.
 
-El proyecto ha sido creado con una arquitectura de [Monorepo](https://monorepo.tools/), utilizando [NPM Workspaces](https://docs.npmjs.com/cli/v8/using-npm/workspaces) y [Lerna](https://lerna.js.org/) para gestión de dependencias entre los módulos del monorepo.
+## Estructura
+- [packages/shell](/Users/usuario/personal/monitorizacion-ia/monitorizacion-ia-front/packages/shell/README.md): aplicacion React que renderiza Home, monitor y admin.
+- [packages/shared-library](/Users/usuario/personal/monitorizacion-ia/monitorizacion-ia-front/packages/shared-library): utilidades compartidas entre paquetes; hoy expone hooks comunes.
+- [cypress](/Users/usuario/personal/monitorizacion-ia/monitorizacion-ia-front/cypress): soporte de pruebas E2E/funcionales del workspace.
 
-# Documentación
+## Que soporta este monorepo
+- Workspaces npm para aislar paquetes.
+- Orquestacion con `lerna` para ejecutar scripts por paquete.
+- Build y start por perfiles (`development`, `integration`, `production` y variantes).
+- Mock server local con Mockoon para escenarios funcionales y E2E del workspace.
+- Predeploy que consolida el artefacto final partiendo de `packages/shell`.
 
-La documentación para saber más acerca de la estructura de la aplicación leer la documentación en el [Portal del Desarrollador](https://storybookarq.unicajabanco.es/). En ella se provee la documentación actualmente de la librería de componententes de la nueva arquitectura de Unicaja, de la cual se sustenta esta aplicación.
+## Requisitos
+- Node `>=18`
+- npm `>=8`
 
-## Nueva Arquitectura
+## Scripts principales
+### Desarrollo
+- `npm run start`: arranca todos los paquetes que implementan `start`.
+- `npm run start:development`
+- `npm run start:integration`
+- `npm run start:production`
+- `npm run start:mock`: levanta Mockoon y el runtime.
 
-La documentación de la librería de componententes de la nueva arquitectura de Unicaja, puede ser consultada [Portal del Desarrollador](https://storybookarq.unicajabanco.es/). Sus componentes son las principales herramientas para la configuración de las funcionalidades de esta aplicación. Para ello es preciso visualizar el storybook del proyecto de nueva arquitectura para su idoneidad respecto al diseño del proyecto.
+### Calidad
+- `npm run typecheck`
+- `npm run lint`
+- `npm run test`
+- `npm run complete-check`
 
-### [Storybook](https://storybook.js.org/)
+### Build
+- `npm run build`
+- `npm run build:development`
+- `npm run build:integration`
+- `npm run build:production`
+- `npm run predeploy`
 
-Entorno de desarrollo para componentes de interfaz de usuario. Le permite explorar una biblioteca de componentes, ver los diferentes estados de cada componente y desarrollar y probar componentes de forma interactiva. [Storybook de la Nueva Arquitectura](https://storybookarq.unicajabanco.es/)
+### Testing con Cypress
+- `npm run cypress:functional`
+- `npm run cypress:e2e`
+- `npm run cypress:report`
 
-# Requisitos Previos
-
-Para la correcta utilización de la aplicación es necesario tener instaladas las siguientes herramientas:
-
-## [Node 18+](https://nodejs.org/)
-
-Un entorno de ejecución multiplataforma de código abierto para la capa del servidor basado en el lenguaje de programación JavaScript, asíncrono, con E/S de datos en una arquitectura dirigida por eventos y basado en el motor V8 de Node.js.
-
-## [NPM 8+](https://docs.npmjs.com/)
-
-Package manager para la plataforma Node JavaScript.
-
-# Instalación
-
-## Repositorio
-
-Es preciso estar registrado al repositorio de la arquitectura de componentes https://central.unicaja.es/artifactory/webapp/#/home y obtener a traves de npm-repository
-la información que acceso de nuestro usuario para ser seteada en el archivo .npmrc de nuestro equipo. Para ello es preciso seguir la guía de descarga de dependencias: https://devops.unicaja.es/confluence/pages/viewpage.action?spaceKey=DO&title=%5BNPM%5D+Descarga+de+dependencias
-
-# Utilización
-
-```sh
-> npm install
+## Arranque como desarrollador
+### Instalar dependencias del monorepo
+```bash
+cd /Users/usuario/personal/monitorizacion-ia/monitorizacion-ia-front
+npm install
 ```
 
-```sh
-> npm run build
+### Trabajar solo con la shell
+```bash
+cd /Users/usuario/personal/monitorizacion-ia/monitorizacion-ia-front/packages/shell
+npm install --workspaces=false
+npm run start
 ```
 
-## Uso con mocks locales
-
-Para el uso de mocks locales es preciso tener instalado [Mockoon](https://mockoon.com/) para simular la gestión de las peticiones API. Sobre esta aplicación se debe incluir el archivo provisto en el repositorio de Nueva Arquitectura llamado `mockoon.json` o iniciar Mockoon en linea de comando:
-
-```sh
-> npm run start:mockoon
+### Flujo integrado recomendado
+```bash
+cd /Users/usuario/personal/monitorizacion-ia
+make run
 ```
 
-```sh
-> sudo vim /etc/hosts
-127.0.0.1      localhost
-#127.0.0.1 featurepru20.unicajabanco.es
-> npm run start
+## Como se integra con el backend
+- La shell resuelve `MONITOR_API_BASE_URL` por entorno.
+- Consume `GET /ui/shell` para descubrir sistemas y vistas.
+- Consume `POST /cards`, `POST /dashboard` y `POST /dashboard_detail` para poblar el monitor.
+- Consume `/admin/view-configs` para la consola administrativa.
+
+La capa de API y contratos vive en `packages/shell/src/shared`.
+
+## Perfiles y entornos
+La shell incluye archivos `.env` para:
+- `.env.mock`
+- `.env.development`
+- `.env.integration`
+- `.env.preproduction`
+- `.env.production`
+
+`packages/shell` selecciona el perfil adecuado con `dotenv-cli` segun el script que ejecutes.
+
+## Artefacto generado
+- El build de `packages/shell` deja salida en `packages/shell/build`.
+- `npm run predeploy` agrega los `build` de paquetes relevantes en un unico directorio `build/` del monorepo.
+
+## Desarrollo de nuevos cambios
+### Cambios en runtime
+- Trabaja en `packages/shell`.
+- Ajusta contratos en `packages/shell/src/shared/contracts`.
+- Mantiene alineado el backend con el contrato JSON esperado.
+
+### Cambios compartidos
+- Publica utilidades comunes en `packages/shared-library`.
+- Ejecuta `npm run typecheck` y, si aplica, `npm run test`.
+
+### Cambios de configuracion declarativa
+- El origen funcional esta en el backend.
+- La shell interpreta configuracion; no debe duplicar catalogos ni vistas como fuente primaria.
+
+## Verificacion recomendada
+```bash
+cd /Users/usuario/personal/monitorizacion-ia/monitorizacion-ia-front
+npm run typecheck
 ```
 
-## Uso con entronos de desarrollo
-
-```sh
-> sudo vim /etc/hosts
-127.0.0.1 localhost
-127.0.0.1 featurepru20.unicajabanco.es
-> npm run start
+```bash
+cd /Users/usuario/personal/monitorizacion-ia
+make smoke
+make e2e
 ```
 
-# Principales librerías y herramientas utilizadas
-
-## [React](https://reactjs.org/)
-
-Una biblioteca de JavaScript para crear interfaces de usuario.
-
-## [TypeScript](https://www.typescriptlang.org/)
-
-La librería fue escrita utilizando TypeScript, pero Typescript no es un prerrequisito para la utilización del la librería pues esa se publica como modules Javascript.
-
-## [styled-components](https://styled-components.com/)
-
-Un framework CSS-in-JS que permite escribir CSS dentro de JavaScript.
-
-## [Jest](https://jestjs.io/)
-
-JavaScript Testing Framework.
-
-## [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
-
-Solución ligera para probar componentes React.
-
-## [Mockoon](https://mockoon.com/)
-
-Gestión de test y mocks para APIs
+## Referencias
+- [README raiz](/Users/usuario/personal/monitorizacion-ia/README.md)
+- [README de packages/shell](/Users/usuario/personal/monitorizacion-ia/monitorizacion-ia-front/packages/shell/README.md)

@@ -16,18 +16,20 @@ export const queryRequestSchema = z.object({
   limit: z.number().int().positive().optional(),
 });
 
-const cardSchema = z.object({
+export const cardSchema = z.object({
   title: z.string(),
-  subtitle: z.string().optional(),
+  subtitle: z.string().nullable().optional(),
   value: z.union([z.string(), z.number()]),
   format: z.enum(['seconds', 'percent', 'currencyEUR', 'int', 'float']).optional(),
+  unit: z.string().nullable().optional(),
+  variant: z.enum(['neutral', 'positive', 'warning', 'danger']).optional(),
 });
 
 const tableColumnSchema = z.object({
   key: z.string(),
   label: z.string(),
-  filterable: z.boolean().optional(),
-  sortable: z.boolean().optional(),
+  filterable: z.boolean().nullable().optional(),
+  sortable: z.boolean().nullable().optional(),
 });
 
 const tableRowSchema = z
@@ -40,14 +42,14 @@ const tableRowSchema = z
   .and(z.record(z.string(), z.unknown()));
 
 export const cardsResponseSchema = z.object({
-  cards: z.array(cardSchema),
+  cards: z.array(z.unknown()),
 });
 
 export const dashboardResponseSchema = z.object({
   table: z.object({
     columns: z.array(tableColumnSchema),
     rows: z.array(tableRowSchema),
-    nextCursor: z.string().optional(),
+    nextCursor: z.string().nullable().optional(),
   }),
 });
 
@@ -81,6 +83,7 @@ export const dashboardDetailResponseSchema = z.object({
 
 const datopsUseCaseSchema = z.object({
   id: z.string(),
+  label: z.string(),
   adapter: z.string(),
   timeout_ms: z.number().int().positive(),
   upstream_base_url: z.string().nullable().optional(),
@@ -98,85 +101,71 @@ export const datopsOverviewResponseSchema = z.object({
   use_cases: z.array(datopsUseCaseSchema),
 });
 
-const cardsComponentSchema = z.object({
-  id: z.string().min(1),
-  type: z.literal('cards'),
-  title: z.string().min(1),
-  data_source: z.literal('/cards'),
-  position: z.number().int().nonnegative(),
-  config: z.object({
-    max_cards: z.number().int().positive().max(10).optional(),
-    columns: z.number().int().positive().max(6).optional(),
-  }).optional(),
+const viewRuntimeSchema = z.object({
+  adapter: z.literal('http_proxy'),
+  upstream_base_url: z.string().min(1),
 });
 
-const tableComponentSchema = z.object({
-  id: z.string().min(1),
-  type: z.literal('table'),
-  title: z.string().min(1),
-  data_source: z.literal('/dashboard'),
-  position: z.number().int().nonnegative(),
-  config: z.object({
-    visible_columns: z.array(z.string().min(1)).max(20).optional(),
-    required_columns: z.array(z.string().min(1)).max(10).optional(),
-  }).optional(),
-});
+export type ViewComponent = {
+  id: string;
+  type: 'cards' | 'table' | 'detail' | 'chart' | 'text' | 'stack' | 'split';
+  title: string;
+  data_source: string;
+  position: number;
+  config?: Record<string, unknown> | null;
+  children?: ViewComponent[] | null;
+};
 
-const detailComponentSchema = z.object({
-  id: z.string().min(1),
-  type: z.literal('detail'),
-  title: z.string().min(1),
-  data_source: z.enum(['/dashboard_detail', '/none']),
-  position: z.number().int().nonnegative(),
-  config: z.record(z.string(), z.unknown()).optional(),
-});
-
-const textComponentSchema = z.object({
-  id: z.string().min(1),
-  type: z.literal('text'),
-  title: z.string().min(1),
-  data_source: z.literal('/none'),
-  position: z.number().int().nonnegative(),
-  config: z.object({ text: z.string().max(3000).optional() }).optional(),
-});
-
-const chartComponentSchema = z.object({
-  id: z.string().min(1),
-  type: z.literal('chart'),
-  title: z.string().min(1),
-  data_source: z.enum(['/dashboard', '/cards', '/none']),
-  position: z.number().int().nonnegative(),
-  config: z.object({
-    height: z.number().int().positive().max(700).optional(),
-    color: z.string().min(3).max(30).optional(),
-  }).optional(),
-});
-
-export const viewComponentSchema = z.discriminatedUnion('type', [
-  cardsComponentSchema,
-  tableComponentSchema,
-  detailComponentSchema,
-  textComponentSchema,
-  chartComponentSchema,
-]);
+export const viewComponentSchema: z.ZodType<ViewComponent> = z.lazy(() =>
+  z.object({
+    id: z.string().min(1),
+    type: z.enum(['cards', 'table', 'detail', 'chart', 'text', 'stack', 'split']),
+    title: z.string().min(1),
+    data_source: z.string().min(1),
+    position: z.number().int().nonnegative(),
+    config: z.record(z.string(), z.unknown()).nullable().optional(),
+    children: z.array(viewComponentSchema).nullable().optional(),
+  }),
+);
 
 export const viewConfigurationSchema = z.object({
   id: z.string().min(1),
   name: z.string().min(1),
   system: z.string().min(1),
   enabled: z.boolean(),
+  runtime: viewRuntimeSchema.nullable().optional(),
   components: z.array(viewComponentSchema).min(1).max(20),
 });
 
 export const viewConfigurationListSchema = z.array(viewConfigurationSchema);
 
+export const uiShellResponseSchema = z.object({
+  schema_version: z.string(),
+  generated_at: z.string(),
+  home: z.object({
+    id: z.string(),
+    label: z.string(),
+    path: z.string(),
+  }),
+  systems: z.array(
+    z.object({
+      id: z.string(),
+      label: z.string(),
+      default: z.boolean(),
+      route_path: z.string(),
+      view: viewConfigurationSchema,
+    }),
+  ),
+});
+
 export type QueryRequest = z.infer<typeof queryRequestSchema>;
+export type CardItem = z.infer<typeof cardSchema>;
 export type CardsResponse = z.infer<typeof cardsResponseSchema>;
 export type DashboardResponse = z.infer<typeof dashboardResponseSchema>;
 export type DashboardDetailResponse = z.infer<typeof dashboardDetailResponseSchema>;
 export type DatopsOverviewResponse = z.infer<typeof datopsOverviewResponseSchema>;
-export type ViewComponent = z.infer<typeof viewComponentSchema>;
 export type ViewConfiguration = z.infer<typeof viewConfigurationSchema>;
+export type UIShellResponse = z.infer<typeof uiShellResponseSchema>;
 
 export type NormalizedApiErrorCode =
   | 'UNKNOWN_USE_CASE'

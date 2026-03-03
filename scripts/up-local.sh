@@ -6,14 +6,13 @@ source "$(cd "$(dirname "$0")" && pwd)/common.sh"
 require_cmd curl
 require_cmd npm
 
+free_port "${BACK_PORT}" "backend"
+rm -f "${BACK_PID_FILE}"
+
 BACK_PID="$(read_pid_file "${BACK_PID_FILE}")"
 if [ -n "${BACK_PID}" ] && is_pid_alive "${BACK_PID}"; then
   echo "Backend already running (pid=${BACK_PID})"
 else
-  if is_port_listening "${BACK_PORT}"; then
-    echo "Port ${BACK_PORT} is already in use by pid $(listener_pid "${BACK_PORT}")" >&2
-    exit 1
-  fi
   echo "Starting backend on port ${BACK_PORT}"
   start_backend
 fi
@@ -24,14 +23,13 @@ if ! wait_http_ok "http://127.0.0.1:${BACK_PORT}/health"; then
   exit 1
 fi
 
+free_port "${FRONT_PORT}" "frontend"
+rm -f "${FRONT_PID_FILE}"
+
 FRONT_PID="$(read_pid_file "${FRONT_PID_FILE}")"
 if [ -n "${FRONT_PID}" ] && is_pid_alive "${FRONT_PID}"; then
   echo "Frontend already running (pid=${FRONT_PID})"
 else
-  if is_port_listening "${FRONT_PORT}"; then
-    echo "Port ${FRONT_PORT} is already in use by pid $(listener_pid "${FRONT_PORT}")" >&2
-    exit 1
-  fi
   echo "Starting frontend on port ${FRONT_PORT}"
   start_front
 fi

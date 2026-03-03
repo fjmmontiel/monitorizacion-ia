@@ -1,222 +1,107 @@
-# Monitorización IA — Estado actual y guía de uso/escalado
+# Monitorizacion IA
 
-Este repositorio implementa un **monitor frontend configurable por JSON** y un **backend orquestador mínimo** que enruta por `caso_de_uso` y sirve datos mock desde JSON locales.
+Repositorio de referencia para un monitor declarativo de operaciones IA.
 
----
+La solucion esta separada en dos piezas runtime:
+- un backend FastAPI que orquesta datos, vistas y routing por `caso_de_uso`
+- un frontend React que consume `GET /ui/shell` y renderiza Home, monitor y admin sin hardcodes por sistema
 
-## 1) Estado actual (resumen ejecutivo)
+La idea central es simple: el backend decide que sistemas existen, que vista tiene cada uno y de donde salen los datos; el frontend solo interpreta ese contrato y lo pinta.
 
-- **Frontend (shell React)**
-  - Home con navegación a sistemas/casos de uso.
-  - Monitor con render dinámico por componentes (`cards`, `table`, `text`, `chart`) definidos en configuración de vistas.
-  - Detalle por fila con layout compuesto **60/40**:
-    - Conversación (60%).
-    - Panel fijo (40%) con productos/servicios e información contextual.
-  - Página **Admin** con CRUD de vistas para crear composiciones sin tocar código.
+## Microservicios y paquetes
+- [Backend orquestador](/Users/usuario/personal/monitorizacion-ia/monitorizacion-ia-python/README.md): API FastAPI con adapters `native` y `http_proxy`, configuracion de vistas y mocks locales.
+- [Frontend monorepo](/Users/usuario/personal/monitorizacion-ia/monitorizacion-ia-front/README.md): workspace con la shell runtime, libreria compartida y soporte de Cypress.
+- [Shell frontend](/Users/usuario/personal/monitorizacion-ia/monitorizacion-ia-front/packages/shell/README.md): aplicacion React que renderiza `/home`, `/monitor` y `/admin`.
 
-- **Backend (FastAPI)**
-  - API principal de monitor:
-    - `POST /cards`
-    - `POST /dashboard`
-    - `POST /dashboard_detail`
-  - API Admin para vistas:
-    - `GET/POST/PUT/DELETE /admin/view-configs`
-  - Persistencia de vistas en JSON local (`view_configs.json`).
-  - Datos de negocio mock por sistema en JSON local:
-    - `cards.json`
-    - `dashboard.json`
-    - `dashboard_detail.json`
+## Que soporta hoy
+- Navegacion dinamica por sistemas desde backend.
+- Vistas declarativas persistidas en JSON y editables en runtime desde `/admin`.
+- Resolucion de datos por `caso_de_uso` mediante mock local (`native`) o proxy HTTP (`http_proxy`).
+- Componentes de vista soportados: `cards`, `table`, `detail`, `chart`, `text`, `stack`, `split`.
+- Inventario DatOps para descubrir sistemas, adapter activo, timeout y rutas operativas.
+- Filtros de monitor por query string (`timeRange`, `search`, `limit`, `gestor`, `telefono_cliente`, `resolucion`, `fecha`).
 
-- **Objetivo cubierto**
-  - Arquitectura mínima y mantenible.
-  - Nuevos sistemas/vistas añadibles por configuración.
-  - Contrato JSON flexible para variar número de cards y columnas de tabla por vista.
+## Flujo funcional
+1. El frontend carga `GET /ui/shell`.
+2. El backend devuelve Home, sistemas disponibles y la `ViewConfiguration` activa de cada sistema.
+3. Al entrar en `/monitor?caso_de_uso=<id>`, la shell llama a `/cards`, `/dashboard` y `/dashboard_detail`.
+4. El backend resuelve cada operacion con `NativeAdapter` (JSON local) o `HttpProxyAdapter` (upstream).
+5. La vista se compone en cliente segun el arbol de componentes recibido.
 
----
+## Fuentes de verdad
+- Catalogo generable: [config/catalog/monitor_catalog.json](/Users/usuario/personal/monitorizacion-ia/config/catalog/monitor_catalog.json)
+- Casos de uso backend: [monitorizacion-ia-python/src/orchestrator/config/use_cases.yaml](/Users/usuario/personal/monitorizacion-ia/monitorizacion-ia-python/src/orchestrator/config/use_cases.yaml)
+- Vistas persistidas en runtime: [monitorizacion-ia-python/src/orchestrator/config/view_configs.json](/Users/usuario/personal/monitorizacion-ia/monitorizacion-ia-python/src/orchestrator/config/view_configs.json)
+- Datos mock locales: [monitorizacion-ia-python/src/orchestrator/data](/Users/usuario/personal/monitorizacion-ia/monitorizacion-ia-python/src/orchestrator/data)
+- Configuracion derivada en frontend: [monitorizacion-ia-front/packages/shell/src/shared/config](/Users/usuario/personal/monitorizacion-ia/monitorizacion-ia-front/packages/shell/src/shared/config)
 
-## 2) Estructura del proyecto
+## Sistemas y vistas incluidas
+- Sistemas visibles por vista habilitada: `hipotecas`, `prestamos`, `seguros`.
+- Catalogo sincronizado actualmente: `hipotecas` y `prestamos`.
+- Vista base habilitada: `operativa`.
 
-```text
-.
-├─ monitorizacion-ia-front/
-│  └─ packages/shell/                # Frontend principal (React)
-├─ monitorizacion-ia-python/
-│  └─ src/orchestrator/              # Backend FastAPI + adapters + datos JSON
-├─ scripts/                          # Scripts de arranque/parada/smoke/e2e
-├─ docs/qa/                          # Guías QA/UAT
-├─ Makefile                          # Comandos unificados
-└─ README.md                         # Este documento
+`seguros` ya tiene mocks y una vista activa en `view_configs.json`, aunque no forma parte del catalogo generado por [scripts/catalog_manager.py](/Users/usuario/personal/monitorizacion-ia/scripts/catalog_manager.py).
+
+## Arranque local
+```bash
+cd /Users/usuario/personal/monitorizacion-ia
+make run
 ```
 
----
+Comandos utiles:
+- `make install`: instala backend y frontend local.
+- `make sync-config`: regenera config de backend y frontend desde el catalogo.
+- `make up`: levanta backend y shell sin reinstalar.
+- `make stop`: para ambos procesos.
+- `make logs`: muestra logs runtime.
+- `make show-config`: lista sistemas, vistas y URL base de ejemplo.
 
-## 3) Arquitectura funcional
+## URLs locales
+- Home: `http://127.0.0.1:3100/home`
+- Monitor: `http://127.0.0.1:3100/monitor?caso_de_uso=hipotecas`
+- Admin: `http://127.0.0.1:3100/admin`
+- Backend health: `http://127.0.0.1:8002/health`
+- UI shell contract: `http://127.0.0.1:8002/ui/shell`
+- DatOps overview: `http://127.0.0.1:8002/datops/overview`
 
-### Frontend
+## Desarrollo y extension
+### Anadir un sistema
+1. Registra el sistema en [config/catalog/monitor_catalog.json](/Users/usuario/personal/monitorizacion-ia/config/catalog/monitor_catalog.json) o usa `make add-system`.
+2. Ejecuta `make sync-config`.
+3. Crea `cards.json`, `dashboard.json` y `dashboard_detail.json` en `monitorizacion-ia-python/src/orchestrator/data/<nuevo>/`.
+4. Crea o habilita una vista para ese `caso_de_uso` en `/admin` o en `view_configs.json`.
+5. Verifica que aparece una nueva pestaña en `/home` y carga en `/monitor`.
 
-1. El usuario entra en Home y selecciona sistema.
-2. Monitor carga la vista activa (`/admin/view-configs?system=...&enabled=true`).
-3. Se renderizan componentes según contrato JSON y `position`.
-4. `cards` y `table` consumen backend por `caso_de_uso`.
-5. Al abrir detalle de una fila, se carga `dashboard_detail` y se pinta el layout 60/40.
+### Anadir o cambiar una vista
+- Edita [monitorizacion-ia-python/src/orchestrator/config/view_configs.json](/Users/usuario/personal/monitorizacion-ia/monitorizacion-ia-python/src/orchestrator/config/view_configs.json) o usa `/admin`.
+- Mantiene el contrato `ViewConfiguration` del backend.
+- Usa `stack` y `split` para composicion; usa `cards`, `table`, `text`, `chart` y `detail` como nodos de negocio.
 
-### Backend
+### Cambiar el origen de datos
+- `native`: lee JSON local desde `data/<caso_de_uso>/`.
+- `http_proxy`: la vista define `runtime.upstream_base_url` y el backend reenvia las llamadas.
 
-1. Recibe petición con `caso_de_uso`.
-2. `AdapterRegistry` resuelve el adapter configurado para ese caso.
-3. Adapter nativo lee JSON local del sistema.
-4. Devuelve respuesta bajo contrato (cards/dashboard/detail).
-5. API Admin persiste configuraciones de vistas en JSON local.
-
----
-
-## 4) Contratos de configuración de vistas
-
-Cada vista define componentes ordenados por `position`.
-
-Ejemplo base:
-
-```json
-{
-  "id": "vista-hipotecas-5-cards",
-  "name": "Hipotecas · 5 KPIs",
-  "system": "hipotecas",
-  "enabled": true,
-  "components": [
-    {
-      "id": "cards-hipo-5",
-      "type": "cards",
-      "title": "KPIs Hipotecas (5)",
-      "data_source": "/cards",
-      "position": 0,
-      "config": { "max_cards": 5, "columns": 5 }
-    },
-    {
-      "id": "table-hipo",
-      "type": "table",
-      "title": "Conversaciones Hipotecas",
-      "data_source": "/dashboard",
-      "position": 1,
-      "config": {
-        "required_columns": ["detail"],
-        "visible_columns": ["fecha_hora", "nombre_cliente", "razones_llamada", "resolucion", "detail"]
-      }
-    }
-  ]
-}
+## Verificacion recomendada
+```bash
+cd /Users/usuario/personal/monitorizacion-ia/monitorizacion-ia-python
+source .venv/bin/activate && pytest -q
 ```
-
-### Reglas actuales por tipo
-
-- `cards`
-  - `config.max_cards` (opcional)
-  - `config.columns` (opcional)
-- `table`
-  - `config.visible_columns` (opcional)
-  - `config.required_columns` (opcional, por defecto `detail`)
-- `text`
-  - `config.text`
-- `chart`
-  - `config.height`
-  - `config.color`
-
----
-
-## 5) Puesta en marcha local
-
-### Opción recomendada (todo preparado)
 
 ```bash
-make setup-env
-make up
-```
-
-URLs por defecto:
-- Front: `http://127.0.0.1:3100/monitor?caso_de_uso=hipotecas`
-- Back: `http://127.0.0.1:8002/health`
-
-### Operaciones útiles
-
-```bash
-make stop
-make restart
-make status
-make logs
-make show-config
-```
-
----
-
-## 6) Validación y pruebas
-
-### Backend
-
-```bash
-cd monitorizacion-ia-python
-PYTHONPATH=src pytest -q
-```
-
-### Frontend (tipado)
-
-```bash
-cd monitorizacion-ia-front/packages/shell
+cd /Users/usuario/personal/monitorizacion-ia/monitorizacion-ia-front
 npm run typecheck
 ```
 
-### Smoke y E2E del repositorio
-
 ```bash
+cd /Users/usuario/personal/monitorizacion-ia
 make smoke
 make e2e
 ```
 
-> Nota: si `make smoke` falla por tiempos/arranque del entorno, revisar logs (`make logs`) y volver a ejecutar con stack previamente levantado.
+## Logs
+- Front runtime: `logs/fase-ejecucion-local/runtime/front.log`
+- Back runtime: `logs/fase-ejecucion-local/runtime/back.log`
 
----
-
-## 7) Cómo escalar: alta de un nuevo sistema (backend + frontend)
-
-### Paso A — Backend
-
-1. Añadir nuevo `use_case` en `monitorizacion-ia-python/src/orchestrator/config/dev.yaml`.
-2. Crear carpeta:
-   - `monitorizacion-ia-python/src/orchestrator/data/<nuevo_sistema>/`
-3. Añadir JSON mínimos:
-   - `cards.json`
-   - `dashboard.json`
-   - `dashboard_detail.json`
-
-### Paso B — Frontend
-
-1. Registrar sistema en:
-   - `monitorizacion-ia-front/packages/shell/src/shared/config/use_cases.json`
-2. Crear vista desde Admin o precargarla en `view_configs.json`.
-
-### Paso C — QA funcional
-
-1. Abrir Home y comprobar que aparece el nuevo sistema.
-2. Abrir Monitor con `?caso_de_uso=<nuevo_sistema>`.
-3. Crear/editar vista en Admin y activar sus componentes.
-4. Validar detalle 60/40 por fila.
-
----
-
-## 8) Principios de mantenibilidad aplicados
-
-- Configuración por contrato JSON (sin hardcode de layouts).
-- Adapter registry inyectable y extensible.
-- Persistencia local simple para entornos de validación.
-- Componentes UI reutilizables con `config` declarativa.
-- Rutas backend compactas y reutilización de ejecución por operación.
-
----
-
-## 9) Roadmap recomendado (alto nivel)
-
-Las mejoras priorizadas del antiguo plan `evolution` ya están integradas en el código base (excepto autenticación, pospuesta por alcance):
-- validación semántica fuerte de vistas en backend/frontend,
-- persistencia JSON con escritura atómica y backup,
-- métricas in-memory de requests (`/metrics`) y trazas enriquecidas por adapter,
-- limitación de ritmo en endpoints administrativos,
-- contratos de configuración tipados por componente en frontend.
-
+## Documentacion complementaria
+- Ejecucion local: [docs/run/local.md](/Users/usuario/personal/monitorizacion-ia/docs/run/local.md)
+- Uso y extension: [docs/uso-y-extension.md](/Users/usuario/personal/monitorizacion-ia/docs/uso-y-extension.md)

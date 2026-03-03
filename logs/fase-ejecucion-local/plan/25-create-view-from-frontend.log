@@ -1,0 +1,27 @@
+Objetivo de la subtarea
+- Permitir dar de alta una vista nueva desde el frontend sin tener que escribir manualmente todo el JSON de componentes, manteniendo el backend actual que valida y persiste en `view_configs.json`.
+
+Qué cambió
+- Se añadió `buildDefaultViewComponents()` para generar una estructura base válida de vista (`stack` + `cards` + `table`).
+- En modo creación, si el JSON de componentes está vacío, el submit genera automáticamente esa estructura base antes de enviar el payload al backend.
+- Se añadió un botón explícito `Generar vista base` para precargar esa configuración desde el formulario.
+- Se mantuvo intacto el contrato actual del backend de creación: el frontend sigue enviando una `ViewConfiguration` completa y el backend la persiste en JSON como hasta ahora.
+- Se añadió un test unitario para la generación de la estructura base.
+
+Ficheros tocados
+- monitorizacion-ia-front/packages/shell/src/features/admin/pages/AdminViews.page.tsx
+- monitorizacion-ia-front/packages/shell/tests/features/admin/adminViews.spec.ts
+- logs/fase-ejecucion-local/plan/25-create-view-from-frontend.log
+
+Comandos ejecutados + resultado
+- `packages/shell/node_modules/.bin/tsc --noEmit -p packages/shell/tsconfig.json`: OK.
+- `npm run build` en `monitorizacion-ia-front/packages/shell`: OK, `webpack compiled successfully`.
+- Validación real en frontend (Chrome por DevTools):
+  - se rellenó `id`, `name`, `system`
+  - se pulsó `Generar vista base`
+  - se pulsó `Crear vista`
+  - resultado: `Vista vista-front-smoke-admin creada correctamente.`
+- Verificación de persistencia:
+  - `rg 'vista-front-smoke-admin' monitorizacion-ia-python/src/orchestrator/config/view_configs.json`: encontrado tras la creación
+  - `DELETE /admin/view-configs/vista-front-smoke-admin`: `204`
+  - verificación posterior: `REMOVED`

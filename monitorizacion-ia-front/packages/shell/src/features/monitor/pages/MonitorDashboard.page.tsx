@@ -5,16 +5,16 @@ import { CardsGrid } from '#/shell/features/monitor/components/CardsGrid/CardsGr
 import { DashboardDetail } from '#/shell/features/monitor/components/DashboardDetail/DashboardDetail';
 import { DynamicTable } from '#/shell/features/monitor/components/DynamicTable/DynamicTable';
 import { defaultMonitorStyle } from '#/shell/features/monitor/config/monitorStyle';
-import { resolveSystemLayout } from '#/shell/features/monitor/config/systemLayouts';
 import { MonitorApi } from '#/shell/shared/api/MonitorApi';
-import { resolveUseCase, useCasesConfig } from '#/shell/shared/config/useCases';
+import { ShellTabs } from '#/shell/shared/components/ShellTabs';
 import {
   CardsResponse,
   DashboardDetailResponse,
   DashboardResponse,
   MonitorApiError,
   QueryRequest,
-  ViewConfiguration,
+  UIShellResponse,
+  ViewComponent,
 } from '#/shell/shared/contracts/monitor.contracts';
 
 const normalizeErrorMessage = (error: unknown) => {
@@ -30,6 +30,8 @@ type SidebarFilters = {
   resolucion: string;
   fecha: string;
 };
+
+type DetailViewLayout = Record<string, unknown> | null;
 
 const emptySidebarFilters: SidebarFilters = { gestor: '', telefonoCliente: '', resolucion: '', fecha: '' };
 
@@ -75,10 +77,9 @@ const buildQueryFromSearchParams = (params: URLSearchParams): QueryRequest => {
   };
 };
 
-const buildMonitorUrl = (casoDeUso: string, query: QueryRequest, vista?: string) => {
+const buildMonitorUrl = (casoDeUso: string, query: QueryRequest) => {
   const params = new URLSearchParams();
   params.set('caso_de_uso', casoDeUso);
-  if (vista) params.set('vista', vista);
   if (query.timeRange) params.set('timeRange', query.timeRange);
   if (query.search) params.set('search', query.search);
   if (query.limit) params.set('limit', String(query.limit));
@@ -89,36 +90,44 @@ const buildMonitorUrl = (casoDeUso: string, query: QueryRequest, vista?: string)
   return `/monitor?${params.toString()}`;
 };
 
-const monitorLayoutCss = `.monitor-shell-grid{display:grid;grid-template-columns:280px minmax(0,1fr);gap:16px}.monitor-main-stack{display:grid;gap:12px}@media (max-width:1100px){.monitor-shell-grid{grid-template-columns:1fr}}`;
+const monitorLayoutCss = `
+  .monitor-shell-grid{display:grid;grid-template-columns:280px minmax(0,1fr);gap:16px}
+  .monitor-main-stack{display:grid;gap:12px}
+  .monitor-split{display:grid;gap:12px;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .monitor-split-single{grid-template-columns:1fr}
+  @media (max-width:1100px){
+    .monitor-shell-grid{grid-template-columns:1fr}
+    .monitor-split{grid-template-columns:1fr}
+  }
+`;
 
-const fallbackViewForUseCase = (casoDeUso: string): ViewConfiguration => ({
-  id: `${casoDeUso}-default`,
-  name: `Vista ${casoDeUso}`,
-  system: casoDeUso,
-  enabled: true,
-  components: [
-    { id: 'cards-main', type: 'cards', title: 'Resumen de cards', data_source: '/cards', position: 0 },
-    { id: 'table-main', type: 'table', title: 'Tabla operativa', data_source: '/dashboard', position: 1 },
+const defaultDetailView: DetailViewLayout = {
+  type: 'split',
+  children: [
+    { id: 'detail-conversation', type: 'detail_conversation', title: 'Conversación' },
+    { id: 'detail-panels', type: 'detail_panels', title: 'Datos' },
   ],
-});
+};
+
+const sortByPosition = <T extends { position: number }>(items: T[]) => [...items].sort((a, b) => a.position - b.position);
 
 const MonitorDashboardPage = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const styleConfig = defaultMonitorStyle;
 
+  const [shell, setShell] = useState<UIShellResponse | null>(null);
+  const [shellError, setShellError] = useState<string | null>(null);
+
   const [cards, setCards] = useState<CardsResponse | null>(null);
   const [dashboard, setDashboard] = useState<DashboardResponse | null>(null);
   const [detail, setDetail] = useState<DashboardDetailResponse | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedRowSnapshot, setSelectedRowSnapshot] = useState<Record<string, unknown> | null>(null);
+  const [activeDetailLayout, setActiveDetailLayout] = useState<DetailViewLayout>(defaultDetailView);
 
   const [query, setQuery] = useState<QueryRequest>(() => buildQueryFromSearchParams(searchParams));
   const [sidebarFilters, setSidebarFilters] = useState<SidebarFilters>(() => queryFiltersToSidebar(buildQueryFromSearchParams(searchParams).filters));
-  const [selectedUseCase, setSelectedUseCase] = useState<string | undefined>(undefined);
-
-  const [viewConfigs, setViewConfigs] = useState<ViewConfiguration[]>([]);
-  const [viewError, setViewError] = useState<string | null>(null);
 
   const [loadingCards, setLoadingCards] = useState(false);
   const [loadingDashboard, setLoadingDashboard] = useState(false);
@@ -128,80 +137,42 @@ const MonitorDashboardPage = () => {
   const [dashboardError, setDashboardError] = useState<string | null>(null);
   const [detailError, setDetailError] = useState<string | null>(null);
 
-  const casoDeUso = useMemo(() => {
-    try {
-      return resolveUseCase(searchParams.get('caso_de_uso'), selectedUseCase);
-    } catch {
-      return resolveUseCase(null, selectedUseCase);
+  const defaultSystemId = useMemo(() => {
+    const explicitDefault = shell?.systems.find(item => item.default);
+    return explicitDefault?.id ?? shell?.systems[0]?.id ?? '';
+  }, [shell]);
+
+  const requestedUseCase = searchParams.get('caso_de_uso') ?? '';
+  const casoDeUso = requestedUseCase || defaultSystemId;
+
+  const activeSystem = useMemo(() => {
+    if (!shell) {
+      return null;
     }
-  }, [searchParams, selectedUseCase]);
+    return shell.systems.find(item => item.id === casoDeUso) ?? shell.systems[0] ?? null;
+  }, [shell, casoDeUso]);
 
-  const selectedVista = searchParams.get('vista') ?? undefined;
-  const systemLayout = useMemo(() => resolveSystemLayout(casoDeUso), [casoDeUso]);
+  const activeView = activeSystem?.view ?? null;
 
-  const availableViews = useMemo(
-    () => viewConfigs.filter(item => item.enabled && item.system === casoDeUso).sort((a, b) => a.name.localeCompare(b.name)),
-    [viewConfigs, casoDeUso],
-  );
+  useEffect(() => {
+    const loadShell = async () => {
+      try {
+        setShell(await MonitorApi.getUIShell());
+        setShellError(null);
+      } catch (error) {
+        setShellError(normalizeErrorMessage(error));
+        setShell(null);
+      }
+    };
 
-  const activeView = useMemo(() => {
-    const selected = availableViews.find(item => item.id === selectedVista);
-    return selected ?? availableViews[0] ?? fallbackViewForUseCase(casoDeUso);
-  }, [availableViews, selectedVista, casoDeUso]);
+    void loadShell();
+  }, []);
 
-  const sortedActiveComponents = useMemo(
-    () => [...activeView.components].sort((a, b) => a.position - b.position),
-    [activeView],
-  );
-
-  const loadCards = async () => {
-    setLoadingCards(true);
-    setCardsError(null);
-    try { setCards(await MonitorApi.postCards(casoDeUso, query)); }
-    catch (error) { setCardsError(normalizeErrorMessage(error)); }
-    finally { setLoadingCards(false); }
-  };
-
-  const loadDashboard = async () => {
-    setLoadingDashboard(true);
-    setDashboardError(null);
-    try { setDashboard(await MonitorApi.postDashboard(casoDeUso, query)); }
-    catch (error) { setDashboardError(normalizeErrorMessage(error)); }
-    finally { setLoadingDashboard(false); }
-  };
-
-  const loadDetail = async (id: string) => {
-    setLoadingDetail(true);
-    setDetailError(null);
-    setSelectedId(id);
-    setSelectedRowSnapshot(dashboard?.table.rows.find(row => row.id === id) ?? null);
-    try { setDetail(await MonitorApi.postDashboardDetail(casoDeUso, id, query)); }
-    catch (error) { setDetailError(normalizeErrorMessage(error)); }
-    finally { setLoadingDetail(false); }
-  };
-
-  const loadViews = async () => {
-    try {
-      setViewConfigs(await MonitorApi.getViewConfigurations({ system: casoDeUso, enabled: true }));
-      setViewError(null);
-    } catch (error) {
-      setViewError(normalizeErrorMessage(error));
-      setViewConfigs([]);
+  useEffect(() => {
+    if (!requestedUseCase && defaultSystemId) {
+      navigate(buildMonitorUrl(defaultSystemId, query), { replace: true });
     }
-  };
-
-  const applySidebarFilters = () => {
-    const nextQuery: QueryRequest = { ...query, cursor: undefined, filters: sidebarToQueryFilters(sidebarFilters) };
-    setQuery(nextQuery);
-    navigate(buildMonitorUrl(casoDeUso, nextQuery, activeView.id));
-  };
-
-  const resetSidebarFilters = () => {
-    setSidebarFilters(emptySidebarFilters);
-    const nextQuery: QueryRequest = { ...query, cursor: undefined, search: undefined, filters: undefined };
-    setQuery(nextQuery);
-    navigate(buildMonitorUrl(casoDeUso, nextQuery, activeView.id));
-  };
+  }, [defaultSystemId, navigate, query, requestedUseCase]);
 
   useEffect(() => {
     const urlQuery = buildQueryFromSearchParams(searchParams);
@@ -229,58 +200,143 @@ const MonitorDashboardPage = () => {
     });
   }, [searchParams]);
 
-  useEffect(() => { void loadViews(); }, [casoDeUso]);
+  const loadCards = async (systemId: string, nextQuery: QueryRequest) => {
+    setLoadingCards(true);
+    setCardsError(null);
+    try { setCards(await MonitorApi.postCards(systemId, nextQuery)); }
+    catch (error) { setCardsError(normalizeErrorMessage(error)); }
+    finally { setLoadingCards(false); }
+  };
+
+  const loadDashboard = async (systemId: string, nextQuery: QueryRequest) => {
+    setLoadingDashboard(true);
+    setDashboardError(null);
+    try { setDashboard(await MonitorApi.postDashboard(systemId, nextQuery)); }
+    catch (error) { setDashboardError(normalizeErrorMessage(error)); }
+    finally { setLoadingDashboard(false); }
+  };
+
+  const loadDetail = async (systemId: string, id: string, detailView?: DetailViewLayout) => {
+    setLoadingDetail(true);
+    setDetailError(null);
+    setSelectedId(id);
+    setActiveDetailLayout(detailView ?? defaultDetailView);
+    setSelectedRowSnapshot(dashboard?.table.rows.find(row => row.id === id) ?? null);
+    try { setDetail(await MonitorApi.postDashboardDetail(systemId, id, query)); }
+    catch (error) { setDetailError(normalizeErrorMessage(error)); }
+    finally { setLoadingDetail(false); }
+  };
 
   useEffect(() => {
-    void loadCards();
-    void loadDashboard();
+    if (!activeSystem) {
+      return;
+    }
+
+    void loadCards(activeSystem.id, query);
+    void loadDashboard(activeSystem.id, query);
     setDetail(null);
     setSelectedId(null);
     setSelectedRowSnapshot(null);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [casoDeUso, query]);
+    setActiveDetailLayout(defaultDetailView);
+  }, [activeSystem, query]);
 
-  const renderComponent = (type: string, title: string, id: string, config?: Record<string, unknown>) => {
-    if (type === 'cards') {
+  const applySidebarFilters = () => {
+    if (!activeSystem) {
+      return;
+    }
+    const nextQuery: QueryRequest = { ...query, cursor: undefined, filters: sidebarToQueryFilters(sidebarFilters) };
+    setQuery(nextQuery);
+    navigate(buildMonitorUrl(activeSystem.id, nextQuery));
+  };
+
+  const resetSidebarFilters = () => {
+    if (!activeSystem) {
+      return;
+    }
+    setSidebarFilters(emptySidebarFilters);
+    const nextQuery: QueryRequest = { ...query, cursor: undefined, search: undefined, filters: undefined };
+    setQuery(nextQuery);
+    navigate(buildMonitorUrl(activeSystem.id, nextQuery));
+  };
+
+  const renderComponent = (component: ViewComponent): JSX.Element => {
+    const sortedChildren = component.children ? sortByPosition(component.children) : [];
+    const surfaceStyle = {
+      background: styleConfig.theme.surfaceBackground,
+      border: `1px solid ${styleConfig.theme.surfaceBorder}`,
+      borderRadius: 10,
+      padding: 12,
+    };
+
+    if (component.type === 'stack') {
       return (
-        <section key={id} style={{ background: styleConfig.theme.surfaceBackground, border: `1px solid ${styleConfig.theme.surfaceBorder}`, borderRadius: 10, padding: 12 }}>
-          <h2 style={{ marginBottom: 10 }}>{title}</h2>
-          <CardsGrid data={cards} loading={loadingCards} error={cardsError} onRefresh={loadCards} view={styleConfig} config={config} />
+        <section key={component.id} className='monitor-main-stack'>
+          {sortedChildren.map(renderComponent)}
         </section>
       );
     }
 
-    if (type === 'table') {
+    if (component.type === 'split') {
+      const splitClassName = sortedChildren.length <= 1 ? 'monitor-split monitor-split-single' : 'monitor-split';
       return (
-        <section key={id} style={{ background: styleConfig.theme.surfaceBackground, border: `1px solid ${styleConfig.theme.surfaceBorder}`, borderRadius: 10, padding: 12 }}>
-          <h2 style={{ marginBottom: 10 }}>{title}</h2>
-          <DynamicTable data={dashboard} loading={loadingDashboard} error={dashboardError} query={query} onQueryChange={setQuery} onOpenDetail={loadDetail} view={styleConfig} config={config} />
+        <section key={component.id} className={splitClassName}>
+          {sortedChildren.map(renderComponent)}
         </section>
       );
     }
 
-    if (type === 'text') {
+    if (component.type === 'cards') {
       return (
-        <section key={id} style={{ background: styleConfig.theme.surfaceBackground, border: `1px solid ${styleConfig.theme.surfaceBorder}`, borderRadius: 10, padding: 12 }}>
-          <h2 style={{ marginBottom: 8 }}>{title}</h2>
-          <p style={{ margin: 0 }}>{typeof config?.text === 'string' ? config.text : 'Componente textual configurable desde Admin.'}</p>
+        <section key={component.id} style={surfaceStyle}>
+          <h2 style={{ marginBottom: 10 }}>{component.title}</h2>
+          <CardsGrid data={cards} loading={loadingCards} error={cardsError} onRefresh={() => activeSystem && void loadCards(activeSystem.id, query)} view={styleConfig} config={component.config ?? undefined} />
         </section>
       );
     }
 
-    if (type === 'chart') {
+    if (component.type === 'table') {
+      const detailView = component.config && typeof component.config.detail_view === 'object'
+        ? (component.config.detail_view as Record<string, unknown>)
+        : defaultDetailView;
       return (
-        <section key={id} style={{ background: styleConfig.theme.surfaceBackground, border: `1px solid ${styleConfig.theme.surfaceBorder}`, borderRadius: 10, padding: 12 }}>
-          <h2 style={{ marginBottom: 8 }}>{title}</h2>
-          <p style={{ marginBottom: 8 }}>Placeholder de gráfico (componente reusable de alto rendimiento por contrato JSON).</p>
-          <div style={{ height: Number(config?.height ?? 160), borderRadius: 8, background: String(config?.color ?? '#dbe7ff') }} />
+        <section key={component.id} style={surfaceStyle}>
+          <h2 style={{ marginBottom: 10 }}>{component.title}</h2>
+          <DynamicTable
+            data={dashboard}
+            loading={loadingDashboard}
+            error={dashboardError}
+            query={query}
+            onQueryChange={setQuery}
+            onOpenDetail={id => activeSystem && void loadDetail(activeSystem.id, id, detailView)}
+            view={styleConfig}
+            config={component.config ?? undefined}
+          />
+        </section>
+      );
+    }
+
+    if (component.type === 'text') {
+      return (
+        <section key={component.id} style={surfaceStyle}>
+          <h2 style={{ marginBottom: 8 }}>{component.title}</h2>
+          <p style={{ margin: 0 }}>{typeof component.config?.text === 'string' ? component.config.text : 'Componente textual configurable desde backend.'}</p>
+        </section>
+      );
+    }
+
+    if (component.type === 'chart') {
+      return (
+        <section key={component.id} style={surfaceStyle}>
+          <h2 style={{ marginBottom: 8 }}>{component.title}</h2>
+          <p style={{ marginBottom: 8 }}>Placeholder de gráfico renderizado por contrato JSON.</p>
+          <div style={{ height: Number(component.config?.height ?? 160), borderRadius: 8, background: String(component.config?.color ?? '#dbe7ff') }} />
         </section>
       );
     }
 
     return (
-      <section key={id} style={{ background: styleConfig.theme.surfaceBackground, border: `1px solid ${styleConfig.theme.surfaceBorder}`, borderRadius: 10, padding: 12 }}>
-        <h2 style={{ marginBottom: 8 }}>{title}</h2>
+      <section key={component.id} style={surfaceStyle}>
+        <h2 style={{ marginBottom: 8 }}>{component.title}</h2>
         <p style={{ margin: 0 }}>El detalle se abre desde la tabla (id seleccionado: {selectedId ?? 'ninguno'}).</p>
       </section>
     );
@@ -289,51 +345,35 @@ const MonitorDashboardPage = () => {
   return (
     <main style={{ background: styleConfig.theme.pageBackground, color: styleConfig.theme.text, minHeight: '100vh', padding: 24 }}>
       <style>{monitorLayoutCss}</style>
-      <section style={{ background: `linear-gradient(135deg, ${systemLayout.accent} 0%, ${styleConfig.theme.accent} 100%)`, borderRadius: 12, color: '#fff', marginBottom: 14, padding: 16 }}>
+      {shell && (
+        <ShellTabs
+          shell={shell}
+          activeTab={activeSystem?.id ?? 'home'}
+          onSelectHome={() => navigate('/home')}
+          onSelectSystem={systemId => navigate(buildMonitorUrl(systemId, query))}
+        />
+      )}
+
+      <section style={{ background: 'linear-gradient(135deg, #0b5fff 0%, #102a43 100%)', borderRadius: 12, color: '#fff', marginBottom: 14, padding: 16 }}>
         <div style={{ alignItems: 'center', display: 'flex', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
           <div>
-            <h1 style={{ marginBottom: 6 }}>{systemLayout.headerTitle}</h1>
-            <p style={{ margin: 0, opacity: 0.9 }}>{systemLayout.headerSubtitle}</p>
+            <h1 style={{ marginBottom: 6 }}>{activeSystem?.label ?? 'Monitor'}</h1>
+            <p style={{ margin: 0, opacity: 0.9 }}>{activeView?.name ?? 'Cargando vista declarativa desde backend.'}</p>
           </div>
-          <button onClick={() => navigate(`/home?caso_de_uso=${casoDeUso}`)}>Home general</button>
+          <button onClick={() => navigate('/admin')}>Admin de vistas</button>
         </div>
       </section>
 
+      {shellError && (
+        <section style={{ background: '#fff4f2', border: '1px solid #fecdca', borderRadius: 10, marginBottom: 14, padding: 12 }}>
+          Error shell: {shellError}
+        </section>
+      )}
+
       <div className='monitor-shell-grid'>
         <aside style={{ background: styleConfig.theme.surfaceBackground, border: `1px solid ${styleConfig.theme.surfaceBorder}`, borderRadius: 10, height: 'fit-content', padding: 14 }}>
-          <h3 style={{ marginBottom: 6 }}>{systemLayout.sidebarTitle}</h3>
-          <p style={{ margin: '0 0 12px 0', fontSize: 13 }}>{systemLayout.sidebarHint}</p>
-
-          <section aria-label='Sistemas monitor' style={{ marginBottom: 12 }}>
-            <p style={{ margin: '0 0 6px 0' }}>Sistemas</p>
-            <div role='tablist' style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-              {useCasesConfig.filter(item => item.enabled).map(item => {
-                const isActive = item.id === casoDeUso;
-                const systemAccent = resolveSystemLayout(item.id).accent;
-                return (
-                  <button key={item.id} role='tab' aria-selected={isActive} onClick={() => { setSelectedUseCase(item.id); navigate(buildMonitorUrl(item.id, query, undefined)); }} style={{ background: isActive ? systemAccent : styleConfig.theme.surfaceBackground, border: `1px solid ${isActive ? systemAccent : styleConfig.theme.surfaceBorder}`, borderRadius: 999, color: isActive ? '#ffffff' : styleConfig.theme.text, padding: '6px 12px' }}>
-                    {item.label}
-                  </button>
-                );
-              })}
-            </div>
-          </section>
-
-          <section aria-label='Vistas configuradas' style={{ marginBottom: 12 }}>
-            <p style={{ margin: '0 0 6px 0' }}>Vistas</p>
-            {viewError && <p style={{ margin: '0 0 6px 0', color: '#b42318' }}>{viewError}</p>}
-            <div role='tablist' style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-              {availableViews.map(view => {
-                const isActive = view.id === activeView.id;
-                return (
-                  <button key={view.id} role='tab' aria-selected={isActive} onClick={() => navigate(buildMonitorUrl(casoDeUso, query, view.id))} style={{ background: isActive ? '#0b5fff' : styleConfig.theme.surfaceBackground, border: `1px solid ${isActive ? '#0b5fff' : styleConfig.theme.surfaceBorder}`, borderRadius: 999, color: isActive ? '#fff' : styleConfig.theme.text, padding: '6px 12px' }}>
-                    {view.name}
-                  </button>
-                );
-              })}
-              {availableViews.length === 0 && <small>Sin vistas admin, usando fallback por defecto.</small>}
-            </div>
-          </section>
+          <h3 style={{ marginBottom: 6 }}>Filtros</h3>
+          <p style={{ margin: '0 0 12px 0', fontSize: 13 }}>Todos los componentes se resuelven desde una vista backend. Los filtros se aplican sobre la tabla activa.</p>
 
           <label htmlFor='timeRange' style={{ display: 'block', marginBottom: 8 }}><span>Rango temporal</span><input id='timeRange' style={{ marginTop: 4, width: '100%' }} value={query.timeRange ?? ''} onChange={event => setQuery({ ...query, timeRange: event.target.value })} /></label>
           <label htmlFor='search' style={{ display: 'block', marginBottom: 8 }}><span>Buscar</span><input id='search' style={{ marginTop: 4, width: '100%' }} value={query.search ?? ''} onChange={event => setQuery({ ...query, search: event.target.value || undefined })} /></label>
@@ -347,13 +387,20 @@ const MonitorDashboardPage = () => {
         </aside>
 
         <section className='monitor-main-stack'>
-          {sortedActiveComponents.map(component =>
-            renderComponent(component.type, component.title, component.id, component.config),
-          )}
+          {activeView?.components ? sortByPosition(activeView.components).map(renderComponent) : <p>Cargando vista...</p>}
         </section>
       </div>
 
-      <DashboardDetail data={detail} loading={loadingDetail} error={detailError} selectedId={selectedId} selectedRowSnapshot={selectedRowSnapshot} onClose={() => setSelectedId(null)} view={styleConfig} />
+      <DashboardDetail
+        data={detail}
+        loading={loadingDetail}
+        error={detailError}
+        selectedId={selectedId}
+        selectedRowSnapshot={selectedRowSnapshot}
+        detailView={activeDetailLayout}
+        onClose={() => setSelectedId(null)}
+        view={styleConfig}
+      />
     </main>
   );
 };

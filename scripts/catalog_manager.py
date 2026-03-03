@@ -33,6 +33,9 @@ def generate_backend_use_cases_yaml(systems: list[dict[str, Any]]) -> str:
             [
                 f"  {system['id']}:",
                 f"    adapter: {system['adapter']}",
+                f"    label: {system['label']}",
+                f"    enabled: {'true' if bool(system.get('enabled', True)) else 'false'}",
+                f"    default: {'true' if bool(system.get('default', False)) else 'false'}",
                 "    timeouts:",
                 f"      ms: {system['timeout_ms']}",
             ]

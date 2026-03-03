@@ -1,178 +1,215 @@
 [
   {
-    "id": "vista-hipotecas-5-cards",
-    "name": "Hipotecas · 5 KPIs",
+    "id": "vista-hipotecas-operativa",
+    "name": "Hipotecas · Operativa",
     "system": "hipotecas",
     "enabled": true,
     "components": [
       {
-        "id": "cards-hipo-5",
-        "type": "cards",
-        "title": "KPIs Hipotecas (5)",
-        "data_source": "/cards",
+        "id": "layout-hipotecas",
+        "type": "stack",
+        "title": "Layout Hipotecas",
+        "data_source": "/none",
         "position": 0,
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-        "config": {
-          "max_cards": 5,
-          "columns": 5
-        }
-=======
-        "config": { "max_cards": 5, "columns": 5 }
->>>>>>> theirs
-=======
-        "config": { "max_cards": 5, "columns": 5 }
->>>>>>> theirs
-=======
-        "config": { "max_cards": 5, "columns": 5 }
->>>>>>> theirs
-=======
-        "config": { "max_cards": 5, "columns": 5 }
->>>>>>> theirs
-      },
-      {
-        "id": "table-hipo",
-        "type": "table",
-        "title": "Conversaciones Hipotecas",
-        "data_source": "/dashboard",
-        "position": 1,
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-        "config": {
-          "required_columns": [
-            "detail"
-          ],
-          "visible_columns": [
-            "fecha_hora",
-            "nombre_cliente",
-            "razones_llamada",
-            "resolucion",
-            "detail"
-          ]
-        }
-=======
-        "config": { "required_columns": ["detail"], "visible_columns": ["fecha_hora", "nombre_cliente", "razones_llamada", "resolucion", "detail"] }
->>>>>>> theirs
-=======
-        "config": { "required_columns": ["detail"], "visible_columns": ["fecha_hora", "nombre_cliente", "razones_llamada", "resolucion", "detail"] }
->>>>>>> theirs
-=======
-        "config": { "required_columns": ["detail"], "visible_columns": ["fecha_hora", "nombre_cliente", "razones_llamada", "resolucion", "detail"] }
->>>>>>> theirs
-=======
-        "config": { "required_columns": ["detail"], "visible_columns": ["fecha_hora", "nombre_cliente", "razones_llamada", "resolucion", "detail"] }
->>>>>>> theirs
+        "children": [
+          {
+            "id": "cards-hipotecas",
+            "type": "cards",
+            "title": "KPIs Hipotecas",
+            "data_source": "/cards",
+            "position": 0,
+            "config": {
+              "max_cards": 5,
+              "columns": 5
+            }
+          },
+          {
+            "id": "table-hipotecas",
+            "type": "table",
+            "title": "Conversaciones Hipotecas",
+            "data_source": "/dashboard",
+            "position": 1,
+            "config": {
+              "required_columns": [
+                "id",
+                "detail"
+              ],
+              "visible_columns": [
+                "fecha_hora",
+                "numero_entrante",
+                "nombre_cliente",
+                "razones_llamada",
+                "duracion",
+                "resolucion",
+                "detail"
+              ],
+              "detail_view": {
+                "type": "split",
+                "children": [
+                  {
+                    "id": "detail-conversation",
+                    "type": "detail_conversation",
+                    "title": "Conversación"
+                  },
+                  {
+                    "id": "detail-panels",
+                    "type": "detail_panels",
+                    "title": "Datos"
+                  }
+                ]
+              }
+            }
+          }
+        ]
       }
     ]
   },
   {
-    "id": "vista-seguros-3-cards",
-    "name": "Seguros · 3 KPIs",
+    "id": "vista-prestamos-operativa",
+    "name": "Prestamos · Operativa",
+    "system": "prestamos",
+    "enabled": true,
+    "components": [
+      {
+        "id": "layout-prestamos",
+        "type": "stack",
+        "title": "Layout Prestamos",
+        "data_source": "/none",
+        "position": 0,
+        "children": [
+          {
+            "id": "cards-prestamos",
+            "type": "cards",
+            "title": "KPIs Prestamos",
+            "data_source": "/cards",
+            "position": 0,
+            "config": {
+              "max_cards": 4,
+              "columns": 4
+            }
+          },
+          {
+            "id": "table-prestamos",
+            "type": "table",
+            "title": "Casos Prestamos",
+            "data_source": "/dashboard",
+            "position": 1,
+            "config": {
+              "required_columns": [
+                "id",
+                "detail"
+              ],
+              "visible_columns": [
+                "fecha_hora",
+                "numero_entrante",
+                "nombre_cliente",
+                "razones_llamada",
+                "duracion",
+                "resolucion",
+                "detail"
+              ],
+              "detail_view": {
+                "type": "split",
+                "children": [
+                  {
+                    "id": "detail-conversation",
+                    "type": "detail_conversation",
+                    "title": "Conversación"
+                  },
+                  {
+                    "id": "detail-panels",
+                    "type": "detail_panels",
+                    "title": "Datos"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "vista-seguros-operativa",
+    "name": "Seguros · Operativa",
     "system": "seguros",
     "enabled": true,
     "components": [
       {
-        "id": "text-seg",
-        "type": "text",
-        "title": "Resumen",
+        "id": "layout-seguros",
+        "type": "stack",
+        "title": "Layout Seguros",
         "data_source": "/none",
         "position": 0,
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-        "config": {
-          "text": "Vista compacta de seguros"
-        }
-=======
-        "config": { "text": "Vista compacta de seguros" }
->>>>>>> theirs
-=======
-        "config": { "text": "Vista compacta de seguros" }
->>>>>>> theirs
-=======
-        "config": { "text": "Vista compacta de seguros" }
->>>>>>> theirs
-=======
-        "config": { "text": "Vista compacta de seguros" }
->>>>>>> theirs
-      },
-      {
-        "id": "cards-seg-3",
-        "type": "cards",
-        "title": "KPIs Seguros (3)",
-        "data_source": "/cards",
-        "position": 1,
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-        "config": {
-          "max_cards": 3,
-          "columns": 3
-        }
-=======
-        "config": { "max_cards": 3, "columns": 3 }
->>>>>>> theirs
-=======
-        "config": { "max_cards": 3, "columns": 3 }
->>>>>>> theirs
-=======
-        "config": { "max_cards": 3, "columns": 3 }
->>>>>>> theirs
-=======
-        "config": { "max_cards": 3, "columns": 3 }
->>>>>>> theirs
-      },
-      {
-        "id": "table-seg",
-        "type": "table",
-        "title": "Casos Seguros",
-        "data_source": "/dashboard",
-        "position": 2,
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-        "config": {
-          "required_columns": [
-            "detail"
-          ],
-          "visible_columns": [
-            "fecha_hora",
-            "numero_entrante",
-            "nombre_cliente",
-            "resolucion",
-            "detail"
-          ]
-        }
+        "children": [
+          {
+            "id": "hero-seguros",
+            "type": "text",
+            "title": "Resumen",
+            "data_source": "/none",
+            "position": 0,
+            "config": {
+              "text": "Vista generada desde backend con layout dinámico."
+            }
+          },
+          {
+            "id": "main-seguros",
+            "type": "split",
+            "title": "Bloque principal",
+            "data_source": "/none",
+            "position": 1,
+            "children": [
+              {
+                "id": "cards-seguros",
+                "type": "cards",
+                "title": "KPIs Seguros",
+                "data_source": "/cards",
+                "position": 0,
+                "config": {
+                  "max_cards": 3,
+                  "columns": 1
+                }
+              },
+              {
+                "id": "table-seguros",
+                "type": "table",
+                "title": "Casos Seguros",
+                "data_source": "/dashboard",
+                "position": 1,
+                "config": {
+                  "required_columns": [
+                    "id",
+                    "detail"
+                  ],
+                  "visible_columns": [
+                    "fecha_hora",
+                    "numero_entrante",
+                    "nombre_cliente",
+                    "razones_llamada",
+                    "resolucion",
+                    "detail"
+                  ],
+                  "detail_view": {
+                    "type": "split",
+                    "children": [
+                      {
+                        "id": "detail-conversation",
+                        "type": "detail_conversation",
+                        "title": "Conversación"
+                      },
+                      {
+                        "id": "detail-panels",
+                        "type": "detail_panels",
+                        "title": "Datos"
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ]
       }
     ]
   }
 ]
-=======
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-        "config": { "required_columns": ["detail"], "visible_columns": ["fecha_hora", "numero_entrante", "nombre_cliente", "resolucion", "detail"] }
-      }
-    ]
-  }
-]
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs

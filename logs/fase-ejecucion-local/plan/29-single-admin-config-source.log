@@ -1,0 +1,25 @@
+Objetivo de la subtarea
+- Eliminar la dependencia del routing externo y dejar como unica fuente de configuracion de sistemas y vistas el JSON persistido por el ADMIN.
+
+Que cambio
+- El backend ya no lee `dev.yaml` ni `ORCH_CONFIG_PATH` al arrancar.
+- La resolucion de `caso_de_uso` para `/ui/shell`, `/datops/overview`, `/cards`, `/dashboard` y `/dashboard_detail` ahora sale solo de `view_configs.json`.
+- Si una vista tiene `runtime.http_proxy`, el backend proxya al `upstream_base_url` definido en esa misma vista.
+- Si una vista no tiene `runtime`, el backend la trata como sistema nativo local y lee sus JSONs mock desde `data/<caso_de_uso>`.
+- El ADMIN ya no habla de configuracion externa y permite volver de `http_proxy` a nativo limpiando el `runtime`.
+- Se elimino el archivo `monitorizacion-ia-python/src/orchestrator/config/dev.yaml`.
+
+Ficheros tocados
+- monitorizacion-ia-python/src/orchestrator/adapters/http_proxy.py
+- monitorizacion-ia-python/src/orchestrator/adapters/native.py
+- monitorizacion-ia-python/src/orchestrator/api/routes.py
+- monitorizacion-ia-python/src/orchestrator/main.py
+- monitorizacion-ia-python/src/orchestrator/core/settings.py
+- monitorizacion-ia-python/src/orchestrator/config/dev.yaml
+- monitorizacion-ia-front/packages/shell/src/features/admin/pages/AdminViews.page.tsx
+
+Comandos ejecutados + resultado
+- `python3 -m compileall monitorizacion-ia-python/src/orchestrator`: OK
+- `./node_modules/.bin/tsc --noEmit -p tsconfig.json` en `monitorizacion-ia-front/packages/shell`: OK
+- `npm run build` en `monitorizacion-ia-front/packages/shell`: OK (`webpack compiled successfully`)
+- `PYTHONPATH=src python3 -c "from orchestrator.main import create_app; app = create_app(); print(app.title)"` en `monitorizacion-ia-python`: no verificable en este entorno por dependencia local ausente (`pydantic_settings`)

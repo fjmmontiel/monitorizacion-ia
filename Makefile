@@ -10,23 +10,7 @@ FRONT_PORT ?= 3100
 BACK_PORT ?= 8002
 BACK_ORCH_CONFIG_PATH ?= src/orchestrator/config/dev.yaml
 
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
 .PHONY: help install install-back install-front setup-env sync-config add-system add-view run up stop restart status smoke e2e logs show-config
-=======
-.PHONY: help install install-back install-front setup-env run up stop restart status smoke e2e logs show-config
->>>>>>> theirs
-=======
-.PHONY: help install install-back install-front setup-env run up stop restart status smoke e2e logs show-config
->>>>>>> theirs
-=======
-.PHONY: help install install-back install-front setup-env run up stop restart status smoke e2e logs show-config
->>>>>>> theirs
-=======
-.PHONY: help install install-back install-front setup-env run up stop restart status smoke e2e logs show-config
->>>>>>> theirs
 
 help:
 	@echo "Targets disponibles:"

@@ -4,19 +4,25 @@
       "title": "Pólizas activas",
       "subtitle": "Total en seguimiento",
       "value": 203,
-      "format": "int"
+      "format": "int",
+      "unit": "pólizas",
+      "variant": "neutral"
     },
     {
       "title": "Siniestros abiertos",
       "subtitle": "Casos en curso",
       "value": 18,
-      "format": "int"
+      "format": "int",
+      "unit": "casos",
+      "variant": "warning"
     },
     {
       "title": "Ratio resolución",
       "subtitle": "Casos cerrados",
       "value": 0.87,
-      "format": "percent"
+      "format": "percent",
+      "unit": "%",
+      "variant": "positive"
     }
   ]
 }

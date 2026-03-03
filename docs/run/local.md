@@ -1,123 +1,36 @@
-# Ejecución local end-to-end
+# Ejecución local
 
-## Requisitos
-- Python virtualenv preparado en `monitorizacion-ia-python/.venv`.
-- Dependencias instaladas en `monitorizacion-ia-front/packages/shell/node_modules`.
-- Puertos libres por defecto:
-  - Front: `3100`
-  - Back: `8002`
-
-## Arranque de toda la app
-
-```bash
-cd /Users/usuario/personal/monitorizacion-ia
-./scripts/up-local.sh
-```
-
-## Arranque unificado con Make
+## Arranque
 
 ```bash
 cd /Users/usuario/personal/monitorizacion-ia
 make run
 ```
 
-`make run` ejecuta:
-- creación/uso de `monitorizacion-ia-python/.venv`
-- instalación backend (`pip install -e ".[dev]"`)
-- instalación frontend shell (`npm install --workspaces=false`)
-- sincronización automática de configuraciones BE/FE desde `config/catalog/monitor_catalog.json`
-- arranque backend + frontend
-- impresión de sistemas y vistas habilitadas
-
-URLs:
-- Front Home: `http://127.0.0.1:3100/home`
-- Front Monitor: `http://127.0.0.1:3100/monitor?caso_de_uso=hipotecas`
-- Back: `http://127.0.0.1:8002/health`
-- DatOps mock overview: `http://127.0.0.1:8002/datops/overview`
-
-En `home` los sistemas configurados quedan cargados como tabs y se puede navegar al monitor.
-
-En `monitor` el layout operativo queda fijo en este orden:
-- cards (arriba)
-- tabla (debajo)
-- detalle de fila en modal pop-up (al pulsar `Ver detalle`)
-
-Para entorno local se activa fallback mock del frontend:
-- `REACT_APP_MONITOR_FAILOVER_TO_MOCK=true` en `monitorizacion-ia-front/packages/shell/.env.mock`
-
-## Automatización de alta de sistemas y vistas
-
-Fuente de verdad única:
-- `config/catalog/monitor_catalog.json`
-
-Sincronizar manualmente backend + frontend desde el catálogo:
+Alternativas:
 
 ```bash
-make sync-config
-```
-
-Alta de nuevo sistema (genera BE + FE + layout por defecto):
-
-```bash
-make add-system ARGS="--id reclamaciones --label Reclamaciones"
-```
-
-Alta de nueva vista (genera `views.json` con componentes habilitados):
-
-```bash
-make add-view ARGS="--id ejecutiva --label Ejecutiva --components cards,table"
-```
-
-Después de cada alta, el script sincroniza automáticamente:
-- `monitorizacion-ia-python/src/orchestrator/config/use_cases.yaml`
-- `monitorizacion-ia-front/packages/shell/src/shared/config/use_cases.json`
-- `monitorizacion-ia-front/packages/shell/src/shared/config/views.json`
-- `monitorizacion-ia-front/packages/shell/src/features/monitor/config/system_layouts.json`
-
-## Parada
-
-```bash
-cd /Users/usuario/personal/monitorizacion-ia
+./scripts/up-local.sh
 ./scripts/down-local.sh
 ```
 
-Con Make:
+## URLs
+- Front: `http://127.0.0.1:3100/home`
+- Monitor: `http://127.0.0.1:3100/monitor?caso_de_uso=hipotecas`
+- Back: `http://127.0.0.1:8002/health`
+- UI Shell: `http://127.0.0.1:8002/ui/shell`
+
+## Comprobación rápida
 
 ```bash
 cd /Users/usuario/personal/monitorizacion-ia
-make stop
-```
-
-## Smoke rápido
-
-```bash
-cd /Users/usuario/personal/monitorizacion-ia
-./scripts/smoke-local.sh
-```
-
-## E2E multi-configuración (sistema)
-
-```bash
-cd /Users/usuario/personal/monitorizacion-ia
-./scripts/e2e-cases-local.sh
-```
-
-Con Make:
-
-```bash
-cd /Users/usuario/personal/monitorizacion-ia
+make smoke
 make e2e
 ```
 
-## Otros comandos Make útiles
-
-```bash
-make status
-make logs
-make smoke
-make show-config
-```
-
-## Logs runtime
+## Logs
 - Front: `logs/fase-ejecucion-local/runtime/front.log`
 - Back: `logs/fase-ejecucion-local/runtime/back.log`
+
+## Más detalle
+- [docs/uso-y-extension.md](/Users/usuario/personal/monitorizacion-ia/docs/uso-y-extension.md)

@@ -68,7 +68,24 @@ def test_datops_overview_lists_use_cases_and_routes():
     use_cases = {item['id']: item for item in payload['use_cases']}
     assert 'hipotecas' in use_cases
     assert 'prestamos' in use_cases
+    assert 'seguros' in use_cases
     assert use_cases['hipotecas']['routes']['cards'] == '/cards?caso_de_uso=hipotecas'
+    assert use_cases['hipotecas']['label'] == 'Hipotecas'
+
+
+def test_ui_shell_lists_home_and_enabled_systems():
+    res = client.get('/ui/shell')
+    assert res.status_code == 200
+    payload = res.json()
+    assert payload['schema_version'] == 'v1'
+    assert payload['home']['label'] == 'HOME'
+    systems = {item['id']: item for item in payload['systems']}
+    assert 'hipotecas' in systems
+    assert 'prestamos' in systems
+    assert 'seguros' in systems
+    assert systems['hipotecas']['default'] is True
+    assert systems['hipotecas']['view']['system'] == 'hipotecas'
+    assert systems['hipotecas']['view']['components'][0]['type'] == 'stack'
 
 
 def test_dashboard_has_operational_columns_for_hipotecas():
@@ -211,4 +228,3 @@ def test_admin_rate_limit_can_block_requests():
         limiter.window_seconds = original_window
         limiter.reset()
         _ = client.delete(f"/admin/view-configs/{locals().get('view_id', '')}")
-

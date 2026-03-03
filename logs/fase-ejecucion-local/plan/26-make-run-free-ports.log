@@ -1,0 +1,20 @@
+Objetivo de la subtarea
+- Hacer que `make run` libere los puertos configurados de frontend y backend antes de arrancar, evitando fallos por procesos previos colgados.
+
+Qué cambió
+- Se añadió `free_port()` en `scripts/common.sh` para localizar el proceso que escucha en un puerto, enviar `TERM` y escalar a `KILL` si sigue vivo.
+- `scripts/up-local.sh` ahora libera primero `BACK_PORT` y `FRONT_PORT` antes del arranque.
+- `scripts/up-local.sh` elimina también los `pid files` previos antes de arrancar para evitar referencias obsoletas.
+- Con esto, `make run` ya no falla cuando los puertos están ocupados por procesos antiguos en esos mismos puertos.
+
+Ficheros tocados
+- scripts/common.sh
+- scripts/up-local.sh
+- logs/fase-ejecucion-local/plan/26-make-run-free-ports.log
+
+Comandos ejecutados + resultado
+- `bash -n scripts/common.sh && bash -n scripts/up-local.sh`: OK.
+- Validación funcional en puerto temporal `39100`:
+  - se levantó `python3 -m http.server 39100`
+  - `source scripts/common.sh; free_port 39100 test`
+  - resultado: `before=7491`, `after=` (puerto liberado)

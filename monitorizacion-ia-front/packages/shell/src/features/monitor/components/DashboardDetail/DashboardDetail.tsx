@@ -3,12 +3,20 @@ import { DashboardDetailResponse } from '#/shell/shared/contracts/monitor.contra
 import { ConversationPanel } from './components/ConversationPanel';
 import { RightInfoPanel } from './components/RightInfoPanel';
 
+type DetailLayoutNode = {
+  id?: string;
+  type?: string;
+  title?: string;
+  children?: DetailLayoutNode[];
+};
+
 type Props = {
   data: DashboardDetailResponse | null;
   loading: boolean;
   error: string | null;
   selectedId: string | null;
   selectedRowSnapshot: Record<string, unknown> | null;
+  detailView: Record<string, unknown> | null;
   onClose: () => void;
   view: MonitorStyleConfig;
 };
@@ -16,18 +24,28 @@ type Props = {
 const detailLayoutCss = `
   .monitor-detail-layout {
     display: grid;
-    grid-template-columns: 60% 40%;
     gap: 14px;
+  }
+  .monitor-detail-split {
+    grid-template-columns: 60% 40%;
     align-items: start;
   }
   @media (max-width: 980px) {
-    .monitor-detail-layout {
+    .monitor-detail-split {
       grid-template-columns: 1fr;
     }
   }
 `;
 
-export const DashboardDetail = ({ data, loading, error, selectedId, selectedRowSnapshot, onClose, view }: Props) => {
+const defaultDetailLayout: DetailLayoutNode = {
+  type: 'split',
+  children: [
+    { id: 'detail-conversation', type: 'detail_conversation', title: 'Conversación' },
+    { id: 'detail-panels', type: 'detail_panels', title: 'Datos' },
+  ],
+};
+
+export const DashboardDetail = ({ data, loading, error, selectedId, selectedRowSnapshot, detailView, onClose, view }: Props) => {
   if (!selectedId) {
     return null;
   }
@@ -35,6 +53,26 @@ export const DashboardDetail = ({ data, loading, error, selectedId, selectedRowS
   const summaryEntries = selectedRowSnapshot
     ? Object.entries(selectedRowSnapshot).filter(([key]) => key !== 'detail').slice(0, 6)
     : [];
+
+  const resolvedLayout = (detailView ?? defaultDetailLayout) as DetailLayoutNode;
+
+  const renderNode = (node: DetailLayoutNode, index: number): JSX.Element => {
+    if (node.type === 'split' || node.type === 'stack') {
+      const className = node.type === 'split' ? 'monitor-detail-layout monitor-detail-split' : 'monitor-detail-layout';
+      const children = node.children?.length ? node.children : defaultDetailLayout.children ?? [];
+      return (
+        <section key={node.id ?? `${node.type}-${index}`} className={className}>
+          {children.map(renderNode)}
+        </section>
+      );
+    }
+
+    if (node.type === 'detail_panels') {
+      return <RightInfoPanel key={node.id ?? `detail-panels-${index}`} panels={data?.right ?? []} view={view} />;
+    }
+
+    return <ConversationPanel key={node.id ?? `detail-conversation-${index}`} messages={data?.left.messages ?? []} view={view} />;
+  };
 
   return (
     <section
@@ -75,7 +113,7 @@ export const DashboardDetail = ({ data, loading, error, selectedId, selectedRowS
             {summaryEntries.map(([key, value]) => (
               <article key={key} style={{ border: `1px solid ${view.theme.surfaceBorder}`, borderRadius: 8, padding: 10 }}>
                 <small style={{ display: 'block', marginBottom: 4, opacity: 0.7 }}>{key}</small>
-                <strong>{typeof value === 'string' || typeof value === 'number' ? value : '-'}</strong>
+                <strong>{typeof value === 'string' || typeof value === 'number' ? value : JSON.stringify(value)}</strong>
               </article>
             ))}
           </div>
@@ -84,12 +122,7 @@ export const DashboardDetail = ({ data, loading, error, selectedId, selectedRowS
         {loading && <p>Cargando detalle...</p>}
         {error && <p>Error detalle: {error}</p>}
 
-        {data && (
-          <div className='monitor-detail-layout'>
-            <ConversationPanel messages={data.left.messages} view={view} />
-            <RightInfoPanel panels={data.right} view={view} />
-          </div>
-        )}
+        {!loading && !error && renderNode(resolvedLayout, 0)}
       </div>
     </section>
   );

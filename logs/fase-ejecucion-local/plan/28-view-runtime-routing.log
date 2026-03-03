@@ -1,0 +1,23 @@
+Objetivo de la subtarea
+- Permitir que una vista creada desde ADMIN centralice tambien la orquestacion del sistema cuando use `http_proxy`, incluyendo el host upstream, para que el backend pueda resolver un `caso_de_uso` nuevo sin depender de `dev.yaml`.
+
+Que cambio
+- Se amplio el contrato backend de `ViewConfiguration` con un bloque opcional `runtime` (`adapter=http_proxy` + `upstream_base_url`).
+- El backend ahora da prioridad a `view.runtime` para resolver las operaciones `/cards`, `/dashboard` y `/dashboard_detail`.
+- `ui/shell` y `datops/overview` ahora incluyen sistemas definidos solo en vistas cuando tienen `runtime` valido.
+- El request logging del backend ahora refleja el adapter efectivo definido en la vista cuando existe.
+- El ADMIN del frontend ahora permite elegir entre configuracion backend existente o `http_proxy` desde la propia vista, capturando el host upstream.
+- El listado de vistas del ADMIN muestra la orquestacion `http_proxy` cuando aplica.
+
+Ficheros tocados
+- monitorizacion-ia-python/src/orchestrator/api/schemas.py
+- monitorizacion-ia-python/src/orchestrator/api/routes.py
+- monitorizacion-ia-python/src/orchestrator/main.py
+- monitorizacion-ia-front/packages/shell/src/shared/contracts/monitor.contracts.ts
+- monitorizacion-ia-front/packages/shell/src/features/admin/pages/AdminViews.page.tsx
+
+Comandos ejecutados + resultado
+- `python3 -m compileall monitorizacion-ia-python/src/orchestrator`: OK
+- `PYTHONPATH=src python3 -c "from orchestrator.main import create_app; app = create_app(); print(app.title)"` en `monitorizacion-ia-python`: FALLA en este entorno por dependencia local ausente (`ModuleNotFoundError: No module named 'yaml'`)
+- `./node_modules/.bin/tsc --noEmit -p tsconfig.json` en `monitorizacion-ia-front/packages/shell`: OK
+- `npm run build` en `monitorizacion-ia-front/packages/shell`: OK (`webpack compiled successfully`)

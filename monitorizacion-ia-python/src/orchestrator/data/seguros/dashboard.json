@@ -1,6 +1,7 @@
 {
   "table": {
     "columns": [
+      {"key": "id", "label": "Id", "sortable": true},
       {"key": "fecha_hora", "label": "Fecha · Hora", "sortable": true},
       {"key": "numero_entrante", "label": "Numero entrante", "filterable": true},
       {"key": "nombre_cliente", "label": "Nombre del cliente", "filterable": true},

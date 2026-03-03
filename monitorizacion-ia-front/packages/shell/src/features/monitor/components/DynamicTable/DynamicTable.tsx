@@ -12,6 +12,25 @@ type Props = {
   config?: Record<string, unknown>;
 };
 
+const renderCellValue = (value: unknown) => {
+  if (typeof value === 'string' || typeof value === 'number') {
+    return value;
+  }
+  if (typeof value === 'boolean') {
+    return value ? 'true' : 'false';
+  }
+  if (value === null || typeof value === 'undefined') {
+    return '-';
+  }
+  if (Array.isArray(value)) {
+    return value.map(item => (typeof item === 'string' || typeof item === 'number' ? String(item) : JSON.stringify(item))).join(', ');
+  }
+  if (typeof value === 'object') {
+    return JSON.stringify(value);
+  }
+  return String(value);
+};
+
 export const DynamicTable = ({ data, loading, error, query, onQueryChange, onOpenDetail, view, config }: Props) => {
   if (loading) {
     return <p>Cargando tabla...</p>;
@@ -32,13 +51,21 @@ export const DynamicTable = ({ data, loading, error, query, onQueryChange, onOpe
     : sourceColumns;
   const requiredColumns = Array.isArray(tableConfig.required_columns)
     ? (tableConfig.required_columns as string[])
-    : ['detail'];
+    : ['id', 'detail'];
 
-  const hasRequiredColumns = requiredColumns.every(required => sourceColumns.some(column => column.key === required));
+  const hasRequiredColumns = requiredColumns.every(required => {
+    if (required === 'id') {
+      return rows.every(row => typeof row.id === 'string' && row.id.length > 0);
+    }
+    if (required === 'detail') {
+      return sourceColumns.some(column => column.key === 'detail');
+    }
+    return sourceColumns.some(column => column.key === required);
+  });
   const filterableColumns = visibleColumns.filter(column => column.filterable);
 
   if (!hasRequiredColumns) {
-    return <p>Configuración inválida: falta columna obligatoria detail.</p>;
+    return <p>Configuración inválida: la tabla exige `id` y `detail`.</p>;
   }
 
   return (
@@ -46,6 +73,7 @@ export const DynamicTable = ({ data, loading, error, query, onQueryChange, onOpe
       style={{
         border: `1px solid ${view.theme.surfaceBorder}`,
         borderRadius: 8,
+        overflowX: 'auto',
         padding: 10,
       }}
     >
@@ -72,11 +100,11 @@ export const DynamicTable = ({ data, loading, error, query, onQueryChange, onOpe
           ))}
         </div>
       )}
-      <table style={{ border: `1px solid ${view.theme.surfaceBorder}`, borderRadius: 6, overflow: 'hidden', width: '100%' }}>
+      <table style={{ border: `1px solid ${view.theme.surfaceBorder}`, borderRadius: 6, tableLayout: 'auto', width: '100%' }}>
         <thead>
           <tr style={{ background: view.theme.pageBackground, textAlign: 'left' }}>
-          {visibleColumns.map(column => (
-              <th key={column.key} style={{ borderBottom: `1px solid ${view.theme.surfaceBorder}`, padding: 10 }}>
+            {visibleColumns.map(column => (
+              <th key={column.key} style={{ borderBottom: `1px solid ${view.theme.surfaceBorder}`, padding: 10, whiteSpace: 'nowrap' }}>
                 <span>{column.label}</span>
                 {column.sortable && (
                   <button
@@ -98,19 +126,19 @@ export const DynamicTable = ({ data, loading, error, query, onQueryChange, onOpe
         <tbody>
           {rows.map(row => (
             <tr key={row.id} style={{ borderBottom: `1px solid ${view.theme.surfaceBorder}` }}>
-            {visibleColumns.map(column => {
+              {visibleColumns.map(column => {
                 if (column.key === 'detail') {
                   return (
-                    <td key={`${row.id}-${column.key}`} style={{ padding: 10 }}>
+                    <td key={`${row.id}-${column.key}`} style={{ padding: 10, whiteSpace: 'nowrap' }}>
                       <button onClick={() => onOpenDetail(row.id)}>{row.detail.action}</button>
                     </td>
                   );
                 }
 
-                const value = row[column.key];
+                const value = column.key === 'id' ? row.id : row[column.key];
                 return (
-                  <td key={`${row.id}-${column.key}`} style={{ padding: 10 }}>
-                    {typeof value === 'string' || typeof value === 'number' ? value : '-'}
+                  <td key={`${row.id}-${column.key}`} style={{ maxWidth: 360, padding: 10, verticalAlign: 'top' }}>
+                    <div style={{ overflowWrap: 'anywhere' }}>{renderCellValue(value)}</div>
                   </td>
                 );
               })}

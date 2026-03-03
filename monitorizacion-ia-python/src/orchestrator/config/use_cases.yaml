@@ -1,9 +1,15 @@
 use_cases:
   hipotecas:
     adapter: native
+    label: Hipotecas
+    enabled: true
+    default: true
     timeouts:
       ms: 2500
   prestamos:
     adapter: native
+    label: Prestamos
+    enabled: true
+    default: false
     timeouts:
       ms: 2500

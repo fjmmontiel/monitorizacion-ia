@@ -1,6 +1,4 @@
 import { envVariables } from '#/shell/config/env';
-import { getFixtureByUseCase } from '#/shell/features/monitor/fixtures';
-import { isAllowedUseCase, useCasesConfig } from '#/shell/shared/config/useCases';
 import {
   CardsResponse,
   DatopsOverviewResponse,
@@ -8,12 +6,14 @@ import {
   DashboardResponse,
   MonitorApiError,
   QueryRequest,
+  UIShellResponse,
   ViewConfiguration,
   cardsResponseSchema,
   datopsOverviewResponseSchema,
   dashboardDetailResponseSchema,
   dashboardResponseSchema,
   queryRequestSchema,
+  uiShellResponseSchema,
   viewConfigurationListSchema,
   viewConfigurationSchema,
 } from '#/shell/shared/contracts/monitor.contracts';
@@ -57,8 +57,8 @@ const assertQuery = (body?: QueryRequest) => {
 };
 
 const assertUseCase = (casoDeUso: string) => {
-  if (!isAllowedUseCase(casoDeUso)) {
-    throw new MonitorApiError('UNKNOWN_USE_CASE', `Use case not allowed: ${casoDeUso}`);
+  if (!casoDeUso.trim()) {
+    throw new MonitorApiError('VALIDATION_ERROR', 'caso_de_uso is required');
   }
 };
 
@@ -85,15 +85,15 @@ const request = async <T>(
     });
 
     if (!response.ok) {
-      let payload: { code?: string; message?: string } | undefined;
+      let payload: { code?: string; message?: string; detail?: string } | undefined;
       try {
-        payload = (await response.json()) as { code?: string; message?: string };
+        payload = (await response.json()) as { code?: string; message?: string; detail?: string };
       } catch {
         payload = undefined;
       }
       throw new MonitorApiError(
         mapBackendErrorCode(payload?.code),
-        payload?.message ?? `HTTP ${response.status}`,
+        payload?.message ?? payload?.detail ?? `HTTP ${response.status}`,
       );
     }
 
@@ -109,62 +109,19 @@ const request = async <T>(
   }
 };
 
-const inMockMode = envVariables.REACT_APP_MONITOR_MOCK_MODE;
-const enableFailoverToMock = envVariables.REACT_APP_MONITOR_FAILOVER_TO_MOCK;
-
-const getMockDatopsOverview = (): DatopsOverviewResponse =>
-  datopsOverviewResponseSchema.parse({
-    schema_version: 'v1',
-    generated_at: new Date().toISOString(),
-    profile: 'local-mock',
-    use_cases: useCasesConfig
-      .filter(item => item.enabled)
-      .map(item => ({
-        id: item.id,
-        adapter: 'native',
-        timeout_ms: 2500,
-        upstream_base_url: null,
-        routes: {
-          cards: `/cards?caso_de_uso=${item.id}`,
-          dashboard: `/dashboard?caso_de_uso=${item.id}`,
-          dashboard_detail: `/dashboard_detail?caso_de_uso=${item.id}&id={id}`,
-        },
-      })),
-  });
-
 export const MonitorApi = {
   async postCards(casoDeUso: string, body?: QueryRequest): Promise<CardsResponse> {
     assertUseCase(casoDeUso);
     assertQuery(body);
-    if (inMockMode) {
-      return cardsResponseSchema.parse(getFixtureByUseCase(casoDeUso).cards);
-    }
-    try {
-      const payload = await request<CardsResponse>(buildUrl('/cards', { caso_de_uso: casoDeUso }), body);
-      return cardsResponseSchema.parse(payload);
-    } catch (error) {
-      if (enableFailoverToMock) {
-        return cardsResponseSchema.parse(getFixtureByUseCase(casoDeUso).cards);
-      }
-      throw normalizeError(error);
-    }
+    const payload = await request<CardsResponse>(buildUrl('/cards', { caso_de_uso: casoDeUso }), body);
+    return cardsResponseSchema.parse(payload);
   },
 
   async postDashboard(casoDeUso: string, body?: QueryRequest): Promise<DashboardResponse> {
     assertUseCase(casoDeUso);
     assertQuery(body);
-    if (inMockMode) {
-      return dashboardResponseSchema.parse(getFixtureByUseCase(casoDeUso).dashboard);
-    }
-    try {
-      const payload = await request<DashboardResponse>(buildUrl('/dashboard', { caso_de_uso: casoDeUso }), body);
-      return dashboardResponseSchema.parse(payload);
-    } catch (error) {
-      if (enableFailoverToMock) {
-        return dashboardResponseSchema.parse(getFixtureByUseCase(casoDeUso).dashboard);
-      }
-      throw normalizeError(error);
-    }
+    const payload = await request<DashboardResponse>(buildUrl('/dashboard', { caso_de_uso: casoDeUso }), body);
+    return dashboardResponseSchema.parse(payload);
   },
 
   async postDashboardDetail(casoDeUso: string, id: string, body?: QueryRequest): Promise<DashboardDetailResponse> {
@@ -173,36 +130,21 @@ export const MonitorApi = {
       throw new MonitorApiError('VALIDATION_ERROR', 'id is required');
     }
     assertQuery(body);
-    if (inMockMode) {
-      return dashboardDetailResponseSchema.parse(getFixtureByUseCase(casoDeUso).dashboardDetail);
-    }
-    try {
-      const payload = await request<DashboardDetailResponse>(
-        buildUrl('/dashboard_detail', { caso_de_uso: casoDeUso, id }),
-        body,
-      );
-      return dashboardDetailResponseSchema.parse(payload);
-    } catch (error) {
-      if (enableFailoverToMock) {
-        return dashboardDetailResponseSchema.parse(getFixtureByUseCase(casoDeUso).dashboardDetail);
-      }
-      throw normalizeError(error);
-    }
+    const payload = await request<DashboardDetailResponse>(
+      buildUrl('/dashboard_detail', { caso_de_uso: casoDeUso, id }),
+      body,
+    );
+    return dashboardDetailResponseSchema.parse(payload);
   },
 
   async getDatopsOverview(): Promise<DatopsOverviewResponse> {
-    if (inMockMode) {
-      return getMockDatopsOverview();
-    }
-    try {
-      const payload = await request<DatopsOverviewResponse>(buildUrl('/datops/overview', {}), undefined, 'GET');
-      return datopsOverviewResponseSchema.parse(payload);
-    } catch (error) {
-      if (enableFailoverToMock) {
-        return getMockDatopsOverview();
-      }
-      throw normalizeError(error);
-    }
+    const payload = await request<DatopsOverviewResponse>(buildUrl('/datops/overview', {}), undefined, 'GET');
+    return datopsOverviewResponseSchema.parse(payload);
+  },
+
+  async getUIShell(): Promise<UIShellResponse> {
+    const payload = await request<UIShellResponse>(buildUrl('/ui/shell', {}), undefined, 'GET');
+    return uiShellResponseSchema.parse(payload);
   },
 
   async getViewConfigurations(filters?: { system?: string; enabled?: boolean }): Promise<ViewConfiguration[]> {

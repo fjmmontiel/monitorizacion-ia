@@ -21,6 +21,9 @@ class UseCaseTimeouts(BaseModel):
 
 class UseCaseConfig(BaseModel):
     adapter: str
+    label: str | None = None
+    enabled: bool = True
+    default: bool = False
     upstream: UpstreamConfig | None = None
     timeouts: UseCaseTimeouts = Field(default_factory=UseCaseTimeouts)
     headers_passthrough: dict | None = None
